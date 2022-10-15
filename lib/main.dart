@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
+import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _currentPageIndex = 0;
+  final PageController pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -14,54 +24,33 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      home: SafeArea(
+        child: Scaffold(
+          bottomNavigationBar: BottomBar(
+            pageIndex: _currentPageIndex,
+            pageController: pageController,
+            onBottomMenuTapHandler: onBottomMenuTap, 
+            onSwipeHandler: onPageSwiape,),
+          body: PageViewMainMenu(
+            pageController: pageController, 
+            onSwipeHandler: onPageSwiape, 
+            pages: children,)),
       ),
     );
   }
+
+  void onBottomMenuTap(int index, PageController pageController) {
+    pageController.animateToPage(index,
+        duration: Duration(microseconds: 500), curve: Curves.easeIn);
+  }
+
+  void onPageSwiape(int index){
+    _currentPageIndex = index;
+    setState(() {});
+  }
+
+  List<Widget> get children => [
+    Text("test"),
+    Text("data"),
+  ];
 }
