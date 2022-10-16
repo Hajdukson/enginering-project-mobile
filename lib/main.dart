@@ -1,13 +1,20 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
+import 'package:money_manager_mobile/widgets/pages/camera_access.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+
+  runApp(MyApp(camera: firstCamera,));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.camera}) : super(key: key);
+  final CameraDescription camera;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -15,33 +22,31 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _currentPageIndex = 0;
-  final PageController pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
+  Map<String, Object> pages = {};
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
         primarySwatch: Colors.blue,
       ),
-      home: SafeArea(
-        child: Scaffold(
-          bottomNavigationBar: BottomBar(
-            pageIndex: _currentPageIndex,
-            pageController: pageController,
-            onBottomMenuTapHandler: onBottomMenuTap, 
-            onSwipeHandler: onPageSwiape,),
-          body: PageViewMainMenu(
-            pageController: pageController, 
-            onSwipeHandler: onPageSwiape, 
-            pages: children,)),
-      ),
+      home: Scaffold(
+        bottomNavigationBar: BottomBar(
+          pageIndex: _currentPageIndex,
+          pageController: _pageController,
+          onBottomMenuTapHandler: onBottomMenuTap,), 
+        body: PageViewMainMenu(
+          pageController: _pageController, 
+          onSwipeHandler: onPageSwiape, 
+          pages: children,)),
     );
   }
 
   void onBottomMenuTap(int index, PageController pageController) {
     pageController.animateToPage(index,
-        duration: Duration(microseconds: 500), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void onPageSwiape(int index){
@@ -50,7 +55,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   List<Widget> get children => [
-    Text("test"),
-    Text("data"),
+    SafeArea(child: Text("data")),
+    CameraAccess(camera: widget.camera,),
   ];
 }
