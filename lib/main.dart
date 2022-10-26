@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
@@ -5,6 +7,7 @@ import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 import 'package:money_manager_mobile/widgets/pages/camera_access.dart';
 
 Future<void> main() async {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
@@ -33,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        bottomNavigationBar: BottomBar(
+        bottomNavigationBar: BottomBarMainMenu(
           pageIndex: _currentPageIndex,
           pageController: _pageController,
           onBottomMenuTapHandler: onBottomMenuTap,), 
@@ -55,7 +58,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   List<Widget> get children => [
-    SafeArea(child: Text("data")),
+    const SafeArea(child: Text("data")),
     CameraAccess(camera: widget.camera,),
   ];
+}
+
+ class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
 }
