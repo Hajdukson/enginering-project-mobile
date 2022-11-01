@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import 'bought_products_preview.dart';
+import 'bought_products_analizer.dart';
 
 class CameraAccess extends StatefulWidget {
   const CameraAccess({Key? key, required this.camera}) : super(key: key);
@@ -53,7 +53,7 @@ class _CameraAccessState extends State<CameraAccess> {
           if (!mounted) return;
 
           await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => BoughtProductsPreView(image: image,))
+            MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: image,))
           );
         }
         catch(e){

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 import 'package:money_manager_mobile/widgets/pages/camera_access.dart';
+import 'package:money_manager_mobile/widgets/pages/user_details.dart';
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   List<Widget> get children => [
-    const SafeArea(child: Text("data")),
+    const UserDetails(),
     CameraAccess(camera: widget.camera,),
   ];
 }
