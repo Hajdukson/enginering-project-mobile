@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-class BoughtProductsPreview extends StatefulWidget {
-  const BoughtProductsPreview({Key? key, required this.boughtProducts}) : super(key: key);
-  final List<BoughtProduct> boughtProducts;
 
+import '../generics/selectable_list.dart';
+class BoughtProductsPreview extends SelectableList<BoughtProduct> {
+  BoughtProductsPreview({Key? key, required List<BoughtProduct> boughtProducts}) : super(key: key, data: boughtProducts);
+  
   @override
-  State<BoughtProductsPreview> createState() => _BoughtProductsPreviewState();
-}
-
-class _BoughtProductsPreviewState extends State<BoughtProductsPreview> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('The following products were found.')),
-      body: ListView.builder(
-        itemCount: widget.boughtProducts.length,
-        itemBuilder: ((context, index) {
-          return Card(child: ListTile(title: Text('${widget.boughtProducts[index].name} ${widget.boughtProducts[index].price} PLN')));
-      })),
+  Widget buildChildren(int index) {
+    return Card(
+      color: selectableItems[index].isSelected ? Colors.red : Colors.white,
+      child: ListTile(
+        title: Text("${selectableItems[index].data.name}"),
+        subtitle: Text("${selectableItems[index].data.price}"),
+        trailing: IconButton(
+          onPressed: () {print("edit");},
+          icon: const Icon(Icons.edit),),
+      ),
     );
   }
 }
