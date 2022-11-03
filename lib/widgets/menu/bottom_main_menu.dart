@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BottomBar extends StatelessWidget {
+class BottomBarMainMenu extends StatelessWidget {
   final int pageIndex;
   final PageController pageController;
   final Function(int, PageController) onBottomMenuTapHandler;
 
-  const BottomBar(
+  const BottomBarMainMenu(
       {Key? key,
       required this.pageIndex,
       required this.pageController,

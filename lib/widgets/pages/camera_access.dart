@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import 'bought_products_analizer.dart';
+
 class CameraAccess extends StatefulWidget {
   const CameraAccess({Key? key, required this.camera}) : super(key: key);
   final CameraDescription camera;
@@ -42,7 +44,23 @@ class _CameraAccessState extends State<CameraAccess> {
           },
         ), 
       ),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.camera_enhance), onPressed: () {},),
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.camera_enhance), onPressed: () async {
+        try {
+          await initializeControllerFuture;
+
+          final image = await cameraController.takePicture();
+
+          if (!mounted) return;
+
+          await Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: image,))
+          );
+        }
+        catch(e){
+          print(e);
+        }
+        
+      },),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
