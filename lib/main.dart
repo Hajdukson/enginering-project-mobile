@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
+import 'package:money_manager_mobile/widgets/pages/recipt_view.dart';
 import 'package:money_manager_mobile/widgets/pages/camera_access.dart';
-import 'package:money_manager_mobile/widgets/pages/user_details.dart';
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   int _currentPageIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   Map<String, Object> pages = {};
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,9 +57,25 @@ class _MyAppState extends State<MyApp> {
     _currentPageIndex = index;
     setState(() {});
   }
-
+  var productList = [
+        BoughtProduct(name: "kanapka", price: 10),
+        BoughtProduct(name: "chleb", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(name: "kanapka", price: 10),
+        BoughtProduct(name: "chleb", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(name: "biszkopt", price: 10),
+        BoughtProduct(name: "biszkopt", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(name: "pizza", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(name: "frytki", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(name: "ciastka", price: 10),
+      ];
+  // for testing
   List<Widget> get children => [
-    const UserDetails(),
+    ReciptView(recipt: productList,),
     CameraAccess(camera: widget.camera,),
   ];
 }
