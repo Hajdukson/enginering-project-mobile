@@ -76,7 +76,6 @@ class SelectableListState extends State<SelectableList> {
         ),
       ),
         floatingActionButton: _rednerFloatingButtons(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -89,7 +88,6 @@ class SelectableListState extends State<SelectableList> {
     else if(widget.anySelectedIcon == null && widget.notSelectedIcon == null) {
       return Container();
     }
-    
     return FloatingActionButton(onPressed: widget.onAnySelectedHandler, child: widget.anySelectedIcon,);
   }
 

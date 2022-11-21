@@ -1,18 +1,24 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/menu/bottom_main_menu.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 import 'package:money_manager_mobile/widgets/pages/recipt_view.dart';
 import 'package:money_manager_mobile/widgets/pages/camera_access.dart';
 
+import 'flavor/flavor_config.dart';
+
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
-
+  FlavorConfig(
+    values: FlavorValues(
+      baseUrl: "https://192.168.1.31:7075"
+    ));
   runApp(MyApp(camera: firstCamera,));
 }
 
@@ -75,7 +81,7 @@ class _MyAppState extends State<MyApp> {
       ];
   // for testing
   List<Widget> get children => [
-    ReciptView(recipt: productList,),
+    ReceiptView(recipt: productList,),
     CameraAccess(camera: widget.camera,),
   ];
 }
