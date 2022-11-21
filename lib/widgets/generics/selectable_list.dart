@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import '../../models/bought_product.dart';
 import 'models/selectable_item_.dart';
 abstract class SelectableList extends StatefulWidget {
-  SelectableList({Key? key, required List<BoughtProduct> data ,this.anySelectedIcon, this.notSelectedIcon , this.onAnySelectedHandler, this.onNotSelectedHandler}) : _data = data, super(key: key);
+  SelectableList({Key? key, required List<BoughtProduct> data, required this.listKey, this.anySelectedIcon, this.notSelectedIcon , this.onAnySelectedHandler, this.onNotSelectedHandler}) : _data = data, super(key: key);
 
   final Icon? anySelectedIcon;
   final Icon? notSelectedIcon;
+  final GlobalKey<AnimatedListState> listKey;
 
   final Function()? onAnySelectedHandler;
   final Function()? onNotSelectedHandler;
@@ -16,11 +17,12 @@ abstract class SelectableList extends StatefulWidget {
   @override
   State<SelectableList> createState() => SelectableListState();
 
-  Widget buildChildren(SelectableItem<BoughtProduct> product);
+  Widget buildChildren(SelectableItem<BoughtProduct> product, Animation<double> animation);
 }
 
 class SelectableListState extends State<SelectableList> {
   List<SelectableItem<BoughtProduct>> searchableBoughtProducts = [];
+  bool wasSearched = false;
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class SelectableListState extends State<SelectableList> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               TextField(
@@ -46,9 +48,10 @@ class SelectableListState extends State<SelectableList> {
                 height: 20,
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: searchableBoughtProducts.length,
-                  itemBuilder: (context, index) {
+                child: AnimatedList(
+                  key: widget.listKey,
+                  initialItemCount : searchableBoughtProducts.length,
+                  itemBuilder: (context, index, animation) {
                     return GestureDetector(
                       onTap: () {
                         if(searchableBoughtProducts[index].isSelected) {
@@ -63,7 +66,8 @@ class SelectableListState extends State<SelectableList> {
                         searchableBoughtProducts[index].isSelected = true;
                         setState(() { });
                       },
-                      child: widget.buildChildren(searchableBoughtProducts[index]),
+                      child: index > searchableBoughtProducts.length - 1 ? 
+                        Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
                     );
                   }),
               ),
@@ -90,13 +94,14 @@ class SelectableListState extends State<SelectableList> {
   }
 
   void _runFilter(String enteredKeyword) {
+    // TODO - można tu dodać tą samą animacje co przy usuwaniu wiele elementów (troche dziwne to będzie - taki dodatkowy quest)
     List<SelectableItem<BoughtProduct>> results = [];
     if (enteredKeyword.isEmpty) {
       results = widget.selectableItems;
     } else {
       results = widget.selectableItems
-          .where((item) => item.data.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
+        .where((item) => item.data.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+        .toList();
     }
     searchableBoughtProducts = results;
     setState(() { });

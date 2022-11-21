@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
+import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
 
-class ReciptView extends StatefulWidget {
-  ReciptView({Key? key, required this.recipt}) : super(key: key);
+class ReceiptView extends StatefulWidget {
+  ReceiptView({Key? key, required this.recipt}) : super(key: key);
 
   List<BoughtProduct> recipt;
 
   @override
-  State<ReciptView> createState() => ReciptViewState();
+  State<ReceiptView> createState() => ReceiptViewState();
 }
 
-class ReciptViewState extends State<ReciptView> {
+class ReceiptViewState extends State<ReceiptView> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final reciptKey = GlobalKey<SelectableListState>();
+  final listKey = GlobalKey<AnimatedListState>();
 
   @override
   void dispose() {
@@ -32,6 +33,7 @@ class ReciptViewState extends State<ReciptView> {
       child: ReciptList(
         onNotSelectedHandler: () {},
         onAnySelectedHandler: delete,
+        listKey: listKey,
         key: reciptKey,
         edit: (product) {
           var itemToEdit = product;
@@ -89,14 +91,20 @@ class ReciptViewState extends State<ReciptView> {
   }
 
   void delete() {
-    var searchable = reciptKey.currentState?.searchableBoughtProducts.where((item) => item.isSelected).toList();
-    reciptKey.currentState?.widget.selectableItems.removeWhere((it) => searchable!.any((element) => it.data.keyHelper == element.data.keyHelper));
-    widget.recipt.removeWhere((it) => searchable!.any((element) => it.keyHelper == element.data.keyHelper));
-    
-    reciptKey.currentState?.searchableBoughtProducts.clear();
-    reciptKey.currentState?.searchableBoughtProducts.addAll(widget.recipt.map((e) => SelectableItem(e)));
+    var products = reciptKey.currentState!.searchableBoughtProducts;
+    var selectedProducts = products.where((element) => element.isSelected);
+    var numberOfSelectedProducts = selectedProducts.length;
 
-    setState(() { });
+    for(var i = 0; i < numberOfSelectedProducts; i++) {
+      var product = products.firstWhere((element) => element.isSelected);
+
+      listKey.currentState!.removeItem(products.indexOf(product), (context, animation) 
+        => BoughtProductTail(product: product, animation: animation,));
+      
+      products.remove(product);
+    }
+
+    setState(() {  });
   }
 
   void add() {
