@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/pages/recipt_view.dart';
@@ -9,7 +8,7 @@ import '../../api_calls/bought_products._api.dart';
 class BoughtProductsAnalizer extends StatefulWidget {
   const BoughtProductsAnalizer({required this.image, Key? key})
       : super(key: key);
-  final XFile image;
+  final File image;
 
   @override
   State<BoughtProductsAnalizer> createState() => _BoughtProductsAnalizerState();
@@ -20,7 +19,17 @@ class _BoughtProductsAnalizerState extends State<BoughtProductsAnalizer> {
   @override
   void initState() {
     super.initState();
-    futureBoughtProducts = BoughtProductsApi.analizeReceipt(widget.image);
+
+    try
+    {
+      futureBoughtProducts = BoughtProductsApi.analizeReceipt(widget.image, context);
+    } on Exception catch(e) {
+      showDialog(context: context, builder: (context) => 
+        Dialog(child: Container(
+          height: 100,
+          width: 100,
+          child: Text("Error"),),));
+    }
   }
 
   @override

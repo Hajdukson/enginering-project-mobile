@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
-import 'package:camera/camera.dart';
 import 'package:money_manager_mobile/flavor/flavor_config.dart';
 
 import '../models/bought_product.dart';
@@ -10,7 +8,7 @@ import '../models/bought_product.dart';
 class BoughtProductsApi {
   static final String _baseUrl = FlavorConfig.instance.values.baseUrl;
 
-  static Future<List<BoughtProduct>> analizeReceipt(XFile image) async {
+  static Future<List<BoughtProduct>> analizeReceipt(File image) async {
     var uri = Uri.parse("$_baseUrl/api/boughtproducts/analize");
     var request = http.MultipartRequest("GET", uri);
     request.files
@@ -19,6 +17,9 @@ class BoughtProductsApi {
     try {
       var response = await request.send();
       var respStr = await response.stream.bytesToString();
+      if(respStr.isEmpty) {
+        throw Exception("'respStr' was empty - Check filesize. Filesize should be lesser than 4mb");
+      }
       var responseAsJosn = jsonDecode(respStr);
       List<BoughtProduct> boughtProducts = [];
 

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 import 'bought_products_analizer.dart';
 
@@ -49,11 +52,12 @@ class _CameraAccessState extends State<CameraAccess> {
           await initializeControllerFuture;
 
           final image = await cameraController.takePicture();
+          final compressedImage = await compressImage(File(image.path));
 
           if (!mounted) return;
 
           await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: image,))
+            MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: File(compressedImage.path),))
           );
         }
         catch(e){
@@ -63,5 +67,11 @@ class _CameraAccessState extends State<CameraAccess> {
       },),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Future<File> compressImage(File image) async{
+    File compressedFile = await FlutterNativeImage.compressImage(image.path,
+        quality: 90,);
+    return compressedFile;
   }
 }
