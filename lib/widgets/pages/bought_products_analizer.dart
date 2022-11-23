@@ -22,7 +22,7 @@ class _BoughtProductsAnalizerState extends State<BoughtProductsAnalizer> {
 
     try
     {
-      futureBoughtProducts = BoughtProductsApi.analizeReceipt(widget.image, context);
+      futureBoughtProducts = BoughtProductsApi.analizeReceipt(widget.image);
     } on Exception catch(e) {
       showDialog(context: context, builder: (context) => 
         Dialog(child: Container(

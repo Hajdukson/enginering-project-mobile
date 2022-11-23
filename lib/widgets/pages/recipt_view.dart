@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
+import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
 
 class ReceiptView extends StatefulWidget {
@@ -31,8 +34,8 @@ class ReceiptViewState extends State<ReceiptView> {
     return Container(
       margin: EdgeInsets.all(8.0),
       child: ReciptList(
-        onNotSelectedHandler: () {},
-        onAnySelectedHandler: delete,
+        noBulkActions: bulkActions,
+        bulkActions: noBulkActions,
         listKey: listKey,
         key: reciptKey,
         edit: (product) {
@@ -80,6 +83,28 @@ class ReceiptViewState extends State<ReceiptView> {
       ),
     );
   }
+
+  List<ActionButton> get bulkActions => [
+    ActionButton(
+      icon: Icon(Icons.save),
+      onPressed: () {print("zapisanie produktow");},
+    ),
+    ActionButton(
+      icon: Icon(Icons.add),
+      onPressed: () {print("dodanie pojedynczego product");},
+    ),
+    ActionButton(
+      icon: Icon(Icons.clear_all),
+      onPressed: () {print("porzucenie akcji");},
+    ),
+  ];
+
+  List<ActionButton> get noBulkActions => [
+    ActionButton(
+      icon: Icon(Icons.delete),
+      onPressed: delete,
+    ),
+  ];
 
   void edit(BoughtProduct itemToEdit , GlobalKey<FormState> key) {
     if(key.currentState!.validate()) {

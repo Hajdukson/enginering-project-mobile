@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/widgets/pages/widgets/fab/expandable_fab.dart';
 import '../../models/bought_product.dart';
+import '../pages/widgets/fab/action_button.dart';
 import 'models/selectable_item_.dart';
 abstract class SelectableList extends StatefulWidget {
-  SelectableList({Key? key, required List<BoughtProduct> data, required this.listKey, this.anySelectedIcon, this.notSelectedIcon , this.onAnySelectedHandler, this.onNotSelectedHandler}) : _data = data, super(key: key);
+  SelectableList({Key? key, required List<BoughtProduct> data, required this.listKey, required this.onBulkActions, required this.noBulkActions}) : _data = data, super(key: key);
 
-  final Icon? anySelectedIcon;
-  final Icon? notSelectedIcon;
   final GlobalKey<AnimatedListState> listKey;
 
-  final Function()? onAnySelectedHandler;
-  final Function()? onNotSelectedHandler;
+  final List<ActionButton> onBulkActions;
+  final List<ActionButton> noBulkActions;
 
   final List<BoughtProduct> _data;
   late final List<SelectableItem<BoughtProduct>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
@@ -22,7 +22,9 @@ abstract class SelectableList extends StatefulWidget {
 
 class SelectableListState extends State<SelectableList> {
   List<SelectableItem<BoughtProduct>> searchableBoughtProducts = [];
-  bool wasSearched = false;
+
+  final bulkActionFabKey = GlobalKey<ExpandableFabState>();
+  final noBulkActionFabKey = GlobalKey<ExpandableFabState>();
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class SelectableListState extends State<SelectableList> {
 
   @override
   Widget build(BuildContext context) {
+    bool isAnySelected = searchableBoughtProducts.any((item) => item.isSelected);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -75,24 +78,26 @@ class SelectableListState extends State<SelectableList> {
           ),
         ),
       ),
-        floatingActionButton: _rednerFloatingButtons(),
+      floatingActionButton: isAnySelected ? ExpandableFab(
+        key: bulkActionFabKey,
+        icon: const Icon(Icons.bolt),
+        distance: 112.0,
+        children: [
+          ...widget.onBulkActions
+        ],
+      ) : ExpandableFab(
+            key: noBulkActionFabKey,
+            icon: const Icon(Icons.menu),
+            distance: 112.0, 
+            children: [
+            ...widget.noBulkActions
+            ]
+          )
     );
   }
 
-  Widget _rednerFloatingButtons() {
-    if(widget.anySelectedIcon != null && widget.notSelectedIcon != null) {
-      return searchableBoughtProducts.any((item) => item.isSelected) ? 
-          FloatingActionButton(onPressed: widget.onAnySelectedHandler, child: widget.anySelectedIcon) :
-          FloatingActionButton(onPressed: widget.onNotSelectedHandler, child: widget.notSelectedIcon,);      
-    } 
-    else if(widget.anySelectedIcon == null && widget.notSelectedIcon == null) {
-      return Container();
-    }
-    return FloatingActionButton(onPressed: widget.onAnySelectedHandler, child: widget.anySelectedIcon,);
-  }
-
   void _runFilter(String enteredKeyword) {
-    // TODO - można tu dodać tą samą animacje co przy usuwaniu wiele elementów (troche dziwne to będzie - taki dodatkowy quest)
+    // TODO - można dodać tą samą animacje co przy usuwaniu wiele elementów (troche dziwne to będzie - taki dodatkowy quest)
     List<SelectableItem<BoughtProduct>> results = [];
     if (enteredKeyword.isEmpty) {
       results = widget.selectableItems;
