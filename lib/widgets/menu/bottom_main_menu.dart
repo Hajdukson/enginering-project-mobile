@@ -15,11 +15,8 @@ class BottomBarMainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        backgroundColor: Colors.blue,
         currentIndex: pageIndex,
         onTap: (index) => {onBottomMenuTapHandler(index, pageController)},
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "User"),
           BottomNavigationBarItem(

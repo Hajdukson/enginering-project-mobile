@@ -47,24 +47,27 @@ class _CameraAccessState extends State<CameraAccess> {
           },
         ), 
       ),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.camera_enhance), onPressed: () async {
-        try {
-          await initializeControllerFuture;
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: const Icon(Icons.camera_enhance), 
+        onPressed: () async {
+          try {
+            await initializeControllerFuture;
 
-          final image = await cameraController.takePicture();
-          final compressedImage = await compressImage(File(image.path));
+            final image = await cameraController.takePicture();
+            final compressedImage = await compressImage(File(image.path));
 
-          if (!mounted) return;
+            if (!mounted) return;
 
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: File(compressedImage.path),))
-          );
-        }
-        catch(e){
-          print(e);
-        }
-        
-      },),
+            await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: File(compressedImage.path),))
+            );
+          }
+          catch(e){
+            print(e);
+          }
+          
+        },),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

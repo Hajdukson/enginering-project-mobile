@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/widgets/menu/menu.dart';
 
@@ -13,9 +14,25 @@ Future<void> main() async {
   final firstCamera = cameras.first;
   FlavorConfig(
     values: FlavorValues(
-      baseUrl: "https://192.168.1.33:7075",
+      baseUrl: "https://192.168.1.30:7075",
       camera: firstCamera,
-    ));
+      themeData: ThemeData(
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.black87,
+          selectedItemColor: Colors.amber
+        ),
+        primaryColor: Colors.black12,
+        colorScheme: ColorScheme.fromSwatch(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.amber,
+          accentColor: const Color.fromARGB(255, 241, 113, 58)
+        ),
+        textTheme: GoogleFonts.anybodyTextTheme(const TextTheme(
+          labelSmall: TextStyle(
+            fontSize: 16,
+            color: Colors.grey
+        ))))));
   runApp(const MyApp());
 }
 
@@ -30,10 +47,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
-        primarySwatch: Colors.blue,
-      ),
+      theme: FlavorConfig.instance.values.themeData,
       home: const Menu(),
     );
   }

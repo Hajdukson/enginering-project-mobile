@@ -82,7 +82,7 @@ class ExpandableFabState extends State<ExpandableFab>
       height: 56.0,
       child: Center(
         child: Material(
-          color: Colors.blue,
+          color: Theme.of(context).colorScheme.secondary,
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
@@ -135,6 +135,7 @@ class ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: toggle,
             child: widget.icon,
           ),

@@ -42,6 +42,7 @@ class SelectableListState extends State<SelectableList> {
           child: Column(
             children: [
               TextField(
+                style: Theme.of(context).textTheme.labelSmall,
                 onChanged: (value) => _runFilter(value),
                 decoration: const InputDecoration(
                   labelText: 'Search', 
@@ -81,14 +82,14 @@ class SelectableListState extends State<SelectableList> {
       floatingActionButton: isAnySelected ? ExpandableFab(
         key: bulkActionFabKey,
         icon: const Icon(Icons.bolt),
-        distance: 112.0,
+        distance: 80.0,
         children: [
           ...widget.onBulkActions
         ],
       ) : ExpandableFab(
             key: noBulkActionFabKey,
             icon: const Icon(Icons.menu),
-            distance: 112.0, 
+            distance: 80.0, 
             children: [
             ...widget.noBulkActions
             ]

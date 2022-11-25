@@ -22,7 +22,7 @@ class _ActionButtonState extends State<ActionButton>{
     return Material(
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
-      color: Colors.blue,
+      color: Theme.of(context).colorScheme.secondary,
       elevation: 4.0,
       child: IconButton(
         onPressed: widget.onPressed,
