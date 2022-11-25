@@ -6,9 +6,10 @@ import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
+import 'package:money_manager_mobile/widgets/pages/widgets/yesno_dialog.dart';
 
 class ReceiptView extends StatefulWidget {
-  ReceiptView({Key? key, required this.recipt}) : super(key: key);
+  ReceiptView({Key? key, required this.recipt, }) : super(key: key);
 
   List<BoughtProduct> recipt;
 
@@ -87,22 +88,22 @@ class ReceiptViewState extends State<ReceiptView> {
   List<ActionButton> get bulkActions => [
     ActionButton(
       icon: Icon(Icons.save),
-      onPressed: () {print("zapisanie produktow");},
+      onPressed: saveItems,
     ),
     ActionButton(
       icon: Icon(Icons.add),
-      onPressed: () {print("dodanie pojedynczego product");},
+      onPressed: addItem,
     ),
     ActionButton(
       icon: Icon(Icons.clear_all),
-      onPressed: () {print("porzucenie akcji");},
+      onPressed: abortActionDialog,
     ),
   ];
 
   List<ActionButton> get noBulkActions => [
     ActionButton(
       icon: Icon(Icons.delete),
-      onPressed: delete,
+      onPressed: deleteSelectedItemsDialog,
     ),
   ];
 
@@ -115,7 +116,7 @@ class ReceiptViewState extends State<ReceiptView> {
     }
   }
 
-  void delete() {
+  void deleteSelectedItems() {
     var products = reciptKey.currentState!.searchableBoughtProducts;
     var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
@@ -130,11 +131,59 @@ class ReceiptViewState extends State<ReceiptView> {
     }
     reciptKey.currentState!.widget.selectableItems.removeWhere((item) => item.isSelected);
     widget.recipt.clear();
-    widget.recipt.addAll(reciptKey.currentState!.widget.selectableItems.map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
+    widget.recipt
+      .addAll(reciptKey.currentState!.widget.selectableItems
+      .map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
+
     setState(() {  });
   }
+  void deleteSelectedItemsDialog() {
+    showDialog(context: context, builder: ((context) => 
+      YesNoDialog(
+        title: "Abort data",
+        description: "Are your sure you want to delete ${reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length} products?",
+        onYesClickAction: () {
+          deleteSelectedItems();
+          Navigator.of(context).pop();
+        },
+        onNoClickAction: () {
+          Navigator.of(context).pop();
+        },
+      )));
+  }
 
-  void add() {
-    //TODO - napisać nowy endpoint w C#
+  void abortActionDialog() {
+    showDialog(context: context, builder: ((context) => 
+      YesNoDialog(
+        title: "Abort data",
+        description: "Are your sure?",
+        onYesClickAction: () {
+          Navigator.of(context).pop();
+        },
+        onNoClickAction: () {
+          Navigator.of(context).pop();
+        },
+      )));
+  }
+
+  void saveItems() {
+    showDialog(context: context, builder: ((context) => 
+      YesNoDialog(
+        title: "Save data",
+        description: "Are your sure?",
+        onYesClickAction: () {
+          Navigator.of(context).pop();
+        },
+        onNoClickAction: () {
+          Navigator.of(context).pop();
+        },
+      )));
+  }
+
+  void addItem() {
+    showDialog(context: context, builder: (context) => 
+      YesNoDialog(
+        title: "Text(),"
+      ));  
   }
 }
