@@ -60,14 +60,17 @@ class SelectableListState extends State<SelectableList> {
                       onTap: () {
                         if(searchableBoughtProducts[index].isSelected) {
                           searchableBoughtProducts[index].isSelected = false;
+                          widget.selectableItems[index].isSelected = false;
                         }
                         else if(searchableBoughtProducts.any((item) => item.isSelected)){
                           searchableBoughtProducts[index].isSelected = true;
+                          widget.selectableItems[index].isSelected = true;
                         }
                         setState(() { });
                       },
                       onLongPress: () {
                         searchableBoughtProducts[index].isSelected = true;
+                        widget.selectableItems[index].isSelected = true;
                         setState(() { });
                       },
                       child: index > searchableBoughtProducts.length - 1 ? 

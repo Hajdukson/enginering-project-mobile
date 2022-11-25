@@ -117,7 +117,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
   void delete() {
     var products = reciptKey.currentState!.searchableBoughtProducts;
-    var selectedProducts = products.where((element) => element.isSelected);
+    var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
 
     for(var i = 0; i < numberOfSelectedProducts; i++) {
@@ -128,7 +128,9 @@ class ReceiptViewState extends State<ReceiptView> {
       
       products.remove(product);
     }
-
+    reciptKey.currentState!.widget.selectableItems.removeWhere((item) => item.isSelected);
+    widget.recipt.clear();
+    widget.recipt.addAll(reciptKey.currentState!.widget.selectableItems.map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
     setState(() {  });
   }
 
