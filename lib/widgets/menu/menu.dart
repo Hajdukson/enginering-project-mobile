@@ -3,9 +3,9 @@ import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 
 import '../../models/bought_product.dart';
-import '../pages/camera_access.dart';
-import '../pages/recipt_view.dart';
-import '../pages/user_details.dart';
+import '../pages/views/camera_access.dart';
+import '../pages/views/recipt_view.dart';
+import '../pages/views/user_details.dart';
 import 'bottom_main_menu.dart';
 
 class Menu extends StatefulWidget {

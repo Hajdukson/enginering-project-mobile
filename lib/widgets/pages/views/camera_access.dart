@@ -60,7 +60,8 @@ class _CameraAccessState extends State<CameraAccess> {
             if (!mounted) return;
 
             await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => BoughtProductsAnalizer(image: File(compressedImage.path),))
+              MaterialPageRoute(builder: (context) => 
+                BoughtProductsAnalizer(image: File(compressedImage.path),))
             );
           }
           catch(e){

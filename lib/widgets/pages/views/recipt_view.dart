@@ -22,7 +22,7 @@ class ReceiptViewState extends State<ReceiptView> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final reciptKey = GlobalKey<SelectableListState>();
-  final listKey = GlobalKey<AnimatedListState>();
+  var listKey = GlobalKey<AnimatedListState>();
 
   @override
   void dispose() {
@@ -89,7 +89,7 @@ class ReceiptViewState extends State<ReceiptView> {
   List<ActionButton> get bulkActions => [
     ActionButton(
       icon: Icon(Icons.save),
-      onPressed: saveItems,
+      onPressed: saveItemsDialog,
     ),
     ActionButton(
       icon: Icon(Icons.add),
@@ -138,6 +138,22 @@ class ReceiptViewState extends State<ReceiptView> {
 
     setState(() {  });
   }
+
+  void aboirtAction() {
+    for(var i = 0; i < reciptKey.currentState!.widget.selectableItems.length; i++) {
+      listKey.currentState!.removeItem(0, (context, animation) => Container());
+    }
+    widget.recipt.clear();
+    setState(() { });
+  }
+
+  void saveItems() {
+    BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
+      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate)).toList());
+    widget.recipt.clear();
+    setState(() { });
+  }
+
   void deleteSelectedItemsDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
@@ -159,7 +175,7 @@ class ReceiptViewState extends State<ReceiptView> {
         title: "Abort data",
         description: "Are your sure?",
         onYesClickAction: () {
-          reciptKey.currentState!.widget.selectableItems.clear();
+          aboirtAction();
           Navigator.of(context).pop();
         },
         onNoClickAction: () {
@@ -168,14 +184,13 @@ class ReceiptViewState extends State<ReceiptView> {
       )));
   }
 
-  void saveItems() {
+  void saveItemsDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
         title: "Save data",
         description: "Are your sure?",
         onYesClickAction: () {
-          BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
-            .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate)).toList());
+          saveItems();
           Navigator.of(context).pop();
         },
         onNoClickAction: () {

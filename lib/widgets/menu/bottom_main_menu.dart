@@ -18,7 +18,10 @@ class BottomBarMainMenu extends StatelessWidget {
         currentIndex: pageIndex,
         onTap: (index) => {onBottomMenuTapHandler(index, pageController)},
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "User"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person), label: "User"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag), label: "Shopping"),
           BottomNavigationBarItem(
               icon: Icon(Icons.camera), label: "Take a photo"),
         ]);
