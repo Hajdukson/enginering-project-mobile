@@ -38,21 +38,26 @@ class BoughtProductsApi {
     if(products.isEmpty) {
       throw Exception("In method 'postProducts' 'List<BoughtProducts>' was empty");
     }
-    
+
     var uri = Uri.parse("$_baseUrl/api/boughtproducts/addboughtproducts");
 
-    try {
-      var request = await http.post(
-        uri, 
-        headers: {
-          "Accept": "application/json",
-          "content-type":"application/json"
-        },
-        body: _decodeProducts(products));
-    }
-    on Exception catch (e) {
-      print(e);
-    }
+    await http.post(
+      uri, 
+      headers: {
+        "Accept": "application/json",
+        "content-type":"application/json"
+      },
+      body: _decodeProducts(products)
+    );
+  }
+  
+  static Future<List<BoughtProduct>> getProducts() async {
+    var uri = Uri.parse("$_baseUrl/api/boughtproducts");
+
+    var respons = await http.get(uri);
+    List json = jsonDecode(respons.body);
+    
+    return json.map((e) => BoughtProduct.fromJson(e)).toList();
   }
 
   static Future<BoughtProduct> postSingeProduct() {

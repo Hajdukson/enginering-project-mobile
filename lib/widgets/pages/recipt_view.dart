@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
@@ -158,6 +159,7 @@ class ReceiptViewState extends State<ReceiptView> {
         title: "Abort data",
         description: "Are your sure?",
         onYesClickAction: () {
+          reciptKey.currentState!.widget.selectableItems.clear();
           Navigator.of(context).pop();
         },
         onNoClickAction: () {
@@ -172,6 +174,8 @@ class ReceiptViewState extends State<ReceiptView> {
         title: "Save data",
         description: "Are your sure?",
         onYesClickAction: () {
+          BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
+            .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate)).toList());
           Navigator.of(context).pop();
         },
         onNoClickAction: () {
