@@ -33,10 +33,39 @@ class BoughtProductsApi {
       throw Exception("Failed to load data");
     }
   }
-  static Future<List<BoughtProduct>> postProducts() {
-    throw HttpStatus.notImplemented;
+
+  static void postProducts(List<BoughtProduct> products) async {
+    if(products.isEmpty) {
+      throw Exception("In method 'postProducts' 'List<BoughtProducts>' was empty");
+    }
+    
+    var uri = Uri.parse("$_baseUrl/api/boughtproducts/addboughtproducts");
+
+    try {
+      var request = await http.post(
+        uri, 
+        headers: {
+          "Accept": "application/json",
+          "content-type":"application/json"
+        },
+        body: _decodeProducts(products));
+    }
+    on Exception catch (e) {
+      print(e);
+    }
   }
+
   static Future<BoughtProduct> postSingeProduct() {
     throw HttpStatus.notImplemented;
+  }
+
+  static String _decodeProducts(List<BoughtProduct> products) {
+    List<Map<String, dynamic>> productsAsJson = products.map((e) => {
+      "id" : e.id,
+      "name" : e.name,
+      "price" : e.price,
+      "boughtDate" : e.boughtDate!.toIso8601String(),
+    }).toList();
+    return jsonEncode(productsAsJson);
   }
 }

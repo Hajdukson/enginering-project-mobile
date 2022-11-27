@@ -14,7 +14,7 @@ Future<void> main() async {
   final firstCamera = cameras.first;
   FlavorConfig(
     values: FlavorValues(
-      baseUrl: "https://192.168.1.30:7075",
+      baseUrl: "https://192.168.1.34:7075",
       camera: firstCamera,
       themeData: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
@@ -31,19 +31,18 @@ Future<void> main() async {
         textTheme: GoogleFonts.anybodyTextTheme(const TextTheme(
           labelSmall: TextStyle(
             fontSize: 16,
-            color: Colors.grey
-        ))))));
+            color: Colors.grey),
+          titleMedium: TextStyle(
+            fontSize: 18,
+            color: Colors.white
+          )
+            )))));
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

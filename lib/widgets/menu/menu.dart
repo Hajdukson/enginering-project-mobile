@@ -5,6 +5,7 @@ import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
 import '../../models/bought_product.dart';
 import '../pages/camera_access.dart';
 import '../pages/recipt_view.dart';
+import '../pages/user_details.dart';
 import 'bottom_main_menu.dart';
 
 class Menu extends StatefulWidget {
@@ -41,23 +42,24 @@ class _MenuState extends State<Menu> {
   }
 
     var productList = [
-        BoughtProduct(name: "kanapka", price: 10),
-        BoughtProduct(name: "chleb", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
-        BoughtProduct(name: "kanapka", price: 10),
-        BoughtProduct(name: "chleb", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
-        BoughtProduct(name: "biszkopt", price: 10),
-        BoughtProduct(name: "biszkopt", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
-        BoughtProduct(name: "pizza", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
-        BoughtProduct(name: "frytki", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
-        BoughtProduct(name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "kanapka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "RABAT", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "pizza", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "frytki", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
       ];
   // for testing
   List<Widget> get children => [
+    const UserDetails(),
     ReceiptView(recipt: productList,),
     CameraAccess(camera: FlavorConfig.instance.values.camera,),
   ];
