@@ -7,6 +7,7 @@ import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
+import 'package:money_manager_mobile/widgets/pages/widgets/two_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/yesno_dialog.dart';
 
 class ReceiptView extends StatefulWidget {
@@ -48,38 +49,14 @@ class ReceiptViewState extends State<ReceiptView> {
           priceController.text = itemToEdit.price.toString();
     
           showDialog(context: context, builder: (context) {
-            return Dialog(
-              child: Form(
-                key: formKey,
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  height: 200,
-                  child: Column(children: [
-                    TextFormField(
-                      controller: nameController,
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return "Enter valid name.";
-                        }
-                      },
-                    ),
-                    TextFormField(
-                      controller: priceController,
-                      validator: (value) {
-                        if(double.tryParse(value!) == null || value.isEmpty) {
-                          return "Enter valid price.";
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 20,),
-                    ElevatedButton(onPressed: () => edit(itemToEdit, formKey),  
-                      child: const Text("Edit"))
-                  ]),
-                ),
-                
-              ),
-            );
-          });
+            return TwoInputDialog(
+              key: formKey, 
+              firstInput: nameController, 
+              firstInputMessage: "Enter valid name",
+              secoundInput: priceController, 
+              secoundInputMessage: "Enter valid price",
+              submitButtonText: "Edit",
+              submitHandler: () => edit(itemToEdit, formKey));});
         },
         recipt: widget.recipt
       ),
@@ -93,7 +70,21 @@ class ReceiptViewState extends State<ReceiptView> {
     ),
     ActionButton(
       icon: Icon(Icons.add),
-      onPressed: addItem,
+      onPressed: () {
+        final nameController = TextEditingController();
+        final priceController = TextEditingController();
+        final formKey = GlobalKey<FormState>();
+
+        showDialog(context: context, builder: (context) => 
+          TwoInputDialog(
+            key: formKey, 
+            firstInput: nameController, 
+            firstInputMessage: "Enter valid name", 
+            secoundInput: priceController,
+            secoundInputMessage: "Enter valid name", 
+            submitButtonText: "Submit", 
+            submitHandler: () => addItem(nameController.text, priceController.text, formKey)));
+      },
     ),
     ActionButton(
       icon: Icon(Icons.clear_all),
@@ -199,10 +190,13 @@ class ReceiptViewState extends State<ReceiptView> {
       )));
   }
 
-  void addItem() {
-    showDialog(context: context, builder: (context) => 
-      YesNoDialog(
-        title: "Text(),"
-      ));  
+  void addItem(String name, String price, GlobalKey<FormState> key) {
+    if(key.currentState!.validate()) {
+      var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
+      listKey.currentState!.insertItem(widget.recipt.length, duration: Duration(microseconds: 500));
+      widget.recipt.add(boughtProduct);
+      Navigator.of(context).pop();
+      setState(() { });
+    }
   }
 }
