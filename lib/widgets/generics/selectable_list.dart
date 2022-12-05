@@ -4,9 +4,10 @@ import '../../models/bought_product.dart';
 import '../pages/widgets/fab/action_button.dart';
 import 'models/selectable_item_.dart';
 abstract class SelectableList extends StatefulWidget {
-  SelectableList({Key? key, required List<BoughtProduct> data, required this.listKey, required this.onBulkActions, required this.noBulkActions}) : _data = data, super(key: key);
+  SelectableList({Key? key, required List<BoughtProduct> data, required this.listKey, required this.onBulkActions, required this.noBulkActions, this.scrollController}) : _data = data, super(key: key);
 
   final GlobalKey<AnimatedListState> listKey;
+  final ScrollController? scrollController;
 
   final List<ActionButton> onBulkActions;
   final List<ActionButton> noBulkActions;
@@ -29,6 +30,7 @@ class SelectableListState extends State<SelectableList> {
   @override
   void initState() {
     searchableBoughtProducts.addAll(widget.selectableItems);
+    widget.scrollController;
     super.initState();
   }
 
@@ -54,6 +56,9 @@ class SelectableListState extends State<SelectableList> {
               Expanded(
                 child: AnimatedList(
                   key: widget.listKey,
+                  controller: widget.scrollController,
+                  shrinkWrap: true,
+                  reverse: true,
                   initialItemCount : searchableBoughtProducts.length,
                   itemBuilder: (context, index, animation) {
                     return GestureDetector(
@@ -74,7 +79,7 @@ class SelectableListState extends State<SelectableList> {
                         setState(() { });
                       },
                       child: index > searchableBoughtProducts.length - 1 ? 
-                        Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
+                      Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
                     );
                   }),
               ),

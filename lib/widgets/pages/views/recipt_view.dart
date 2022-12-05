@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
+import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/two_input_dialog.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/yesno_dialog.dart';
+
+import '../widgets/dialogs/two_input_dialog.dart';
+import '../widgets/dialogs/yesno_dialog.dart';
 
 class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);
@@ -23,7 +25,9 @@ class ReceiptViewState extends State<ReceiptView> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final reciptKey = GlobalKey<SelectableListState>();
-  var listKey = GlobalKey<AnimatedListState>();
+  final listKey = GlobalKey<AnimatedListState>();
+
+  late final scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -37,6 +41,7 @@ class ReceiptViewState extends State<ReceiptView> {
     return Container(
       margin: EdgeInsets.all(8.0),
       child: ReciptList(
+        scrollController: scrollController,
         noBulkActions: bulkActions,
         bulkActions: noBulkActions,
         listKey: listKey,
@@ -44,13 +49,12 @@ class ReceiptViewState extends State<ReceiptView> {
         edit: (product) {
           var itemToEdit = product;
           var formKey = GlobalKey<FormState>();
-    
           nameController.text = itemToEdit.name.toString();
           priceController.text = itemToEdit.price.toString();
     
           showDialog(context: context, builder: (context) {
             return TwoInputDialog(
-              key: formKey, 
+              formKey: formKey,
               firstInput: nameController, 
               firstInputMessage: "Enter valid name",
               secoundInput: priceController, 
@@ -77,7 +81,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
         showDialog(context: context, builder: (context) => 
           TwoInputDialog(
-            key: formKey, 
+            formKey: formKey, 
             firstInput: nameController, 
             firstInputMessage: "Enter valid name", 
             secoundInput: priceController,
@@ -113,6 +117,7 @@ class ReceiptViewState extends State<ReceiptView> {
     var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
 
+    // this loop adds animation while items are deleting
     for(var i = 0; i < numberOfSelectedProducts; i++) {
       var product = products.firstWhere((element) => element.isSelected);
 
@@ -190,12 +195,15 @@ class ReceiptViewState extends State<ReceiptView> {
       )));
   }
 
-  void addItem(String name, String price, GlobalKey<FormState> key) {
+  void addItem(String name, String price, GlobalKey<FormState> key) async {
     if(key.currentState!.validate()) {
       var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
-      listKey.currentState!.insertItem(widget.recipt.length, duration: Duration(microseconds: 500));
       widget.recipt.add(boughtProduct);
+      reciptKey.currentState!.widget.selectableItems.add(SelectableItem(boughtProduct));
+      reciptKey.currentState!.searchableBoughtProducts.insert(0, SelectableItem(boughtProduct));
       Navigator.of(context).pop();
+      await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
+      listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
       setState(() { });
     }
   }
