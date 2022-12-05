@@ -8,6 +8,7 @@ import 'fab/action_button.dart';
 class ReciptList extends SelectableList {
   ReciptList({
     Key? key, 
+    ScrollController? scrollController,
     required List<BoughtProduct> recipt, 
     required this.edit,
     required GlobalKey<AnimatedListState> listKey,
@@ -16,6 +17,7 @@ class ReciptList extends SelectableList {
     required List<ActionButton> bulkActions, 
     required List<ActionButton> noBulkActions}) : 
       super(
+        scrollController: scrollController,
         listKey: listKey,
         key: key, 
         data: recipt,
