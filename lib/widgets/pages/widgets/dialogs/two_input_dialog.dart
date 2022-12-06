@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class TwoInputDialog extends StatelessWidget {
   const TwoInputDialog({
-    required Key key, 
+    Key? key, 
     required this.firstInput, 
     required this.firstInputMessage, 
     required this.secoundInput,
     required this.secoundInputMessage,
     required this.submitButtonText,
-    required this.submitHandler
+    required this.submitHandler,
+    required this.formKey,
     }) : super(key: key);
   final TextEditingController firstInput;
   final String firstInputMessage;
@@ -16,12 +17,13 @@ class TwoInputDialog extends StatelessWidget {
   final String secoundInputMessage;
   final String submitButtonText;
   final VoidCallback submitHandler;
+  final GlobalKey<FormState> formKey;
   
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Form(
-        key: key,
+        key: formKey,
         child: Container(
           margin: const EdgeInsets.all(10),
           height: 200,

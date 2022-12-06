@@ -5,11 +5,11 @@ class FlavorConfig {
   static FlavorConfig? _instance;
 
   factory FlavorConfig({required FlavorValues values}) {
-    _instance = FlavorConfig._interna(values);
+    _instance = FlavorConfig._internal(values);
     return _instance!;
   }
 
-  FlavorConfig._interna(this.values);
+  FlavorConfig._internal(this.values);
 
   static FlavorConfig get instance => _instance!;
 }

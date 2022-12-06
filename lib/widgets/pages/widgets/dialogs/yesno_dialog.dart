@@ -25,8 +25,8 @@ class _YesNoDialogState extends State<YesNoDialog>
       title: Text(widget.title ?? ""),
       content: Text(widget.description ?? ""),
       actions: [
-        OutlinedButton(onPressed: widget.onYesClickAction, child: const Text("Yes")),
-        OutlinedButton(onPressed: widget.onNoClickAction, child: const Text("No"))
+        OutlinedButton(onPressed: widget.onYesClickAction, child: const Text("Tak")),
+        OutlinedButton(onPressed: widget.onNoClickAction, child: const Text("Nie"))
       ],
     );
   }
