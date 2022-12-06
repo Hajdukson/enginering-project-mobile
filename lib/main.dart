@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/widgets/menu/menu.dart';
-
 import 'flavor/flavor_config.dart';
 
 Future<void> main() async {
@@ -46,6 +46,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate
+        ],
+      supportedLocales: const [
+        Locale("pl"),
+        Locale("en")
+      ],
       theme: FlavorConfig.instance.values.themeData,
       home: const Menu(),
     );

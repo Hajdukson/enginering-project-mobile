@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
@@ -29,6 +30,8 @@ class ReceiptViewState extends State<ReceiptView> {
 
   late final scrollController = ScrollController();
 
+  late DateTime shoppingDate;
+
   @override
   void dispose() {
     super.dispose();
@@ -37,32 +40,51 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    shoppingDate = widget.recipt[0].boughtDate!;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8.0),
-      child: ReciptList(
-        scrollController: scrollController,
-        noBulkActions: bulkActions,
-        bulkActions: noBulkActions,
-        listKey: listKey,
-        key: reciptKey,
-        edit: (product) {
-          var itemToEdit = product;
-          var formKey = GlobalKey<FormState>();
-          nameController.text = itemToEdit.name.toString();
-          priceController.text = itemToEdit.price.toString();
-    
-          showDialog(context: context, builder: (context) {
-            return TwoInputDialog(
-              formKey: formKey,
-              firstInput: nameController, 
-              firstInputMessage: "Enter valid name",
-              secoundInput: priceController, 
-              secoundInputMessage: "Enter valid price",
-              submitButtonText: "Edit",
-              submitHandler: () => edit(itemToEdit, formKey));});
-        },
-        recipt: widget.recipt
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Row(children: [
+              const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
+              TextButton(
+                onPressed: () async => await _selectDate(context), 
+                child: Text(DateFormat('dd.MM.yyyy').format(shoppingDate), style: TextStyle(fontSize: 20),))
+            ],),
+            Expanded(
+              child: ReciptList(
+                scrollController: scrollController,
+                noBulkActions: bulkActions,
+                bulkActions: noBulkActions,
+                listKey: listKey,
+                key: reciptKey,
+                edit: (product) {
+                  var itemToEdit = product;
+                  var formKey = GlobalKey<FormState>();
+                  nameController.text = itemToEdit.name.toString();
+                  priceController.text = itemToEdit.price.toString();
+              
+                  showDialog(context: context, builder: (context) {
+                    return TwoInputDialog(
+                      formKey: formKey,
+                      firstInput: nameController, 
+                      firstInputMessage: "Pole nie może być puste",
+                      secoundInput: priceController, 
+                      secoundInputMessage: "Podaj cenę",
+                      submitButtonText: "Edytuj",
+                      submitHandler: () => edit(itemToEdit, formKey));});
+                },
+                recipt: widget.recipt
+              ),
+            )],
+        ),
       ),
     );
   }
@@ -83,10 +105,10 @@ class ReceiptViewState extends State<ReceiptView> {
           TwoInputDialog(
             formKey: formKey, 
             firstInput: nameController, 
-            firstInputMessage: "Enter valid name", 
+            firstInputMessage: "Pole nie może być puste", 
             secoundInput: priceController,
-            secoundInputMessage: "Enter valid name", 
-            submitButtonText: "Submit", 
+            secoundInputMessage: "Podaj cenę", 
+            submitButtonText: "Zatwierdź", 
             submitHandler: () => addItem(nameController.text, priceController.text, formKey)));
       },
     ),
@@ -145,7 +167,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
   void saveItems() {
     BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
-      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate)).toList());
+      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: shoppingDate)).toList());
     widget.recipt.clear();
     setState(() { });
   }
@@ -153,8 +175,8 @@ class ReceiptViewState extends State<ReceiptView> {
   void deleteSelectedItemsDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Abort data",
-        description: "Are your sure you want to delete ${reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length} products?",
+        title: "Usuń",
+        description: "Jesteś pewny, że chcesz usunąć ${reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length} poduktów?",
         onYesClickAction: () {
           deleteSelectedItems();
           Navigator.of(context).pop();
@@ -168,8 +190,8 @@ class ReceiptViewState extends State<ReceiptView> {
   void abortActionDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Abort data",
-        description: "Are your sure?",
+        title: "Porzucenie danych",
+        description: "Będziesz musiał ponownie zeskanować paragon",
         onYesClickAction: () {
           aboirtAction();
           Navigator.of(context).pop();
@@ -183,8 +205,8 @@ class ReceiptViewState extends State<ReceiptView> {
   void saveItemsDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Save data",
-        description: "Are your sure?",
+        title: "Zapisanie danych",
+        description: "Czy chcesz zapisać dane?",
         onYesClickAction: () {
           saveItems();
           Navigator.of(context).pop();
@@ -204,6 +226,19 @@ class ReceiptViewState extends State<ReceiptView> {
       Navigator.of(context).pop();
       await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
       listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
+      setState(() { });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      locale: const Locale("pl", "PL"),
+      initialDate: shoppingDate, 
+      firstDate: DateTime(2015, 8), 
+      lastDate: DateTime(2101, 8));
+    if(picked != null) {
+      shoppingDate = picked;
       setState(() { });
     }
   }

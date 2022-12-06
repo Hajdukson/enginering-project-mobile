@@ -38,54 +38,47 @@ class SelectableListState extends State<SelectableList> {
   Widget build(BuildContext context) {
     bool isAnySelected = searchableBoughtProducts.any((item) => item.isSelected);
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextField(
-                style: Theme.of(context).textTheme.labelSmall,
-                onChanged: (value) => _runFilter(value),
-                decoration: const InputDecoration(
-                  labelText: 'Search', 
-                  suffixIcon: Icon(Icons.search)),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: AnimatedList(
-                  key: widget.listKey,
-                  controller: widget.scrollController,
-                  shrinkWrap: true,
-                  reverse: true,
-                  initialItemCount : searchableBoughtProducts.length,
-                  itemBuilder: (context, index, animation) {
-                    return GestureDetector(
-                      onTap: () {
-                        if(searchableBoughtProducts[index].isSelected) {
-                          searchableBoughtProducts[index].isSelected = false;
-                          widget.selectableItems[index].isSelected = false;
-                        }
-                        else if(searchableBoughtProducts.any((item) => item.isSelected)){
-                          searchableBoughtProducts[index].isSelected = true;
-                          widget.selectableItems[index].isSelected = true;
-                        }
-                        setState(() { });
-                      },
-                      onLongPress: () {
-                        searchableBoughtProducts[index].isSelected = true;
-                        widget.selectableItems[index].isSelected = true;
-                        setState(() { });
-                      },
-                      child: index > searchableBoughtProducts.length - 1 ? 
-                      Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
-                    );
-                  }),
-              ),
-            ]
+      body: Column(
+        children: [
+          TextField(
+            style: Theme.of(context).textTheme.labelSmall,
+            onChanged: (value) => _runFilter(value),
+            decoration: const InputDecoration(
+              labelText: 'Wyszukaj produkt', 
+              suffixIcon: Icon(Icons.search)),
           ),
-        ),
+          const SizedBox(
+            height: 25,
+          ),
+          Expanded(
+            child: AnimatedList(
+              key: widget.listKey,
+              controller: widget.scrollController,
+              initialItemCount : searchableBoughtProducts.length,
+              itemBuilder: (context, index, animation) {
+                return GestureDetector(
+                  onTap: () {
+                    if(searchableBoughtProducts[index].isSelected) {
+                      searchableBoughtProducts[index].isSelected = false;
+                      widget.selectableItems[index].isSelected = false;
+                    }
+                    else if(searchableBoughtProducts.any((item) => item.isSelected)){
+                      searchableBoughtProducts[index].isSelected = true;
+                      widget.selectableItems[index].isSelected = true;
+                    }
+                    setState(() { });
+                  },
+                  onLongPress: () {
+                    searchableBoughtProducts[index].isSelected = true;
+                    widget.selectableItems[index].isSelected = true;
+                    setState(() { });
+                  },
+                  child: index > searchableBoughtProducts.length - 1 ? 
+                  Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
+                );
+              }),
+          ),
+        ]
       ),
       floatingActionButton: isAnySelected ? ExpandableFab(
         key: bulkActionFabKey,
