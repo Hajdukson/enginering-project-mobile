@@ -49,43 +49,62 @@ class ReceiptViewState extends State<ReceiptView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Row(children: [
-              const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
-              TextButton(
-                onPressed: () async => await _selectDate(context), 
-                child: Text(widget.recipt.isNotEmpty ? DateFormat('dd.MM.yyyy').format(shoppingDate) : "- brak", style: TextStyle(fontSize: 20),))
-            ],),
-            Expanded(
-              child: ReciptList(
-                scrollController: scrollController,
-                noBulkActions: bulkActions,
-                bulkActions: noBulkActions,
-                listKey: listKey,
-                key: reciptKey,
-                edit: (product) {
-                  var itemToEdit = product;
-                  var formKey = GlobalKey<FormState>();
-                  nameController.text = itemToEdit.name.toString();
-                  priceController.text = itemToEdit.price.toString();
-              
-                  showDialog(context: context, builder: (context) {
-                    return TwoInputDialog(
-                      formKey: formKey,
-                      firstInput: nameController, 
-                      firstInputMessage: "Pole nie może być puste",
-                      secoundInput: priceController, 
-                      secoundInputMessage: "Podaj cenę",
-                      submitButtonText: "Edytuj",
-                      submitHandler: () => edit(itemToEdit, formKey));});
-                },
-                recipt: widget.recipt
-              ),
-            )],
+    return WillPopScope(
+      onWillPop: () async {
+        bool result = false;
+        showDialog(context: context, builder: ((context) => 
+          YesNoDialog(
+            description: "Jesteś pewien, że chcesz wrócić? Utracisz wszystkie dane.",
+            onNoClickAction: () {
+              result = false;
+              Navigator.of(context).pop(Menu());
+            },
+            onYesClickAction: () {
+              result = true;
+              Navigator.of(context).pop();
+              Navigator.of(context).pop(Menu());
+            },
+          )));
+        return result;
+      },
+      child: SafeArea(
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Row(children: [
+                const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
+                TextButton(
+                  onPressed: () async => await _selectDate(context), 
+                  child: Text(widget.recipt.isNotEmpty ? DateFormat('dd.MM.yyyy').format(shoppingDate) : "- brak", style: TextStyle(fontSize: 20),))
+              ],),
+              Expanded(
+                child: ReciptList(
+                  scrollController: scrollController,
+                  noBulkActions: bulkActions,
+                  bulkActions: noBulkActions,
+                  listKey: listKey,
+                  key: reciptKey,
+                  edit: (product) {
+                    var itemToEdit = product;
+                    var formKey = GlobalKey<FormState>();
+                    nameController.text = itemToEdit.name.toString();
+                    priceController.text = itemToEdit.price.toString();
+                
+                    showDialog(context: context, builder: (context) {
+                      return TwoInputDialog(
+                        formKey: formKey,
+                        firstInput: nameController, 
+                        firstInputMessage: "Pole nie może być puste",
+                        secoundInput: priceController, 
+                        secoundInputMessage: "Podaj cenę",
+                        submitButtonText: "Edytuj",
+                        submitHandler: () => edit(itemToEdit, formKey));});
+                  },
+                  recipt: widget.recipt
+                ),
+              )],
+          ),
         ),
       ),
     );
