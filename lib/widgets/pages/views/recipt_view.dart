@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
+import 'package:money_manager_mobile/widgets/menu/menu.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
@@ -56,7 +58,7 @@ class ReceiptViewState extends State<ReceiptView> {
               const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
               TextButton(
                 onPressed: () async => await _selectDate(context), 
-                child: Text(DateFormat('dd.MM.yyyy').format(shoppingDate), style: TextStyle(fontSize: 20),))
+                child: Text(widget.recipt.isNotEmpty ? DateFormat('dd.MM.yyyy').format(shoppingDate) : "- brak", style: TextStyle(fontSize: 20),))
             ],),
             Expanded(
               child: ReciptList(
@@ -169,14 +171,18 @@ class ReceiptViewState extends State<ReceiptView> {
     BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
       .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: shoppingDate)).toList());
     widget.recipt.clear();
+    reciptKey.currentState!.widget.selectableItems.clear();
+    reciptKey.currentState!.searchableBoughtProducts.clear();
     setState(() { });
+    Navigator.of(context).pop(Menu());
   }
 
   void deleteSelectedItemsDialog() {
+    int selectedProducts = reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length;
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
         title: "Usuń",
-        description: "Jesteś pewny, że chcesz usunąć ${reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length} poduktów?",
+        description: "Jesteś pewny, że chcesz usunąć ${selectedProducts} ${selectedProducts == 1 ? "podukt" : selectedProducts >= 5 ? "produktów" : "produkty"}?",
         onYesClickAction: () {
           deleteSelectedItems();
           Navigator.of(context).pop();
@@ -231,15 +237,17 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      locale: const Locale("pl", "PL"),
-      initialDate: shoppingDate, 
-      firstDate: DateTime(2015, 8), 
-      lastDate: DateTime(2101, 8));
-    if(picked != null) {
-      shoppingDate = picked;
-      setState(() { });
+    if(widget.recipt.isNotEmpty) {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        locale: const Locale("pl", "PL"),
+        initialDate: shoppingDate, 
+        firstDate: DateTime(2015, 8), 
+        lastDate: DateTime(2101, 8));
+      if(picked != null) {
+        shoppingDate = picked;
+        setState(() { });
+      }
     }
   }
 }
