@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
@@ -39,6 +38,7 @@ class ReceiptViewState extends State<ReceiptView> {
     super.dispose();
     nameController.dispose();
     priceController.dispose();
+    reciptKey.currentState!.widget.selectableItems.clear();
   }
 
   @override
@@ -160,7 +160,13 @@ class ReceiptViewState extends State<ReceiptView> {
     var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
 
-    // this loop adds animation while items are deleting
+    // This finally fixed a bug that cached deleted items from searchable list
+    var keys = selectedProducts.map((e) => e.data.keyHelper).toList();
+
+    reciptKey.currentState!.widget.selectableItems
+      .removeWhere((item) => keys.any((key) => item.data.keyHelper == key));
+
+    // This loop adds animation while items are deleting
     for(var i = 0; i < numberOfSelectedProducts; i++) {
       var product = products.firstWhere((element) => element.isSelected);
 
@@ -169,7 +175,6 @@ class ReceiptViewState extends State<ReceiptView> {
       
       products.remove(product);
     }
-    reciptKey.currentState!.widget.selectableItems.removeWhere((item) => item.isSelected);
     widget.recipt.clear();
     widget.recipt
       .addAll(reciptKey.currentState!.widget.selectableItems
@@ -201,7 +206,7 @@ class ReceiptViewState extends State<ReceiptView> {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
         title: "Usuń",
-        description: "Jesteś pewny, że chcesz usunąć ${selectedProducts} ${selectedProducts == 1 ? "podukt" : selectedProducts >= 5 ? "produktów" : "produkty"}?",
+        description: "Jesteś pewny, że chcesz usunąć $selectedProducts ${selectedProducts == 1 ? "podukt" : selectedProducts >= 5 ? "produktów" : "produkty"}?",
         onYesClickAction: () {
           deleteSelectedItems();
           Navigator.of(context).pop();
