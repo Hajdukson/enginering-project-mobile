@@ -67,7 +67,12 @@ class SelectableListState extends State<SelectableList> {
                     setState(() { });
                   },
                   onLongPress: () {
+                  if(searchableBoughtProducts[index].isSelected) {
+                    searchableBoughtProducts[index].isSelected = false;
+                  }
+                  else {
                     searchableBoughtProducts[index].isSelected = true;
+                  }
                     setState(() { });
                   },
                   child: index > searchableBoughtProducts.length - 1 ? 
