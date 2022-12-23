@@ -250,11 +250,10 @@ class ReceiptViewState extends State<ReceiptView> {
   void addItem(String name, String price, GlobalKey<FormState> key) async {
     if(key.currentState!.validate()) {
       var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
-      widget.recipt.add(boughtProduct);
-      reciptKey.currentState!.widget.selectableItems.add(SelectableItem(boughtProduct));
-      reciptKey.currentState!.searchableBoughtProducts.insert(0, SelectableItem(boughtProduct));
       Navigator.of(context).pop();
       await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
+      reciptKey.currentState!.widget.selectableItems.add(SelectableItem(boughtProduct));
+      reciptKey.currentState!.searchableBoughtProducts.insert(0, SelectableItem(boughtProduct));
       listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
       setState(() { });
     }
