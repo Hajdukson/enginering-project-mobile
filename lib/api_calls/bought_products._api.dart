@@ -4,12 +4,14 @@ import 'package:http/http.dart' as http;
 import 'package:money_manager_mobile/flavor/flavor_config.dart';
 
 import '../models/bought_product.dart';
+import '../models/product_summary.dart';
 
 class BoughtProductsApi {
   static final String _baseUrl = FlavorConfig.instance.values.baseUrl;
+  static final String _modelUrl = "$_baseUrl/api/boughtproducts";
 
   static Future<List<BoughtProduct>> analizeReceipt(File image) async {
-    var uri = Uri.parse("$_baseUrl/api/boughtproducts/analize");
+    var uri = Uri.parse("$_modelUrl/analize");
     var request = http.MultipartRequest("GET", uri);
     request.files
         .add(await http.MultipartFile.fromPath('file', image.path));
@@ -39,7 +41,7 @@ class BoughtProductsApi {
       throw Exception("In method 'postProducts' 'List<BoughtProducts>' was empty");
     }
 
-    var uri = Uri.parse("$_baseUrl/api/boughtproducts/addboughtproducts");
+    var uri = Uri.parse("$_modelUrl/addboughtproducts");
 
     await http.post(
       uri, 
@@ -52,12 +54,20 @@ class BoughtProductsApi {
   }
   
   static Future<List<BoughtProduct>> getProducts() async {
-    var uri = Uri.parse("$_baseUrl/api/boughtproducts");
+    var uri = Uri.parse(_modelUrl);
 
     var respons = await http.get(uri);
     List json = jsonDecode(respons.body);
     
     return json.map((e) => BoughtProduct.fromJson(e)).toList();
+  }
+
+  static Future<List<ProductSummary>> getPrductsSummaries() async {
+    var uri = Uri.parse("$_modelUrl/distinctproducts");
+
+    var response = await http.get(uri);
+    List json = jsonDecode(response.body);
+    return json.map((e) => ProductSummary.fromJson(e)).toList();
   }
 
   static Future<BoughtProduct> postSingeProduct() {
