@@ -156,7 +156,7 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void deleteSelectedItems() {
-    var products = reciptKey.currentState!.searchableBoughtProducts;
+    var products = reciptKey.currentState!.searchableItems as List<SelectableItem<BoughtProduct>>;
     var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
 
@@ -196,13 +196,13 @@ class ReceiptViewState extends State<ReceiptView> {
       .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: shoppingDate)).toList());
     widget.recipt.clear();
     reciptKey.currentState!.widget.selectableItems.clear();
-    reciptKey.currentState!.searchableBoughtProducts.clear();
+    reciptKey.currentState!.searchableItems.clear();
     setState(() { });
     Navigator.of(context).pop(Menu());
   }
 
   void deleteSelectedItemsDialog() {
-    int selectedProducts = reciptKey.currentState!.searchableBoughtProducts.where((element) => element.isSelected).length;
+    int selectedProducts = reciptKey.currentState!.searchableItems.where((element) => element.isSelected).length;
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
         title: "Usuń",
@@ -253,7 +253,7 @@ class ReceiptViewState extends State<ReceiptView> {
       Navigator.of(context).pop();
       await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
       reciptKey.currentState!.widget.selectableItems.add(SelectableItem(boughtProduct));
-      reciptKey.currentState!.searchableBoughtProducts.insert(0, SelectableItem(boughtProduct));
+      reciptKey.currentState!.searchableItems.insert(0, SelectableItem(boughtProduct));
       listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
       setState(() { });
     }

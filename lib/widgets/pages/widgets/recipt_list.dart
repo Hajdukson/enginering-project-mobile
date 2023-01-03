@@ -5,7 +5,7 @@ import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.da
 import '../../generics/selectable_list.dart';
 import 'bought_product_tail.dart';
 import 'fab/action_button.dart';
-class ReciptList extends SelectableList {
+class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
     Key? key, 
     ScrollController? scrollController,

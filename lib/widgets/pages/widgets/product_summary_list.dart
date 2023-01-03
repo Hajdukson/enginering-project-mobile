@@ -8,27 +8,27 @@ import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/product_summary_tile.dart';
 
-class ProductSummaryList extends SelectableList {
+class ProductSummaryList extends SelectableList<ProductSummary> {
   ProductSummaryList({
     Key? key, 
     required this.productsSummaries}) : super(
     key: key, 
     onBulkActions: [], 
     noBulkActions: [], 
-    data: productsSummaries.map((e) => BoughtProduct(name: e.productName)).toList(), 
+    data: productsSummaries, 
     listKey: GlobalKey());
     
   final List<ProductSummary> productsSummaries;
 
   @override
-  Widget buildChildren(SelectableItem<BoughtProduct> product, Animation<double> animation) {
+  Widget buildChildren(SelectableItem<ProductSummary> productSummary, Animation<double> animation) {
     return ProductSummaryTile(
-      product: product,
+      productSummary: productSummary,
     );
   }
 
   @override
-  Widget buildFilter(BuildContext context, Function(List<SelectableItem<BoughtProduct>> p1) setStateOverride) {
+  Widget buildFilter(BuildContext context, Function(List<SelectableItem<ProductSummary>> p1) setStateOverride) {
     // TODO: implement buildFilter
     return Container();
   }

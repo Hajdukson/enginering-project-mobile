@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/fab/expandable_fab.dart';
-import '../../models/bought_product.dart';
 import '../pages/widgets/fab/action_button.dart';
 import 'models/selectable_item_.dart';
-abstract class SelectableList extends StatefulWidget {
+abstract class SelectableList<T> extends StatefulWidget {
   SelectableList({
     Key? key, 
-    required List<BoughtProduct> data, 
+    required List<T> data, 
     required this.listKey, 
     required this.onBulkActions, 
     required this.noBulkActions, 
@@ -18,33 +17,33 @@ abstract class SelectableList extends StatefulWidget {
   final List<ActionButton> onBulkActions;
   final List<ActionButton> noBulkActions;
 
-  final List<BoughtProduct> _data;
-  late final List<SelectableItem<BoughtProduct>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
+  final List<T> _data;
+  late final List<SelectableItem<T>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
 
   @override
   State<SelectableList> createState() => SelectableListState();
 
-  Widget buildChildren(SelectableItem<BoughtProduct> product, Animation<double> animation);
+  Widget buildChildren(SelectableItem<T> product, Animation<double> animation);
 
-  Widget buildFilter(BuildContext context, Function (List<SelectableItem<BoughtProduct>>) setStateOverride);
+  Widget buildFilter(BuildContext context, Function (List<SelectableItem<T>>) setStateOverride);
 }
 
-class SelectableListState extends State<SelectableList> {
-  List<SelectableItem<BoughtProduct>> searchableBoughtProducts = [];
+class SelectableListState<T> extends State<SelectableList<T>> {
+  List<SelectableItem<T>> searchableItems = [];
 
   final bulkActionFabKey = GlobalKey<ExpandableFabState>();
   final noBulkActionFabKey = GlobalKey<ExpandableFabState>();
 
   @override
   void initState() {
-    searchableBoughtProducts.addAll(widget.selectableItems);
+    searchableItems.addAll(widget.selectableItems);
     widget.scrollController;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isAnySelected = searchableBoughtProducts.any((item) => item.isSelected);
+    bool isAnySelected = searchableItems.any((item) => item.isSelected);
     return Scaffold(
       body: Column(
         children: [
@@ -56,29 +55,29 @@ class SelectableListState extends State<SelectableList> {
             child: AnimatedList(
               key: widget.listKey,
               controller: widget.scrollController,
-              initialItemCount : searchableBoughtProducts.length,
+              initialItemCount : searchableItems.length,
               itemBuilder: (context, index, animation) {
                 return GestureDetector(
                   onTap: () {
-                    if(searchableBoughtProducts[index].isSelected) {
-                      searchableBoughtProducts[index].isSelected = false;
+                    if(searchableItems[index].isSelected) {
+                      searchableItems[index].isSelected = false;
                     }
-                    else if(searchableBoughtProducts.any((item) => item.isSelected)){
-                      searchableBoughtProducts[index].isSelected = true;
+                    else if(searchableItems.any((item) => item.isSelected)){
+                      searchableItems[index].isSelected = true;
                     }
                     setState(() { });
                   },
                   onLongPress: () {
-                  if(searchableBoughtProducts[index].isSelected) {
-                    searchableBoughtProducts[index].isSelected = false;
+                  if(searchableItems[index].isSelected) {
+                    searchableItems[index].isSelected = false;
                   }
                   else {
-                    searchableBoughtProducts[index].isSelected = true;
+                    searchableItems[index].isSelected = true;
                   }
                     setState(() { });
                   },
-                  child: index > searchableBoughtProducts.length - 1 ? 
-                  Container() : widget.buildChildren(searchableBoughtProducts[index], animation),
+                  child: index > searchableItems.length - 1 ? 
+                  Container() : widget.buildChildren(searchableItems[index], animation),
                 );
               }),
           ),
@@ -102,8 +101,8 @@ class SelectableListState extends State<SelectableList> {
     );
   }
 
-  void setFilterState(List<SelectableItem<BoughtProduct>> products) {
-    searchableBoughtProducts = products; 
+  void setFilterState(List<SelectableItem<T>> selectableItems) {
+    searchableItems = selectableItems; 
     setState(() { });
   }
 }

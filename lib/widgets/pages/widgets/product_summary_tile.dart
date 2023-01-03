@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager_mobile/models/bought_product.dart';
+import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
 
 class ProductSummaryTile extends StatelessWidget {
   const ProductSummaryTile({
-    required this.product,
+    required this.productSummary,
     Key? key
     }) : super(key: key);
 
-  final SelectableItem<BoughtProduct> product;
+  final SelectableItem<ProductSummary> productSummary;
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +28,15 @@ class ProductSummaryTile extends StatelessWidget {
                 Row(
                   children: [
                     const Icon(Icons.sailing),
-                    SizedBox(width: 15,),
-                    Text("${product.data.name}"),
+                    const SizedBox(width: 15,),
+                    Text("${productSummary.data.productName}"),
                   ],),
                 Positioned(
                   right: 0,
                   child: AnimatedOpacity(
-                      opacity: product.isSelected ? 1 : 0,
-                      duration: Duration(milliseconds: 200),
-                      child: Icon(Icons.check_circle, color: Colors.green, size: 25,),
+                      opacity: productSummary.isSelected ? 1 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: const Icon(Icons.check_circle, color: Colors.green, size: 25,),
                   ),
                 )
               ],
@@ -48,8 +48,15 @@ class ProductSummaryTile extends StatelessWidget {
                 height: 1,
               ),
             ),
-            SizedBox(height: 100,)
-      
+            Row(children: [
+              Column(
+                children: [
+                  Row(children: [Text("Data"), Text(" Cena")],),
+                  Row(children: [],)
+                ],
+              ),
+              Text("3,4"),
+            ],)      
           ],
         ),
       ),
@@ -57,3 +64,9 @@ class ProductSummaryTile extends StatelessWidget {
   }
 
 }
+
+// Jakaś ikonka ---> Nazwa productu ---> jeżeli zaznacze ikonka V
+// Divider
+// Z dnia ----> Z dnia
+// Cena   ----> Cena
+// Inflacja
