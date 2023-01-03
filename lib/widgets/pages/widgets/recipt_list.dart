@@ -36,4 +36,29 @@ class ReciptList extends SelectableList {
           icon: const Icon(Icons.edit),),
     );
   }
+  
+  @override
+  Widget buildFilter(BuildContext context, Function setFilterState) {
+    return TextField(
+      style: Theme.of(context).textTheme.labelSmall,
+      onChanged: (value) {
+        setFilterState(_runFilter(value));
+      },
+      decoration: const InputDecoration(
+        labelText: 'Wyszukaj produkt', 
+        suffixIcon: Icon(Icons.search)),
+    );
+  }
+
+  List<SelectableItem<BoughtProduct>> _runFilter(String enteredKeyword) {
+    List<SelectableItem<BoughtProduct>> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = selectableItems;
+    } else {
+      results = selectableItems
+        .where((item) => item.data.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+        .toList();
+    }
+    return results;
+  }
 }
