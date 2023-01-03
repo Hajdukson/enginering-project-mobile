@@ -38,7 +38,7 @@ class ReceiptViewState extends State<ReceiptView> {
     super.dispose();
     nameController.dispose();
     priceController.dispose();
-    reciptKey.currentState!.widget.selectableItems.clear();
+    reciptKey.currentState?.widget.selectableItems.clear();
   }
 
   @override
