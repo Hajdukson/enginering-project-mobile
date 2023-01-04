@@ -8,7 +8,8 @@ abstract class SelectableList<T> extends StatefulWidget {
     required List<T> data, 
     required this.listKey, 
     required this.onBulkActions, 
-    required this.noBulkActions, 
+    required this.noBulkActions,
+    this.noItemSelectedVoidCallBack, 
     this.scrollController}) : _data = data, super(key: key);
 
   final GlobalKey<AnimatedListState> listKey;
@@ -16,6 +17,7 @@ abstract class SelectableList<T> extends StatefulWidget {
 
   final List<ActionButton> onBulkActions;
   final List<ActionButton> noBulkActions;
+  final VoidCallback? noItemSelectedVoidCallBack;
 
   final List<T> _data;
   late final List<SelectableItem<T>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
@@ -64,6 +66,9 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                     }
                     else if(searchableItems.any((item) => item.isSelected)){
                       searchableItems[index].isSelected = true;
+                    }
+                    else {
+                      widget.noItemSelectedVoidCallBack!.call();
                     }
                     setState(() { });
                   },
