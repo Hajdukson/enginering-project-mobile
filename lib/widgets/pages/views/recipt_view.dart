@@ -156,7 +156,7 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void deleteSelectedItems() {
-    var products = reciptKey.currentState!.searchableItems as List<SelectableItem<BoughtProduct>>;
+    var products = reciptKey.currentState!.searchableItems;
     var selectedProducts = products.where((element) => element.isSelected).toList();
     var numberOfSelectedProducts = selectedProducts.length;
 
@@ -171,7 +171,7 @@ class ReceiptViewState extends State<ReceiptView> {
       var product = products.firstWhere((element) => element.isSelected);
 
       listKey.currentState!.removeItem(products.indexOf(product), (context, animation) 
-        => BoughtProductTail(product: product, animation: animation,));
+        => BoughtProductTail(product: product as SelectableItem<BoughtProduct>, animation: animation,));
       
       products.remove(product);
     }
