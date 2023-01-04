@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
+import 'dart:math' as math;
 
 class ProductSummaryTile extends StatelessWidget {
-  const ProductSummaryTile({
-    required this.productSummary,
-    Key? key
-    }) : super(key: key);
+  const ProductSummaryTile({required this.productSummary, Key? key})
+      : super(key: key);
 
   final SelectableItem<ProductSummary> productSummary;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        border:  Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(10)
-      ),
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Stack(
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.sailing),
-                    const SizedBox(width: 15,),
+                    const Icon(Icons.shopping_bag_rounded),
+                    const SizedBox(
+                      width: 15,
+                    ),
                     Text("${productSummary.data.productName}"),
-                  ],),
+                  ],
+                ),
                 Positioned(
                   right: 0,
                   child: AnimatedOpacity(
-                      opacity: productSummary.isSelected ? 1 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: const Icon(Icons.check_circle, color: Colors.green, size: 25,),
+                    opacity: productSummary.isSelected ? 1 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 25,
+                    ),
                   ),
                 )
               ],
@@ -48,25 +54,72 @@ class ProductSummaryTile extends StatelessWidget {
                 height: 1,
               ),
             ),
-            Row(children: [
-              Column(
+            Stack(children: [
+              Table(
+                columnWidths: const {0 : FixedColumnWidth(150)},
                 children: [
-                  Row(children: [Text("Data"), Text(" Cena")],),
-                  Row(children: [],)
+                  const TableRow(children: [
+                    TableCell(child: Text("Data zakupu", style: TextStyle(fontWeight: FontWeight.bold),)),
+                    TableCell(child: Text("Cena", style: TextStyle(fontWeight: FontWeight.bold))),
+                  ]),
+                  TableRow(
+                    children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: Text(
+                            style: const TextStyle(color: Colors.blueGrey),
+                            DateFormat('dd.MM.yyyy').format(productSummary.data.startProduct!.boughtDate!)),
+                      )),
+                    TableCell(
+                      child:
+                        Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Text(
+                            style: const TextStyle(color: Colors.blueGrey),
+                            "${productSummary.data.startProduct!.price} PLN",)))
+                  ]),
+                  TableRow(children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: Text(
+                          style: const TextStyle(color: Colors.blueGrey),
+                          DateFormat('dd.MM.yyyy').format(productSummary.data.endProduct!.boughtDate!)),
+                        )),
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: Text(
+                          style: const TextStyle(color: Colors.blueGrey),
+                          "${productSummary.data.endProduct!.price} PLN")))
+                  ]),
                 ],
               ),
-              Text("3,4"),
-            ],)      
+              Positioned(
+                top: 5,
+                right: 40,
+                child: Column(
+                  children: [
+                    Text("${productSummary.data.porductInflation! < 0 ? 
+                      productSummary.data.porductInflation! * -1 : productSummary.data.porductInflation!}%", 
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: productSummary.data.porductInflation! > 0 ?Colors.red : Colors.green),),
+                    Transform.rotate(
+                      angle: math.pi / 16,
+                      child: Icon(
+                        Icons.trending_up, 
+                        size: 30,
+                        color: productSummary.data.porductInflation! > 0 ? Colors.red : Colors.green,))
+                ])),
+            ]),
           ],
         ),
       ),
     );
   }
-
 }
-
-// Jakaś ikonka ---> Nazwa productu ---> jeżeli zaznacze ikonka V
-// Divider
-// Z dnia ----> Z dnia
-// Cena   ----> Cena
-// Inflacja
+// TODO - animacja strzłek
+// trending_up
+// trenidng_down
