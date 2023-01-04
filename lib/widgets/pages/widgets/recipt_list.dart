@@ -38,11 +38,11 @@ class ReciptList extends SelectableList<BoughtProduct> {
   }
   
   @override
-  Widget buildFilter(BuildContext context, Function setFilterState) {
+  Widget buildFilter(BuildContext context, Function setStateOverride) {
     return TextField(
       style: Theme.of(context).textTheme.labelSmall,
       onChanged: (value) {
-        setFilterState(_runFilter(value));
+        setStateOverride(_runFilter(value));
       },
       decoration: const InputDecoration(
         labelText: 'Wyszukaj produkt', 

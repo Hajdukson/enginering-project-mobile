@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
@@ -7,9 +7,10 @@ import 'package:money_manager_mobile/widgets/pages/widgets/product_summary_tile.
 
 class ProductSummaryList extends SelectableList<ProductSummary> {
   ProductSummaryList({
-    Key? key, 
-    required this.productsSummaries,
-    required this.filterHandler,
+      Key? key,
+      required this.productsSummaries,
+      required this.filterHandler,
+      required this.setChildState
     }) : super(
     key: key, 
     onBulkActions: [], 
@@ -19,10 +20,14 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
     listKey: GlobalKey());
     
   final List<ProductSummary> productsSummaries;
-  final void Function(String, DateTimeRange?, GlobalKey<FormState>) filterHandler;
+  final void Function(String, DateTimeRange?) filterHandler;
+  final void Function(dynamic) setChildState;
+
+  DateTimeRange? selectedDates;
 
   @override
   Widget buildChildren(SelectableItem<ProductSummary> product, Animation<double> animation) {
+  
     return ProductSummaryTile(
       productSummary: product,
     );
@@ -31,13 +36,10 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
   @override
   Widget buildFilter(BuildContext context, Function(List<SelectableItem<ProductSummary>>) setStateOverride) {
     final textController = TextEditingController();
-    DateTimeRange? selectedDates;
-    final formKey = GlobalKey<FormState>();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
       child: Form(
-        key: formKey,
         child: Column(
           children: [
             TextField(
@@ -47,8 +49,10 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
             ),
             ElevatedButton(
               onPressed: () async { 
-                selectedDates = await _showDateRange(context); }, child: const Text("Wybierz date") ),
-            ElevatedButton(onPressed: () => filterHandler(textController.text, selectedDates, formKey), child: Text("Filtruj"))
+                setChildState(selectedDates = await _showDateRange(context));
+              }, 
+              child: selectedDates != null ? Text("${DateFormat('dd.MM.yyyy').format(selectedDates!.start)} - ${DateFormat('dd.MM.yyyy').format(selectedDates!.end)}") : const Text("Wybierz date") ),
+            ElevatedButton(onPressed: () => filterHandler(textController.text, selectedDates), child: const Text("Filtruj"))
           ],
         )),
     );

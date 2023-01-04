@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:money_manager_mobile/flavor/flavor_config.dart';
 
@@ -62,8 +63,11 @@ class BoughtProductsApi {
     return json.map((e) => BoughtProduct.fromJson(e)).toList();
   }
 
-  static Future<List<ProductSummary>> getPrductsSummaries() async {
-    var uri = Uri.parse("$_modelUrl/distinctproducts");
+  static Future<List<ProductSummary>> getPrductsSummaries({String? name, DateTimeRange? dates}) async {
+    var uri = Uri.parse("$_modelUrl/distinctproducts").replace(queryParameters: <String, dynamic> {
+      "name" : name,
+      "startDate" : dates?.start.toIso8601String(),
+      "endDate" : dates?.end.toIso8601String() },);
 
     var response = await http.get(uri);
     List json = jsonDecode(response.body);
