@@ -14,7 +14,7 @@ Future<void> main() async {
   final firstCamera = cameras.first;
   FlavorConfig(
     values: FlavorValues(
-      baseUrl: "https://192.168.1.34:7075",
+      baseUrl: "https://192.168.1.33:7075",
       camera: firstCamera,
       themeData: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),

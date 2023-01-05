@@ -98,18 +98,18 @@ class ProductSummaryTile extends StatelessWidget {
               ),
               Positioned(
                 top: 5,
-                right: 40,
+                right: 30,
                 child: Column(
                   children: [
                     Text("${productSummary.data.porductInflation! < 0 ? 
-                      productSummary.data.porductInflation! * -1 : productSummary.data.porductInflation!}%", 
+                      productSummary.data.porductInflation! * -1 : productSummary.data.porductInflation!} %", 
                       style: TextStyle(
                         fontSize: 24,
                         color: productSummary.data.porductInflation! > 0 ?Colors.red : Colors.green),),
                     Transform.rotate(
-                      angle: math.pi / 16,
+                      angle: productSummary.data.porductInflation!  > 0 ? 0.4 : -0.4,
                       child: Icon(
-                        Icons.trending_up, 
+                        productSummary.data.porductInflation!  > 0 ? Icons.trending_up : Icons.trending_down, 
                         size: 30,
                         color: productSummary.data.porductInflation! > 0 ? Colors.red : Colors.green,))
                 ])),
