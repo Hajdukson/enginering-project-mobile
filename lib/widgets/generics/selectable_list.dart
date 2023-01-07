@@ -17,7 +17,7 @@ abstract class SelectableList<T> extends StatefulWidget {
 
   final List<ActionButton> onBulkActions;
   final List<ActionButton> noBulkActions;
-  final VoidCallback? noItemSelectedVoidCallBack;
+  final Function(BuildContext, dynamic)? noItemSelectedVoidCallBack;
 
   final List<T> _data;
   late final List<SelectableItem<T>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
@@ -68,7 +68,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                       searchableItems[index].isSelected = true;
                     }
                     else {
-                      widget.noItemSelectedVoidCallBack!.call();
+                      widget.noItemSelectedVoidCallBack!(context, searchableItems[index].data);
                     }
                     setState(() { });
                   },

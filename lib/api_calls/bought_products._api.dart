@@ -54,8 +54,8 @@ class BoughtProductsApi {
     );
   }
   
-  static Future<List<BoughtProduct>> getProducts() async {
-    var uri = Uri.parse(_modelUrl);
+  static Future<List<BoughtProduct>> getProducts({String? name}) async {
+    var uri = Uri.parse(_modelUrl).replace(queryParameters: <String, dynamic> {"name" : name});
 
     var respons = await http.get(uri);
     List json = jsonDecode(respons.body);

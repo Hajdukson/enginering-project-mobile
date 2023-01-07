@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
-import 'dart:math' as math;
 
 class ProductSummaryTile extends StatelessWidget {
   const ProductSummaryTile({required this.productSummary, Key? key})
@@ -120,6 +119,3 @@ class ProductSummaryTile extends StatelessWidget {
     );
   }
 }
-// TODO - animacja strzłek
-// trending_up
-// trenidng_down

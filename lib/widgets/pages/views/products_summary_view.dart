@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
+import 'package:money_manager_mobile/widgets/pages/views/product_details_view.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/product_summary_list.dart';
 
-class UserDetails extends StatefulWidget {
-  const UserDetails({Key? key}) : super(key: key);
+class ProductsSummaryView extends StatefulWidget {
+  const ProductsSummaryView({Key? key}) : super(key: key);
 
   @override
-  State<UserDetails> createState() => _UserDetailsState();
+  State<ProductsSummaryView> createState() => _ProductsSummaryViewState();
 }
 
-class _UserDetailsState extends State<UserDetails> {
+class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   late Future<List<ProductSummary>> futureProductsSummaries;
   final productSummaryKey = GlobalKey<SelectableListState>();
+  final expandableController = ExpandableController();
 
   @override
   void initState() {
@@ -24,27 +26,20 @@ class _UserDetailsState extends State<UserDetails> {
   
   @override
   Widget build(BuildContext context) {
-    final expandableController = ExpandableController();
-
-    void expandFilters(ExpandableController controller) {
-      controller.toggle();
-    }
-    
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Raport")),
-       leading: IconButton(onPressed: () {}, icon: Icon(Icons.navigate_before,)),
-       actions: [
-        TextButton(
-          onPressed: () { 
-            expandFilters(expandableController);
-          }, 
-          child: Row(children: [
-            const Icon(Icons.filter_alt, color: Colors.white,),
-            Text("Filtry", style: Theme.of(context).textTheme.titleMedium,), 
-          ])
-      )],
-      ),
+        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.navigate_before,)),
+        actions: [
+          TextButton(
+            onPressed: () { 
+              expandableController.toggle();
+            }, 
+            child: Row(children: [
+              const Icon(Icons.filter_alt, color: Colors.white,),
+              Text("Filtry", style: Theme.of(context).textTheme.titleMedium,), 
+            ])
+          )]),
       body: SafeArea(
         child: FutureBuilder<List<ProductSummary>>(
           future: futureProductsSummaries,
@@ -54,6 +49,7 @@ class _UserDetailsState extends State<UserDetails> {
                 return ProductSummaryList(
                   expandableController: expandableController,
                   key: productSummaryKey,
+                  navigateHandler: navigate,
                   setChildState: setChildState,
                   filterHandler: runFilter,
                   clearFilerHandler: clearFiler,
@@ -63,6 +59,13 @@ class _UserDetailsState extends State<UserDetails> {
             }
             return const Center(child: CircularProgressIndicator());
           }))));
+  }
+
+  void navigate(BuildContext context, dynamic productName) {     
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProductDetailsView(productSummary: productName,),
+    ),);
   }
 
   void clearFiler() {

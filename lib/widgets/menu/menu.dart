@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/widgets/menu/page_view_main_menu.dart';
+import 'package:money_manager_mobile/widgets/pages/views/products_summary_view.dart';
 
 import '../../models/bought_product.dart';
 import '../pages/views/camera_access.dart';
 import '../pages/views/recipt_view.dart';
-import '../pages/views/user_details.dart';
 import 'bottom_main_menu.dart';
 
 class Menu extends StatefulWidget {
@@ -59,7 +59,7 @@ class _MenuState extends State<Menu> {
       ];
   // for testing
   List<Widget> get children => [
-    const UserDetails(),
+    const ProductsSummaryView(),
     ReceiptView(recipt: productList,),
     CameraAccess(camera: FlavorConfig.instance.values.camera,),
   ];

@@ -44,7 +44,7 @@ class ReceiptViewState extends State<ReceiptView> {
   @override
   void initState() {
     super.initState();
-    shoppingDate = widget.recipt[0].boughtDate!;
+    shoppingDate = widget.recipt[0].boughtDate!; //FIX - po usunięciu pierwszego elementu z tablicy wali błędem 
   }
 
   @override
