@@ -3,7 +3,7 @@ import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/pages/widgets/chart.dart';
-import 'package:money_manager_mobile/extenstions/last_3_moth_products.dart';
+import 'package:money_manager_mobile/extenstions/last_2_moth_products.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({Key? key, required this.productSummary}) : super(key: key);
