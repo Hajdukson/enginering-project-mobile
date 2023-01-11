@@ -1,26 +1,63 @@
+
+import 'package:date_util/date_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
+import 'package:path/path.dart';
 
 class Chart extends StatelessWidget {
   Chart(this.boughtProducts, {Key? key})  : super(key: key) 
   {
-    boughtProducts.sort((first,next) => first.price!.compareTo(next.price!));
+    boughtProducts.sort((first, next) => first.boughtDate!.compareTo(next.boughtDate!));
   }
 
   final List<BoughtProduct> boughtProducts;
 
-  double get getMaxY => boughtProducts.last.price!.roundToDouble() + 1;
-  double get getMinY => boughtProducts.first.price!.roundToDouble() - 1;
-
-  List<int> get months {
-    final result = <int>[];
-
-    for (var product in boughtProducts) {
-        result.add(product.boughtDate!.month);
-    }
+  List<double> get maxDimValues {
+    var prcies = boughtProducts.map((e) => e.price).toList();
+    prcies.sort();
+    return [prcies.first!.roundToDouble() - 1, prcies.last!.roundToDouble() + 1];
+  }
   
-    return result.toSet().toList();
+  Map<int, int> get daysInMonths {
+    Map<int, int> result = {};
+    var dateUtility = DateUtil();
+    for(int i = 0; i < boughtProducts.length; i++) {
+      var month = boughtProducts[i].boughtDate!.month;
+      var year = boughtProducts[i].boughtDate!.year;
+      var days = dateUtility.daysInMonth(month, year);
+      result[month] = days;
+      if(i == boughtProducts.length - 1) {
+        days = dateUtility.daysInMonth(month + 1, month == 12 ? year + 1 : year);
+        result[month + 1] = days;
+      }
+    }
+    return result;
+  }
+
+  List<FlSpot> drawChart() {
+    List<FlSpot> chartValues = [];
+    var dateUtility = DateUtil();
+
+    double monthIndex = 0;
+    double monthFactor = 0;
+    for (var product in boughtProducts) {
+      if(product.boughtDate!.month > daysInMonths.keys.first) {
+        for(int i = daysInMonths.keys.first; i < product.boughtDate!.month; i++) {
+          monthIndex++;
+          if(i == product.boughtDate!.month - 1) {
+            monthFactor = 1 / dateUtility.daysInMonth(i, product.boughtDate!.year);
+          }
+        }
+        chartValues.add(FlSpot((product.boughtDate!.day * monthFactor) + monthIndex, product.price!));  
+      }
+      else {
+        monthFactor = 1 / dateUtility.daysInMonth(product.boughtDate!.month, product.boughtDate!.year);
+        chartValues.add(FlSpot(product.boughtDate!.day * monthFactor, product.price!));
+      }
+      monthIndex = 0;
+    }
+    return chartValues;
   }
 
   @override
@@ -30,9 +67,9 @@ class Chart extends StatelessWidget {
       child: LineChart(
         LineChartData(
           minX: 0,
-          maxX: months.length.toDouble() - 1,
-          maxY: getMaxY,
-          minY: getMinY,
+          maxX: daysInMonths.length.toDouble() - 1,
+          maxY: maxDimValues[1],
+          minY: maxDimValues[0],
           gridData: FlGridData(show: false),
           lineBarsData: [
             LineChartBarData(
@@ -43,13 +80,8 @@ class Chart extends StatelessWidget {
               isStrokeCapRound: true,
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
-              spots: const [
-                // FlSpot(0.033, 1),
-                // FlSpot(0.066, 3),
-                // FlSpot(0.123, 1.8),
-                // FlSpot(0.153, 2.14),
-                // FlSpot(0.12, 1.8),
-                // FlSpot(0.12, 1.8),
+              spots: [
+                ...drawChart()
               ],
             )
           ],
@@ -91,7 +123,7 @@ class Chart extends StatelessWidget {
       fontSize: 16,
     );
     Widget text;
-    switch (months[value.toInt()]) {
+    switch (daysInMonths.keys.toList()[value.toInt()]) {
       case 1:
         text = const Text('st', style: style);
         break;
@@ -155,6 +187,4 @@ class Chart extends StatelessWidget {
 
     return Text(text, style: style, textAlign: TextAlign.center);
   }
-
-
 }
