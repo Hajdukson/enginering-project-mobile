@@ -22,9 +22,9 @@ class BoughtProductTail extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: product.isSelected ? Colors.lightGreen : Theme.of(context).colorScheme.primary,
+          color: product.isSelected ? Colors.lightGreen : null,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          border: product.isSelected ? Border.all(color: Colors.black12, width: 2) : null,
+          border: product.isSelected ? Border.all(color: Colors.black12, width: 2) : Border.all(color: Colors.grey),
         ),
         child: ListTile(
           leading: const Icon(Icons.shopping_basket, size: 50,),
