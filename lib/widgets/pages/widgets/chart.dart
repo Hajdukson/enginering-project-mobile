@@ -3,7 +3,6 @@ import 'package:date_util/date_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:path/path.dart';
 
 class Chart extends StatelessWidget {
   Chart(this.boughtProducts, {Key? key})  : super(key: key) 
@@ -16,7 +15,22 @@ class Chart extends StatelessWidget {
   List<double> get maxDimValues {
     var prcies = boughtProducts.map((e) => e.price).toList();
     prcies.sort();
-    return [prcies.first!.roundToDouble() - 1, prcies.last!.roundToDouble() + 1];
+    double maxValue = 0;
+    double minValue = 0;
+
+    if(prcies.first!.roundToDouble() > prcies.first!) {
+      minValue = prcies.first!.roundToDouble() - 0.5;
+    } else {
+      minValue = prcies.first!.roundToDouble();
+    }
+
+    if(prcies.last!.roundToDouble() < prcies.last!) {
+      maxValue = prcies.last!.roundToDouble() + 0.5;
+    } else {
+      maxValue = prcies.last!.roundToDouble();
+    }
+
+    return [minValue, maxValue];
   }
   
   Map<int, int> get daysInMonths {
@@ -41,11 +55,23 @@ class Chart extends StatelessWidget {
 
     double monthIndex = 0;
     double monthFactor = 0;
+    
     for (var product in boughtProducts) {
-      if(product.boughtDate!.month > daysInMonths.keys.first) {
-        for(int i = daysInMonths.keys.first; i < product.boughtDate!.month; i++) {
+      if(product.boughtDate!.isAfter(boughtProducts.first.boughtDate!)) {
+        int initial = 0;
+        int endOfloop = 0;
+        if(boughtProducts.first.boughtDate!.month > product.boughtDate!.month) {
           monthIndex++;
-          if(i == product.boughtDate!.month - 1) {
+          initial = 1;
+          endOfloop = product.boughtDate!.month;
+        } else {
+          initial = boughtProducts.first.boughtDate!.month;
+          endOfloop = product.boughtDate!.month;
+        }
+
+        for(int i = initial; i < endOfloop; i++) {
+          monthIndex++;
+          if(i == endOfloop - 1) {
             monthFactor = 1 / dateUtility.daysInMonth(i, product.boughtDate!.year);
           }
         }
@@ -183,7 +209,7 @@ class Chart extends StatelessWidget {
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );
-    String text = "${value.toStringAsFixed(0)} PLN";
+    String text = "${value.toStringAsFixed(1)} PLN";
 
     return Text(text, style: style, textAlign: TextAlign.center);
   }
