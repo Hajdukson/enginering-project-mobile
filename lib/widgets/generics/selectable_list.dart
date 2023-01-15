@@ -67,7 +67,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                     else if(searchableItems.any((item) => item.isSelected)){
                       searchableItems[index].isSelected = true;
                     }
-                    else {
+                    else if(widget.noItemSelectedVoidCallBack != null) {
                       widget.noItemSelectedVoidCallBack!(context, searchableItems[index].data);
                     }
                     setState(() { });
