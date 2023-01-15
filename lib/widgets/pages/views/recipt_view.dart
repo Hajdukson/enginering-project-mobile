@@ -44,7 +44,9 @@ class ReceiptViewState extends State<ReceiptView> {
   @override
   void initState() {
     super.initState();
-    shoppingDate = widget.recipt.first.boughtDate;
+    if(widget.recipt.isNotEmpty) {
+      shoppingDate = widget.recipt.first.boughtDate;
+    }
   }
 
   @override
@@ -239,7 +241,6 @@ class ReceiptViewState extends State<ReceiptView> {
         description: "Czy chcesz zapisać dane?",
         onYesClickAction: () {
           saveItems();
-          Navigator.of(context).pop();
         },
         onNoClickAction: () {
           Navigator.of(context).pop();
@@ -262,17 +263,15 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    if(widget.recipt.isNotEmpty) {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        locale: const Locale("pl", "PL"),
-        initialDate: shoppingDate ?? DateTime.now(), 
-        firstDate: DateTime(2015, 8), 
-        lastDate: DateTime(2101, 8));
-      if(picked != null) {
-        shoppingDate = picked;
-        setState(() { });
-      }
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      locale: const Locale("pl", "PL"),
+      initialDate: shoppingDate ?? DateTime.now(), 
+      firstDate: DateTime(2015, 8), 
+      lastDate: DateTime(2101, 8));
+    if(picked != null) {
+      shoppingDate = picked;
+      setState(() { });
     }
   }
 }
