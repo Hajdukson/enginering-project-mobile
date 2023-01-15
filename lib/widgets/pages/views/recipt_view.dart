@@ -31,7 +31,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
   late final scrollController = ScrollController();
 
-  late DateTime shoppingDate;
+  late DateTime? shoppingDate;
 
   @override
   void dispose() {
@@ -44,7 +44,7 @@ class ReceiptViewState extends State<ReceiptView> {
   @override
   void initState() {
     super.initState();
-    shoppingDate = widget.recipt[0].boughtDate!; //FIX - po usunięciu pierwszego elementu z tablicy wali błędem 
+    shoppingDate = widget.recipt.first.boughtDate;
   }
 
   @override
@@ -76,7 +76,7 @@ class ReceiptViewState extends State<ReceiptView> {
                 const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
                 TextButton(
                   onPressed: () async => await _selectDate(context), 
-                  child: Text(widget.recipt.isNotEmpty ? DateFormat('dd.MM.yyyy').format(shoppingDate) : "- brak", style: TextStyle(fontSize: 20),))
+                  child: Text(widget.recipt.isNotEmpty && shoppingDate != null ? DateFormat('dd.MM.yyyy').format(shoppingDate!) : "- brak", style: TextStyle(fontSize: 20),))
               ],),
               Expanded(
                 child: ReciptList(
@@ -252,8 +252,10 @@ class ReceiptViewState extends State<ReceiptView> {
       var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
       Navigator.of(context).pop();
       await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
-      reciptKey.currentState!.widget.selectableItems.add(SelectableItem(boughtProduct));
-      reciptKey.currentState!.searchableItems.insert(0, SelectableItem(boughtProduct));
+      var selectableItems = reciptKey.currentState!.widget.selectableItems as List<SelectableItem<BoughtProduct>>;
+      selectableItems.add(SelectableItem(boughtProduct));
+      var searchableItems = reciptKey.currentState!.searchableItems;
+      searchableItems.insert(0, SelectableItem(boughtProduct) as SelectableItem<dynamic>);
       listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
       setState(() { });
     }
@@ -264,7 +266,7 @@ class ReceiptViewState extends State<ReceiptView> {
       final DateTime? picked = await showDatePicker(
         context: context,
         locale: const Locale("pl", "PL"),
-        initialDate: shoppingDate, 
+        initialDate: shoppingDate ?? DateTime.now(), 
         firstDate: DateTime(2015, 8), 
         lastDate: DateTime(2101, 8));
       if(picked != null) {
