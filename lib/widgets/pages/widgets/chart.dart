@@ -103,24 +103,22 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.5,
-      child: LineChart(
-        LineChartData(
-          minX: 0,
-          maxX: daysInMonths.length.toDouble() - 1,
-          maxY: maxDimValues[1],
-          minY: maxDimValues[0],
-          gridData: FlGridData(show: false),
-          showingTooltipIndicators: showingTooltipSpot != -1 ? [ShowingTooltipIndicators([
-            LineBarSpot(lineChartBarData[0], showingTooltipSpot, lineChartBarData[0].spots[showingTooltipSpot])
-          ])] : [],
-          lineTouchData: lineTouchData,
-          lineBarsData: lineChartBarData,
-          titlesData: tilesData,
-          borderData: botderData
-        )
+    return LineChart(
+      LineChartData(
+        minX: 0,
+        maxX: daysInMonths.length.toDouble() - 1,
+        maxY: maxDimValues[1],
+        minY: maxDimValues[0],
+        gridData: FlGridData(show: false),
+        showingTooltipIndicators: showingTooltipSpot != -1 ? [ShowingTooltipIndicators([
+          LineBarSpot(lineChartBarData[0], showingTooltipSpot, lineChartBarData[0].spots[showingTooltipSpot])
+        ])] : [],
+        lineTouchData: lineTouchData,
+        lineBarsData: lineChartBarData,
+        titlesData: tilesData,
+        borderData: botderData
       ),
+      swapAnimationDuration: const Duration(milliseconds: 300),
     );
   }
 
@@ -212,7 +210,6 @@ class _ChartState extends State<Chart> {
           }     
           return false;
         },),
-      belowBarData: BarAreaData(show: false),
       spots: [
         ...drawChart()
       ],
@@ -276,7 +273,7 @@ class _ChartState extends State<Chart> {
   SideTitles leftTitles() => SideTitles(
       getTitlesWidget: leftTitleWidgets,
       showTitles: true,
-      interval: 1,
+      interval: 0.5,
       reservedSize: 40,
     );
 
