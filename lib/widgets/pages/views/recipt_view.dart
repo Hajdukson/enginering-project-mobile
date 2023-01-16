@@ -31,7 +31,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
   late final scrollController = ScrollController();
 
-  late DateTime? shoppingDate;
+  DateTime? shoppingDate;
 
   @override
   void dispose() {
