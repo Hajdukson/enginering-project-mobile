@@ -14,10 +14,10 @@ class Chart extends StatefulWidget {
   final List<BoughtProduct> boughtProducts;
 
   @override
-  State<Chart> createState() => _ChartState();
+  State<Chart> createState() => ChartState();
 }
 
-class _ChartState extends State<Chart> {
+class ChartState extends State<Chart> {
   late int showingTooltipSpot;
 
   @override

@@ -32,6 +32,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    var chartKey = GlobalKey<ChartState>();
     return Scaffold(
       appBar: AppBar(title: Center(child: Text("Szczegóły")),),
       body: GestureDetector(
@@ -91,7 +92,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 height: 250,
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 20,right: 30, left: 30),
-                                  child: Chart(snapshot.data!.getProductFromLast2Month(month, year))),
+                                  child: Chart(key: chartKey ,snapshot.data!.getProductFromLast2Month(month, year))),
                                 ),
                                 const SizedBox(height: 30,),
                                 SizedBox(
@@ -106,6 +107,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onPressed: () {
+                                      chartKey.currentState?.showingTooltipSpot = -1;
                                       month--;
                                       setState(() {});
                                     }, 
@@ -118,6 +120,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onPressed: () {
+                                      chartKey.currentState?.showingTooltipSpot = -1;
                                       month++;
                                       setState(() {});
                                     }, 
