@@ -18,7 +18,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   late int year;
   late int month;
-  bool isClicked = false;
+  bool isQuestionMarkClicked = false;
 
   @override
   void initState() {
@@ -30,15 +30,16 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     super.initState();
   }
 
+  var chartKey = GlobalKey<ChartState>();
+
   @override
   Widget build(BuildContext context) {
-    var chartKey = GlobalKey<ChartState>();
     return Scaffold(
       appBar: AppBar(title: Center(child: Text("Szczegóły")),),
       body: GestureDetector(
         onTap: () {
-          if(isClicked) {
-            isClicked = false;
+          if(isQuestionMarkClicked) {
+            isQuestionMarkClicked = false;
             setState(() { });
           }
         },
@@ -69,9 +70,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               IconButton(
                                 splashColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
-                                color: Colors.white.withOpacity(isClicked ? 0.3 : 1.0),
+                                color: Colors.white.withOpacity(isQuestionMarkClicked ? 0.3 : 1.0),
                                 onPressed: () {
-                                  isClicked = !isClicked;
+                                  isQuestionMarkClicked = !isQuestionMarkClicked;
                                   setState(() {});
                                 }, icon: const Icon(Icons.question_mark)),
                               Column(
@@ -97,7 +98,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 const SizedBox(height: 30,),
                                 SizedBox(
                                   height: 50,
-                                  child: Text("Ceny z roku $year", style: Theme.of(context).textTheme.titleMedium,),
+                                  child: Text(month == 1 ? "Ceny z lat ${year - 1} - ${year}" : "Ceny z roku $year", style: Theme.of(context).textTheme.titleMedium,),
                                   )]
                                 ),
                                 Positioned(
@@ -107,9 +108,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onPressed: () {
-                                      chartKey.currentState?.showingTooltipSpot = -1;
-                                      month--;
-                                      setState(() {});
+                                      if(snapshot.data!.any((bp) => bp.boughtDate?.month == month - 1)) {
+                                        chartKey.currentState?.showingTooltipSpot = -1;
+                                        setState(() {
+                                          month--;
+                                        });
+                                      }
                                     }, 
                                     icon: const Icon(Icons.chevron_left, size: 50)),
                                 ),
@@ -120,9 +124,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onPressed: () {
-                                      chartKey.currentState?.showingTooltipSpot = -1;
-                                      month++;
-                                      setState(() {});
+                                      if(snapshot.data!.any((bp) => bp.boughtDate?.month == month + 1)) {
+                                        chartKey.currentState?.showingTooltipSpot = -1;
+                                        setState(() {
+                                          month++;
+                                        });
+                                      }
                                     }, 
                                     icon: const Icon(Icons.navigate_next, size: 50,)),  
                                 )
