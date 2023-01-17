@@ -253,10 +253,9 @@ class ReceiptViewState extends State<ReceiptView> {
       var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
       Navigator.of(context).pop();
       await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
-      var selectableItems = reciptKey.currentState!.widget.selectableItems as List<SelectableItem<BoughtProduct>>;
-      selectableItems.add(SelectableItem(boughtProduct));
-      var searchableItems = reciptKey.currentState!.searchableItems;
-      searchableItems.insert(0, SelectableItem(boughtProduct) as SelectableItem<dynamic>);
+      widget.recipt.insert(0, boughtProduct);
+      // reciptKey.currentState!.widget.selectableItems.insert(0, SelectableItem<BoughtProduct>(boughtProduct));
+      reciptKey.currentState!.searchableItems.insert(0, SelectableItem<BoughtProduct>(boughtProduct));
       listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
       setState(() { });
     }
