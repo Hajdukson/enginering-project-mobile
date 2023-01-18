@@ -38,7 +38,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(18)),
                 gradient: LinearGradient(colors: [
-                  Color.fromARGB(255, 58, 61, 63),
+              Color.fromARGB(255, 58, 61, 63),
                   Color.fromARGB(255, 58, 61, 63),
                 ],
                 begin: Alignment.bottomCenter,
@@ -51,9 +51,14 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     color: Colors.white.withOpacity(widget.isQuestionMarkClicked ? 0.3 : 1.0),
+                    icon: const Icon(Icons.question_mark),
                     onPressed: () {
-                      showDialog(context: context, builder: (context) => InfoDialog(dialogContent: dialogContent,));
-                    }, icon: const Icon(Icons.question_mark)),
+                      showDialog(context: context, builder: (context) => InfoDialog(
+                        Icons.question_mark,
+                        height: 300,
+                        width: 300,
+                        dialogContent: dialogContent,));
+                    }), 
                   Column(
                     children: [
                       const SizedBox(height: 35,),
@@ -92,6 +97,8 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                             setState(() {
                               month--;
                             });
+                          } else {
+                            showDialogOnEdgeOfProductList(context);
                           }
                         }, 
                         icon: const Icon(Icons.chevron_left, size: 50)),
@@ -108,6 +115,8 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                             setState(() {
                               month++;
                             });
+                          } else {
+                            showDialogOnEdgeOfProductList(context);
                           }
                         }, 
                         icon: const Icon(Icons.navigate_next, size: 50,)),  
@@ -115,6 +124,18 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     ],
               )),
           );
+  }
+
+  void showDialogOnEdgeOfProductList(BuildContext context) {
+    showDialog(context: context, builder: (context) => const InfoDialog(
+        Icons.priority_high,
+        dialogContent: [
+          SizedBox(height: 35,),
+          Text("Nie można znaźć więcej prodktów", style: TextStyle(fontSize: 16),),
+        ],
+        height: 200,
+        width: 350,
+        ));
   }
 
   List<Widget> get dialogContent => [

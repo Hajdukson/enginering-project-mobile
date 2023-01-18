@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget {
-  const InfoDialog({required this.dialogContent});
+  const InfoDialog(this.icon, {required this.dialogContent, required this.height, required this.width});
   final List<Widget> dialogContent;
+  final double height;
+  final double width;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: SizedBox(
-        height: 300,
-        width: 300,
+        height: height,
+        width: width,
         child: Column(
           children: [
             const SizedBox(height: 20,),
-            const DecoratedBox(
-              decoration: BoxDecoration(
+            DecoratedBox(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
                 color: Colors.blueGrey
               ),
               child: SizedBox(
                 height: 40,
                 width: 40,
-                child: Icon(Icons.question_mark, 
-                  color: Colors.black,
+                child: Icon(icon, 
+                  color: Colors.white,
                   size: 30,
                   ),),),
             ...dialogContent,
