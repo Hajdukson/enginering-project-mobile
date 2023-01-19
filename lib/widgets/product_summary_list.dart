@@ -1,10 +1,10 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
-import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
-import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/product_summary_tile.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/product_summary_tile.dart';
 
 class ProductSummaryList extends SelectableList<ProductSummary> {
   ProductSummaryList({
@@ -17,6 +17,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
       required this.setChildState
     }) : super(
     key: key, 
+    isPage: true,
     onBulkActions: [], 
     noBulkActions: [],
     noItemSelectedVoidCallBack: navigateHandler,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
-import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
 
 class ProductSummaryTile extends StatelessWidget {
   const ProductSummaryTile({required this.productSummary, Key? key})

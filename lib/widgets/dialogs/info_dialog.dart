@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget {
-  const InfoDialog(this.icon, {required this.dialogContent, required this.height, required this.width});
+  const InfoDialog(this.icon, {Key? key, required this.dialogContent, required this.height, required this.width}) : super(key: key);
   final List<Widget> dialogContent;
   final double height;
   final double width;
@@ -45,7 +45,7 @@ class InfoDialog extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18.0),
                         ))
                       ),
-                    child: const Text("Zamknij"),
+                    child: const Text("Zamknij", style: TextStyle(color: Colors.white),),
                     onPressed: () => Navigator.of(context).pop(),
                     ),
                 ),

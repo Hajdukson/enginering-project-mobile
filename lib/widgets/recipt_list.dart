@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
 
 import '../../generics/selectable_list.dart';
-import 'bought_product_tail.dart';
+import 'bought_product_tile.dart';
 import 'fab/action_button.dart';
 class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
@@ -17,6 +17,7 @@ class ReciptList extends SelectableList<BoughtProduct> {
     required List<ActionButton> bulkActions, 
     required List<ActionButton> noBulkActions}) : 
       super(
+        isPage: true,
         scrollController: scrollController,
         listKey: listKey,
         key: key, 

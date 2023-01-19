@@ -1,10 +1,10 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
+import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
-import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
-import 'package:money_manager_mobile/widgets/pages/views/product_details_view.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/product_summary_list.dart';
+import 'package:money_manager_mobile/views/product_details_view.dart';
+import 'package:money_manager_mobile/widgets/product_summary_list.dart';
 
 class ProductsSummaryView extends StatefulWidget {
   const ProductsSummaryView({Key? key}) : super(key: key);
@@ -40,25 +40,24 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
               Text("Filtry", style: Theme.of(context).textTheme.titleMedium,), 
             ])
           )]),
-      body: SafeArea(
-        child: FutureBuilder<List<ProductSummary>>(
-          future: futureProductsSummaries,
-          builder: ((context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.done) {
-              if(snapshot.hasData) {
-                return ProductSummaryList(
-                  expandableController: expandableController,
-                  key: productSummaryKey,
-                  navigateHandler: navigate,
-                  setChildState: setChildState,
-                  filterHandler: runFilter,
-                  clearFilerHandler: clearFiler,
-                  productsSummaries: snapshot.data!,
-                );
-              }
+      body: FutureBuilder<List<ProductSummary>>(
+        future: futureProductsSummaries,
+        builder: ((context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.done) {
+            if(snapshot.hasData) {
+              return ProductSummaryList(
+                expandableController: expandableController,
+                key: productSummaryKey,
+                navigateHandler: navigate,
+                setChildState: setChildState,
+                filterHandler: runFilter,
+                clearFilerHandler: clearFiler,
+                productsSummaries: snapshot.data!,
+              );
             }
-            return const Center(child: CircularProgressIndicator());
-          }))));
+          }
+          return const Center(child: CircularProgressIndicator());
+        })));
   }
 
   void navigate(BuildContext context, dynamic productName) {     

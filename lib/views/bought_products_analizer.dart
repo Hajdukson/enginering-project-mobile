@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/widgets/pages/views/recipt_view.dart';
-
-import '../../../api_calls/bought_products._api.dart';
+import 'package:money_manager_mobile/views/recipt_view.dart';
 
 class BoughtProductsAnalizer extends StatefulWidget {
   const BoughtProductsAnalizer({required this.image, Key? key})
@@ -25,7 +24,7 @@ class _BoughtProductsAnalizerState extends State<BoughtProductsAnalizer> {
       futureBoughtProducts = BoughtProductsApi.analizeReceipt(widget.image);
     } on Exception catch(e) {
       showDialog(context: context, builder: (context) => 
-        Dialog(child: Container(
+        const Dialog(child: SizedBox(
           height: 100,
           width: 100,
           child: Text("Error"),),));

@@ -3,16 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
+import 'package:money_manager_mobile/generics/selectable_list.dart';
+import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/widgets/generics/models/selectable_item_.dart';
-import 'package:money_manager_mobile/widgets/generics/selectable_list.dart';
-import 'package:money_manager_mobile/widgets/menu/menu.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/bought_product_tail.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/fab/action_button.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/recipt_list.dart';
-
-import '../widgets/dialogs/two_input_dialog.dart';
-import '../widgets/dialogs/yesno_dialog.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/bought_product_tile.dart';
+import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
+import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
+import 'package:money_manager_mobile/widgets/fab/action_button.dart';
+import 'package:money_manager_mobile/widgets/recipt_list.dart';
 
 class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);

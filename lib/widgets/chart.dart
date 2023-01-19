@@ -125,7 +125,7 @@ class ChartState extends State<Chart> {
   FlBorderData get botderData => FlBorderData(
     show: true,
     border: const Border(
-      bottom: BorderSide(color: Color(0xff4e4965), width: 4),
+      bottom: BorderSide(color: Colors.blueGrey, width: 4),
       left: BorderSide(color: Colors.transparent),
       right: BorderSide(color: Colors.transparent),
       top: BorderSide(color: Colors.transparent),
@@ -197,7 +197,7 @@ class ChartState extends State<Chart> {
     LineChartBarData(
       isCurved: true,
       curveSmoothness: 0,
-      color: const Color(0x444af699),
+      color: Color.fromARGB(168, 76, 175, 79),
       barWidth: 4,
       isStrokeCapRound: true,
       dotData: FlDotData(
@@ -218,7 +218,7 @@ class ChartState extends State<Chart> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff72719b),
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
@@ -279,7 +279,7 @@ class ChartState extends State<Chart> {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff75729e),
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );

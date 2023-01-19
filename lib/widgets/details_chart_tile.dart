@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/extenstions/last_2_moth_products.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/chart.dart';
-import 'package:money_manager_mobile/widgets/pages/widgets/dialogs/info_dialog.dart';
+import 'package:money_manager_mobile/widgets/chart.dart';
+import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
+
 
 class DetailsChartTile extends StatefulWidget {
   DetailsChartTile({Key? key, 
-    required this.isQuestionMarkClicked, 
     required this.productSummary, 
     required this.boughtProducts}) : super(key: key);
 
-  bool isQuestionMarkClicked;
   ProductSummary productSummary;
   List<BoughtProduct> boughtProducts;
 
@@ -50,7 +49,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    color: Colors.white.withOpacity(widget.isQuestionMarkClicked ? 0.3 : 1.0),
+                    color: Colors.white,
                     icon: const Icon(Icons.question_mark),
                     onPressed: () {
                       showDialog(context: context, builder: (context) => InfoDialog(

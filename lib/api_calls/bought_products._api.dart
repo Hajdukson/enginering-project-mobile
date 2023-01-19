@@ -15,26 +15,25 @@ class BoughtProductsApi {
     var uri = Uri.parse("$_modelUrl/analize");
     var request = http.MultipartRequest("GET", uri);
     request.files
-        .add(await http.MultipartFile.fromPath('file', image.path));
+      .add(await http.MultipartFile.fromPath('file', image.path));
 
-    try {
-      var response = await request.send();
-      var respStr = await response.stream.bytesToString();
-      if(respStr.isEmpty) {
-        throw Exception("'respStr' was empty - Check filesize. Filesize should be lesser than 4mb");
-      }
-      var responseAsJosn = jsonDecode(respStr);
-      List<BoughtProduct> boughtProducts = [];
-
-      for (var boughtProduct in responseAsJosn) {
-        boughtProducts.add(BoughtProduct.fromJson(boughtProduct));
-      }
-
-      return boughtProducts;
-    } on Exception catch (e) {
-      print(e);
-      throw Exception("Failed to load data");
+    var response = await request.send();
+    if(response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception("Cannot analize image.");  
     }
+
+    var respStr = await response.stream.bytesToString();
+    if(respStr.isEmpty) {
+      throw Exception("'respStr' was empty - Check filesize. Filesize should be lesser than 4mb");
+    }
+    var responseAsJosn = jsonDecode(respStr);
+    List<BoughtProduct> boughtProducts = [];
+
+    for (var boughtProduct in responseAsJosn) {
+      boughtProducts.add(BoughtProduct.fromJson(boughtProduct));
+    }
+
+    return boughtProducts;
   }
 
   static void postProducts(List<BoughtProduct> products) async {
