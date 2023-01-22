@@ -76,7 +76,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                       height: 250,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 20,right: 30, left: 30),
-                        child: Chart(key: chartKey ,widget.boughtProducts.getProductFromLast2Month(month, year))),
+                        child: Chart(key: chartKey ,widget.boughtProducts.getProductsFromLast2Month(month, year))),
                     ),
                     const SizedBox(height: 30,),
                     SizedBox(
