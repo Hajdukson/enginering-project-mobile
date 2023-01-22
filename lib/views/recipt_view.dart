@@ -184,7 +184,7 @@ class ReceiptViewState extends State<ReceiptView> {
     setState(() {  });
   }
 
-  void aboirtAction() {
+  void abortAction() {
     for(var i = 0; i < reciptKey.currentState!.widget.selectableItems.length; i++) {
       listKey.currentState!.removeItem(0, (context, animation) => Container());
     }
@@ -224,7 +224,7 @@ class ReceiptViewState extends State<ReceiptView> {
         title: "Porzucenie danych",
         description: "Będziesz musiał ponownie zeskanować paragon",
         onYesClickAction: () {
-          aboirtAction();
+          abortAction();
           Navigator.of(context).pop();
         },
         onNoClickAction: () {
