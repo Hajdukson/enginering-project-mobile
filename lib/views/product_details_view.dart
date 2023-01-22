@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
+import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
@@ -27,6 +28,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   final chartKey = GlobalKey<ChartState>();
   final listKey = GlobalKey<AnimatedListState>();
+  final detailsProductListKey = GlobalKey<SelectableListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: DetailsProductList(boughtProducts: snapshot.data!, listKey: listKey)),
+                            child: DetailsProductList(
+                              setChildState: setChildState,
+                              key: detailsProductListKey,
+                              boughtProducts: snapshot.data!, 
+                              listKey: listKey)),
                         ],),
                     ),
                   ],
@@ -81,5 +87,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         } )),
       ),
     );
+  }
+
+  void setChildState(dynamic expression) {
+    detailsProductListKey.currentState!.setState(() {
+      expression;
+    });
   }
 }
