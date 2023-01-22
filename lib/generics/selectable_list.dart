@@ -81,7 +81,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         const SizedBox(
           height: 25,
         ),
-        Expanded(
+        searchableItems.isNotEmpty ? Expanded(
           child: AnimatedList(
             key: widget.listKey,
             controller: widget.scrollController,
@@ -101,19 +101,27 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                   setState(() { });
                 },
                 onLongPress: () {
-                if(searchableItems[index].isSelected) {
-                  searchableItems[index].isSelected = false;
-                }
-                else {
-                  searchableItems[index].isSelected = true;
-                }
+                  if(searchableItems[index].isSelected) {
+                    searchableItems[index].isSelected = false;
+                  }
+                  else {
+                    searchableItems[index].isSelected = true;
+                  }
                   setState(() { });
                 },
                 child: index > searchableItems.length - 1 ? 
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
-        ),
+        ) : Column(
+          children: [
+            const SizedBox(
+              width: 140,
+              child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+            ),
+            const SizedBox(height: 20,),
+            Image.asset('assets/images/no_items.png'),
+          ],)
     ]);
 
   void setFilterState(List<SelectableItem<T>> selectableItems) {
