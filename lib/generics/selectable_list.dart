@@ -53,7 +53,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         throw Exception("'noBulkActions' and 'onBulkActions' arguments are required");
       }
       return Scaffold(
-        body: listConternt,
+        body: listContent,
         floatingActionButton: isAnySelected ? ExpandableFab(
           key: bulkActionFabKey,
           icon: const Icon(Icons.bolt),
@@ -71,10 +71,10 @@ class SelectableListState<T> extends State<SelectableList<T>> {
             )
       );
     }
-    return listConternt;
+    return listContent;
   }
 
-  Widget get listConternt => 
+  Widget get listContent => 
     Column(
       children: [
         widget.buildFilter(context, setFilterState),

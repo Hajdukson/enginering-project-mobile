@@ -4,7 +4,7 @@ import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
-import 'package:money_manager_mobile/widgets/product_summary_list.dart';
+import 'package:money_manager_mobile/widgets/lists/product_summary_list.dart';
 
 class ProductsSummaryView extends StatefulWidget {
   const ProductsSummaryView({Key? key}) : super(key: key);

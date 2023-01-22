@@ -7,11 +7,11 @@ import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
-import 'package:money_manager_mobile/widgets/bought_product_tile.dart';
 import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
-import 'package:money_manager_mobile/widgets/recipt_list.dart';
+import 'package:money_manager_mobile/widgets/lists/recipt_list.dart';
+import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 
 class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);

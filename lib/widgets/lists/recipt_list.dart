@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/fab/action_button.dart';
+import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 
-import '../../generics/selectable_list.dart';
-import 'bought_product_tile.dart';
-import 'fab/action_button.dart';
 class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
     Key? key, 

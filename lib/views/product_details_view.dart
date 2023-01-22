@@ -3,8 +3,8 @@ import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
-import 'package:money_manager_mobile/widgets/details_chart_tile.dart';
-import 'package:money_manager_mobile/widgets/details_product_list.dart';
+import 'package:money_manager_mobile/widgets/lists/details_product_list.dart';
+import 'package:money_manager_mobile/widgets/tiles/details_chart_tile.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({Key? key, required this.productSummary}) : super(key: key);
@@ -56,7 +56,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           Tab(text: "Szczegóły",),
                           Tab(text: "Lista"),
                         ],
-                      
                       ),
                     ),
                     Expanded(
@@ -70,7 +69,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: DetailsProductList(boughtProducts: snapshot.data!, listKey: listKey)),
                         ],),
                     ),

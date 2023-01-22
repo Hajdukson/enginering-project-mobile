@@ -34,7 +34,7 @@ class BoughtProductTail extends StatelessWidget {
           title: Text("${product.data.name}"),
           subtitle: Row(
             children: [
-              Text("${product.data.price} PLN"),
+              Text("${product.data.price?.toStringAsFixed(2)} PLN"),
               const SizedBox(width: 10,),
               showDate ? Text(DateFormat("yMMMd", "pl").format(product.data.boughtDate!)) : Container(),
             ],

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
-import 'package:money_manager_mobile/widgets/product_summary_tile.dart';
+import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
 
 class ProductSummaryList extends SelectableList<ProductSummary> {
   ProductSummaryList({
@@ -48,7 +48,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
       child: ExpandablePanel(
         controller: expandableController,
         theme: const ExpandableThemeData(  
-        hasIcon: true),
+          hasIcon: true),
         collapsed: Container(),
         expanded: Padding(
           padding: const EdgeInsets.fromLTRB(15,0,15,0),
