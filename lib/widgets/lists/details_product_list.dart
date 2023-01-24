@@ -59,10 +59,24 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                 onSelected: (value) {
                   if(value is SortDate) {
                     sortDate = value;
-                  }
+                    if(sortDate == SortDate.descending) {
+                      selectableItems.sort((first, next) => next.data.boughtDate!.compareTo(first.data.boughtDate!));
+                      setStateOverride(selectableItems);
+                    } else if(sortDate == SortDate.ascending) {
+                      selectableItems.sort((first, next) => first.data.boughtDate!.compareTo(next.data.boughtDate!));
+                      setStateOverride(selectableItems);
+                    }
+                   }
 
                   if(value is SortPrice) {
                     sortPrice = value;
+                    if(sortPrice == SortPrice.descending){
+                      selectableItems.sort((first, next) => next.data.price!.compareTo(first.data.price!));
+                      setStateOverride(selectableItems);
+                    } else if(sortPrice == SortPrice.ascending) {
+                      selectableItems.sort((first, next) => first.data.price!.compareTo(next.data.price!));
+                      setStateOverride(selectableItems);
+                    }
                   }
                 },
                 itemBuilder: (context) {
@@ -145,6 +159,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
     keepExpanded = false;
     filterDates = null;
     price = null;
+    setChildState(disableFilter = false);
     return selectableItems;
   }
 
