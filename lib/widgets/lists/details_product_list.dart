@@ -17,7 +17,6 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
       key: key, 
       isPage: true,
       data: boughtProducts, 
-      listKey: listKey,
       onBulkActions: [],
       noBulkActions: []);
 

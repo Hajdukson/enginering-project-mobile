@@ -7,14 +7,12 @@ abstract class SelectableList<T> extends StatefulWidget {
     Key? key, 
     this.isPage = false,
     required List<T> data, 
-    required this.listKey, 
     this.onBulkActions, 
     this.noBulkActions,
     this.noItemSelectedVoidCallBack, 
     this.scrollController}) : _data = data, super(key: key);
 
   final bool isPage;
-  final GlobalKey<AnimatedListState> listKey;
   final ScrollController? scrollController;
 
   final List<ActionButton>? onBulkActions;
@@ -37,6 +35,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
 
   final bulkActionFabKey = GlobalKey<ExpandableFabState>();
   final noBulkActionFabKey = GlobalKey<ExpandableFabState>();
+  final listKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
@@ -83,7 +82,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         ),
         searchableItems.isNotEmpty ? Expanded(
           child: AnimatedList(
-            key: widget.listKey,
+            key: listKey,
             controller: widget.scrollController,
             initialItemCount : searchableItems.length,
             itemBuilder: (context, index, animation) {
@@ -123,6 +122,27 @@ class SelectableListState<T> extends State<SelectableList<T>> {
             Image.asset('assets/images/no_items.png'),
           ],)
     ]);
+
+  /// Scrolls to the top of the list and animate insert [item]
+  void animateInsert(SelectableItem<T> item) async {
+      await widget.scrollController!.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+      searchableItems.insert(0, item);
+      listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 500));
+  }
+
+  /// Removes selected items animation [animateTile] - list tile to animate
+  void animateAndRemoveSelected(Widget Function(SelectableItem<T>, Animation<double>) animateTile) {
+    var selectedItems = searchableItems.where((item) => item.isSelected).toList();
+    var keys = selectedItems.map((e) => e.keyHelper);
+
+    widget.selectableItems.removeWhere((item) => keys.any((key) => item.keyHelper == key));
+
+    for(int i = 0; i < selectedItems.length; i++) {
+      var item = searchableItems.firstWhere((item) => item.isSelected);
+      listKey.currentState!.removeItem(searchableItems.indexOf(item), ((context, animation) => animateTile(item, animation)));
+      searchableItems.remove(item);
+    }
+  }
 
   void setFilterState(List<SelectableItem<T>> selectableItems) {
     searchableItems = selectableItems; 

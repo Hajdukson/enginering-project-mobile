@@ -21,8 +21,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
     onBulkActions: [], 
     noBulkActions: [],
     noItemSelectedVoidCallBack: navigateHandler,
-    data: productsSummaries, 
-    listKey: GlobalKey());
+    data: productsSummaries,);
   
   final ExpandableController? expandableController;
   final List<ProductSummary> productsSummaries;

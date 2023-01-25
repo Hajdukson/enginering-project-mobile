@@ -19,7 +19,6 @@ class ReciptList extends SelectableList<BoughtProduct> {
       super(
         isPage: true,
         scrollController: scrollController,
-        listKey: listKey,
         key: key, 
         data: recipt,
         noBulkActions: noBulkActions,

@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:uuid/uuid.dart';
-
 class BoughtProduct {
-  String? keyHelper = Uuid().v1();
   int? id;
   String? name;
   double? price;

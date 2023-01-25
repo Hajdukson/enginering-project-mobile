@@ -155,31 +155,24 @@ class ReceiptViewState extends State<ReceiptView> {
       Navigator.of(context).pop();
     }
   }
+  
+  void addItem(String name, String price, GlobalKey<FormState> key) async {
+    if(key.currentState!.validate()) {
+      var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
+      widget.recipt.insert(0, boughtProduct);
+      Navigator.of(context).pop();
+      reciptKey.currentState!.animateInsert(SelectableItem<BoughtProduct>(boughtProduct));
+      setState(() { });
+    }
+  }
 
   void deleteSelectedItems() {
-    var products = reciptKey.currentState!.searchableItems;
-    var selectedProducts = products.where((element) => element.isSelected).toList();
-    var numberOfSelectedProducts = selectedProducts.length;
-
-    // This finally fixed a bug that cached deleted items from searchable list
-    var keys = selectedProducts.map((e) => e.data.keyHelper).toList();
-
-    reciptKey.currentState!.widget.selectableItems
-      .removeWhere((item) => keys.any((key) => item.data.keyHelper == key));
-
-    // This loop adds animation while items are deleting
-    for(var i = 0; i < numberOfSelectedProducts; i++) {
-      var product = products.firstWhere((element) => element.isSelected);
-
-      listKey.currentState!.removeItem(products.indexOf(product), (context, animation) 
-        => BoughtProductTail(product: product as SelectableItem<BoughtProduct>, animation: animation,));
-      
-      products.remove(product);
-    }
+    reciptKey.currentState!.animateAndRemoveSelected((item, animation) =>
+          BoughtProductTail(product: item as SelectableItem<BoughtProduct>, animation: animation,));
     widget.recipt.clear();
     widget.recipt
       .addAll(reciptKey.currentState!.widget.selectableItems
-      .map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
+        .map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
 
     setState(() {  });
   }
@@ -245,19 +238,6 @@ class ReceiptViewState extends State<ReceiptView> {
           Navigator.of(context).pop();
         },
       )));
-  }
-
-  void addItem(String name, String price, GlobalKey<FormState> key) async {
-    if(key.currentState!.validate()) {
-      var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
-      Navigator.of(context).pop();
-      await scrollController.animateTo(0.0, duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
-      widget.recipt.insert(0, boughtProduct);
-      // reciptKey.currentState!.widget.selectableItems.insert(0, SelectableItem<BoughtProduct>(boughtProduct));
-      reciptKey.currentState!.searchableItems.insert(0, SelectableItem<BoughtProduct>(boughtProduct));
-      listKey.currentState!.insertItem(0, duration: Duration(milliseconds: 500));
-      setState(() { });
-    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
