@@ -125,9 +125,9 @@ class SelectableListState<T> extends State<SelectableList<T>> {
 
   /// Scrolls to the top of the list and animate insert [item]
   void animateInsert(SelectableItem<T> item) async {
-      await widget.scrollController!.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
-      searchableItems.insert(0, item);
-      listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 500));
+    await widget.scrollController!.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+    searchableItems.insert(0, item);
+    listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 500));
   }
 
   /// Removes selected items animation [animateTile] - list tile to animate
