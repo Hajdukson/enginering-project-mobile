@@ -18,6 +18,8 @@ class BoughtProductTail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textStyle = const TextStyle(
+      color: Colors.blueGrey,);
     return SizeTransition(
       sizeFactor: animation,
       child: AnimatedContainer(
@@ -30,14 +32,17 @@ class BoughtProductTail extends StatelessWidget {
           border: product.isSelected ? Border.all(color: Colors.black12, width: 2) : Border.all(color: Colors.grey),
         ),
         child: ListTile(
-          leading: const Icon(Icons.shopping_basket, size: 50,),
+          leading: const Icon(Icons.shopping_bag_outlined, size: 40,),
           title: Text("${product.data.name}"),
-          subtitle: Row(
-            children: [
-              Text("${product.data.price?.toStringAsFixed(2)} PLN"),
-              const SizedBox(width: 10,),
-              showDate ? Text(DateFormat("yMMMd", "pl").format(product.data.boughtDate!)) : Container(),
-            ],
+          subtitle: Padding(
+            padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+            child: Row(
+              children: [
+                Text("${product.data.price?.toStringAsFixed(2)} PLN", style: product.isSelected ? null : textStyle,),
+                const SizedBox(width: 10,),
+                showDate ? Text(DateFormat("yMMMd", "pl").format(product.data.boughtDate!), style: product.isSelected ? null : textStyle,) : Container(),
+              ],
+            ),
           ),
           trailing: trailingButton
         ),

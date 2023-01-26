@@ -86,7 +86,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                     PopupMenuItem(value: SortDate.descending, child: Text("Data malejąco"),),
                   ];
                 },
-                child: const Text("Sortuj", style: TextStyle(fontSize: 20),),),
+                child: const Text("Sortowanie", style: TextStyle(fontSize: 20),),),
               TextButton(
                 onPressed: () {
                   expandableControler.toggle();
@@ -94,7 +94,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                 child: Row(
                   children: const [
                     Icon(Icons.filter_alt, color: Colors.white,),
-                    Text("Filtry", style: TextStyle(color: Colors.white, fontSize: 20),), 
+                    Text("Filtrowanie", style: TextStyle(color: Colors.white, fontSize: 20),), 
                   ],
               ))
             ],
