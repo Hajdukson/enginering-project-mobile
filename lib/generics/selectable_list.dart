@@ -52,6 +52,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         throw Exception("'noBulkActions' and 'onBulkActions' arguments are required");
       }
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: listContent,
         floatingActionButton: isAnySelected ? ExpandableFab(
           heroTag: "bulk",
@@ -75,14 +76,14 @@ class SelectableListState<T> extends State<SelectableList<T>> {
     return listContent;
   }
 
-  Widget get listContent => searchableItems.isNotEmpty ?
+  Widget get listContent =>
     Column(
       children: [
         widget.buildFilter(context, setFilterState),
         const SizedBox(
           height: 25,
         ),
-        Expanded(
+        searchableItems.isNotEmpty ? Expanded(
           child: AnimatedList(
             key: listKey,
             controller: widget.scrollController,
@@ -114,21 +115,15 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
-        )
-    ]) : SingleChildScrollView(
-      child: Column(
-            children: [
-              widget.buildFilter(context, setFilterState),
-              const SizedBox(
-                height: 25,
-              ),
-              const SizedBox(
-                width: 140,
-                child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-              ),
-              const SizedBox(height: 20,),
-              Image.asset('assets/images/no_items.png'),],),
-    );
+        ) : Column(
+                children: [
+                  const SizedBox(
+                    width: 140,
+                    child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                  ),
+                  const SizedBox(height: 20,),
+                  Image.asset('assets/images/no_items.png'),],),
+         ]);
     
 
   /// Scrolls to the top of the list and animate insert [item]

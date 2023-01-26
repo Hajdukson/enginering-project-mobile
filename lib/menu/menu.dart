@@ -20,6 +20,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomBarMainMenu(
           pageIndex: _currentPageIndex,
           pageController: _pageController,
