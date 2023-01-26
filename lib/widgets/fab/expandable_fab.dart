@@ -4,6 +4,7 @@ import 'expanding_action_button.dart';
 
 class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
+    required this.heroTag,
     this.isAnySelected,
     super.key,
     this.initialOpen,
@@ -12,6 +13,7 @@ class ExpandableFab extends StatefulWidget {
     this.icon
   });
 
+  final String heroTag;
   final Icon? icon;
   final bool? initialOpen;
   final double distance;
@@ -135,6 +137,7 @@ class ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
+            heroTag: widget.heroTag,
             backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: toggle,
             child: widget.icon,

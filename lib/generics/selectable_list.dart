@@ -54,6 +54,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
       return Scaffold(
         body: listContent,
         floatingActionButton: isAnySelected ? ExpandableFab(
+          heroTag: "bulk",
           key: bulkActionFabKey,
           icon: const Icon(Icons.bolt),
           distance: 80.0,
@@ -61,6 +62,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
             ...widget.onBulkActions!
           ],
         ) : ExpandableFab(
+              heroTag: "noBulk",
               key: noBulkActionFabKey,
               icon: const Icon(Icons.menu),
               distance: 80.0, 
