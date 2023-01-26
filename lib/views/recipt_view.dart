@@ -23,11 +23,10 @@ class ReceiptView extends StatefulWidget {
 }
 
 class ReceiptViewState extends State<ReceiptView> {
-  final nameController = TextEditingController();
-  final priceController = TextEditingController();
   final reciptKey = GlobalKey<SelectableListState>();
   final listKey = GlobalKey<AnimatedListState>();
-
+  var nameController = TextEditingController();
+  var priceController = TextEditingController();
   late final scrollController = ScrollController();
 
   DateTime? shoppingDate;
@@ -35,8 +34,6 @@ class ReceiptViewState extends State<ReceiptView> {
   @override
   void dispose() {
     super.dispose();
-    nameController.dispose();
-    priceController.dispose();
     reciptKey.currentState?.widget.selectableItems.clear();
   }
 
@@ -58,7 +55,7 @@ class ReceiptViewState extends State<ReceiptView> {
             description: "Jesteś pewien, że chcesz wrócić? Utracisz wszystkie dane.",
             onNoClickAction: () {
               result = false;
-              Navigator.of(context).pop(Menu());
+              Navigator.of(context).pop();
             },
             onYesClickAction: () {
               result = true;
@@ -86,19 +83,45 @@ class ReceiptViewState extends State<ReceiptView> {
                   bulkActions: noBulkActions,
                   key: reciptKey,
                   edit: (product) {
+                    nameController = TextEditingController();
+                    priceController = TextEditingController();
                     var itemToEdit = product;
                     var formKey = GlobalKey<FormState>();
                     nameController.text = itemToEdit.name.toString();
                     priceController.text = itemToEdit.price.toString();
                     showDialog(context: context, builder: (context) {
+                      final firstInput = TextFormField(
+                        decoration: InputDecoration(
+                          label: Text("Nazwa"),
+                        ),  
+                        controller: nameController,
+                        validator: (value) {
+                          if(value == null || value.isEmpty) {
+                            return "Pole nie może być puste";
+                          }
+                        },
+                      );
+                      final secondInput = TextFormField(
+                        decoration: InputDecoration(
+                          label: Text("Cena (PLN)")
+                        ),
+                        controller: priceController,
+                        validator: (value) {
+                          if(double.tryParse(value!) == null || value.isEmpty) {
+                            return "Podaj cenę";
+                          }
+                        },
+                      );
                       return TwoInputDialog(
                         formKey: formKey,
-                        firstInput: nameController, 
-                        firstInputMessage: "Pole nie może być puste",
-                        secoundInput: priceController, 
-                        secoundInputMessage: "Podaj cenę",
-                        submitButtonText: "Edytuj",
-                        submitHandler: () => edit(itemToEdit, formKey));});
+                        firstInput: firstInput,
+                        secondInput: secondInput,
+                        submitHandler: () {
+                          edit(itemToEdit, formKey) ? () {
+                            nameController.dispose();
+                            priceController.dispose();
+                          } : () {};
+                        });});
                   },
                   recipt: widget.recipt
                 ),
@@ -121,17 +144,40 @@ class ReceiptViewState extends State<ReceiptView> {
         final priceController = TextEditingController();
         final formKey = GlobalKey<FormState>();
 
-        showDialog(context: context, builder: (context) => 
-          TwoInputDialog(
-            formKey: formKey, 
-            firstInput: nameController, 
-            firstInputMessage: "Pole nie może być puste", 
-            secoundInput: priceController,
-            secoundInputMessage: "Podaj cenę", 
-            submitButtonText: "Zatwierdź", 
-            submitHandler: () => addItem(nameController.text, priceController.text, formKey)));
-      },
-    ),
+        showDialog(context: context, builder: (context) {
+          final firstInput = TextFormField(
+            decoration: InputDecoration(
+              label: Text("Nazwa"),
+            ),  
+            controller: nameController,
+            validator: (value) {
+              if(value == null || value.isEmpty) {
+                return "Pole nie może być puste";
+              }
+            },
+          );
+          final secondInput = TextFormField(
+            decoration: InputDecoration(
+              label: Text("Cena (PLN)")
+            ),
+            controller: priceController,
+            validator: (value) {
+              if(double.tryParse(value!) == null || value.isEmpty) {
+                return "Podaj cenę";
+              }
+            },
+          );
+          return TwoInputDialog(
+            formKey: formKey,
+            firstInput: firstInput,
+            secondInput: secondInput,
+            submitHandler: () {
+              addItem(nameController.text, priceController.text, formKey) ? () {
+                nameController.dispose();
+                priceController.dispose();
+              } : (){};
+            });});
+        }),
     ActionButton(
       icon: Icon(Icons.clear_all),
       onPressed: abortActionDialog,
@@ -145,23 +191,27 @@ class ReceiptViewState extends State<ReceiptView> {
     ),
   ];
 
-  void edit(BoughtProduct itemToEdit , GlobalKey<FormState> key) {
+  bool edit(BoughtProduct itemToEdit , GlobalKey<FormState> key) {
     if(key.currentState!.validate()) {
       itemToEdit.name = nameController.text;
       itemToEdit.price = double.tryParse(priceController.text);
       setState(() { });
       Navigator.of(context).pop();
+      return true;
     }
+    return false;
   }
   
-  void addItem(String name, String price, GlobalKey<FormState> key) async {
+  bool addItem(String name, String price, GlobalKey<FormState> key) {
     if(key.currentState!.validate()) {
       var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
       widget.recipt.insert(0, boughtProduct);
       Navigator.of(context).pop();
       reciptKey.currentState!.animateInsert(SelectableItem<BoughtProduct>(boughtProduct));
       setState(() { });
+      return true;
     }
+    return false;
   }
 
   void deleteSelectedItems() {
