@@ -84,14 +84,12 @@ class ReceiptViewState extends State<ReceiptView> {
                   scrollController: scrollController,
                   noBulkActions: bulkActions,
                   bulkActions: noBulkActions,
-                  listKey: listKey,
                   key: reciptKey,
                   edit: (product) {
                     var itemToEdit = product;
                     var formKey = GlobalKey<FormState>();
                     nameController.text = itemToEdit.name.toString();
                     priceController.text = itemToEdit.price.toString();
-                
                     showDialog(context: context, builder: (context) {
                       return TwoInputDialog(
                         formKey: formKey,
@@ -178,11 +176,9 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void abortAction() {
-    for(var i = 0; i < reciptKey.currentState!.widget.selectableItems.length; i++) {
-      listKey.currentState!.removeItem(0, (context, animation) => Container());
-    }
     widget.recipt.clear();
     setState(() { });
+    reciptKey.currentState!.removeAllItems();
   }
 
   void saveItems() {

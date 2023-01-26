@@ -73,14 +73,14 @@ class SelectableListState<T> extends State<SelectableList<T>> {
     return listContent;
   }
 
-  Widget get listContent => 
+  Widget get listContent => searchableItems.isNotEmpty ?
     Column(
       children: [
         widget.buildFilter(context, setFilterState),
         const SizedBox(
           height: 25,
         ),
-        searchableItems.isNotEmpty ? Expanded(
+        Expanded(
           child: AnimatedList(
             key: listKey,
             controller: widget.scrollController,
@@ -112,16 +112,22 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
-        ) : Column(
-          children: [
-            const SizedBox(
-              width: 140,
-              child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-            ),
-            const SizedBox(height: 20,),
-            Image.asset('assets/images/no_items.png'),
-          ],)
-    ]);
+        )
+    ]) : SingleChildScrollView(
+      child: Column(
+            children: [
+              widget.buildFilter(context, setFilterState),
+              const SizedBox(
+                height: 25,
+              ),
+              const SizedBox(
+                width: 140,
+                child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+              ),
+              const SizedBox(height: 20,),
+              Image.asset('assets/images/no_items.png'),],),
+    );
+    
 
   /// Scrolls to the top of the list and animate insert [item]
   void animateInsert(SelectableItem<T> item) async {
@@ -142,6 +148,15 @@ class SelectableListState<T> extends State<SelectableList<T>> {
       listKey.currentState!.removeItem(searchableItems.indexOf(item), ((context, animation) => animateTile(item, animation)));
       searchableItems.remove(item);
     }
+  }
+
+  /// Removes all items from [AnimatedList]
+  void removeAllItems() {
+    for(var i = 0; i < widget.selectableItems.length; i++) {
+      listKey.currentState!.removeItem(0, (context, animation) => Container());
+    }
+    searchableItems.clear();
+    setState(() { });
   }
 
   void setFilterState(List<SelectableItem<T>> selectableItems) {

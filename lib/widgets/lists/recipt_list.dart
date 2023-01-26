@@ -11,7 +11,6 @@ class ReciptList extends SelectableList<BoughtProduct> {
     ScrollController? scrollController,
     required List<BoughtProduct> recipt, 
     required this.edit,
-    required GlobalKey<AnimatedListState> listKey,
     Icon isAnySelected = const Icon(Icons.delete_forever), 
     Icon notSelected = const Icon(Icons.add),
     required List<ActionButton> bulkActions, 
