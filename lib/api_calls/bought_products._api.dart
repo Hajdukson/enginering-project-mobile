@@ -18,48 +18,74 @@ class BoughtProductsApi {
       .add(await http.MultipartFile.fromPath('file', image.path));
 
     var response = await request.send();
-    if(response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception("Cannot analize image.");  
-    }
 
-    var respStr = await response.stream.bytesToString();
-    if(respStr.isEmpty) {
-      throw Exception("'respStr' was empty - Check filesize. Filesize should be lesser than 4mb");
-    }
-    var responseAsJosn = jsonDecode(respStr);
-    List<BoughtProduct> boughtProducts = [];
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      var respStr = await response.stream.bytesToString();
+      var responseAsJosn = jsonDecode(respStr);
+      List<BoughtProduct> boughtProducts = [];
 
-    for (var boughtProduct in responseAsJosn) {
-      boughtProducts.add(BoughtProduct.fromJson(boughtProduct));
+      for (var boughtProduct in responseAsJosn) {
+        boughtProducts.add(BoughtProduct.fromJson(boughtProduct));
+      }
+      return boughtProducts;
     }
-
-    return boughtProducts;
+    throw Exception("Cannot analize image check image\nCheck image size or make sure it had some text");
   }
 
-  static void postProducts(List<BoughtProduct> products) async {
+  static Future<String> postProducts(List<BoughtProduct> products) async {
     if(products.isEmpty) {
       throw Exception("In method 'postProducts' 'List<BoughtProducts>' was empty");
     }
 
     var uri = Uri.parse("$_modelUrl/addboughtproducts");
 
-    await http.post(
+    var response = await http.post(
       uri, 
       headers: {
-        "Accept": "application/json",
-        "content-type":"application/json"
+        "content-type" : "application/json",
+        "accept" : "application/json",
       },
       body: _decodeProducts(products)
     );
+
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      return response.body;
+    } else {
+      throw Exception("Failed to post list of products");
+    }
+  }
+
+  static Future<BoughtProduct> postSingeProduct(BoughtProduct boughtProduct) async {
+    var uri = Uri.parse(_modelUrl);
+
+    boughtProduct.id ??= 0;
+
+    final response = await http.post(
+      uri,
+      headers: {
+        "content-type" : "application/json",
+        "accept" : "application/json",
+      },
+      body: _decodeProduct(boughtProduct)
+    );
+
+    if(response.statusCode == 201|| response.statusCode == 200) {
+      return BoughtProduct.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to post product");
+    }
   }
   
   static Future<List<BoughtProduct>> getProducts({String? name}) async {
     var uri = Uri.parse(_modelUrl).replace(queryParameters: <String, dynamic> {"name" : name});
 
-    var respons = await http.get(uri);
-    List json = jsonDecode(respons.body);
-    
-    return json.map((e) => BoughtProduct.fromJson(e)).toList();
+    var response = await http.get(uri);
+    List json = jsonDecode(response.body);
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      return json.map((e) => BoughtProduct.fromJson(e)).toList();
+    } else {
+      throw Exception("Failed to load products");
+    }
   }
 
   static Future<List<ProductSummary>> getPrductsSummaries({String? name, DateTimeRange? dates}) async {
@@ -70,11 +96,22 @@ class BoughtProductsApi {
 
     var response = await http.get(uri);
     List json = jsonDecode(response.body);
-    return json.map((e) => ProductSummary.fromJson(e)).toList();
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      return json.map((e) => ProductSummary.fromJson(e)).toList();
+    } else {
+      throw Exception("Failed to get products summaries");
+    }
   }
 
-  static Future<BoughtProduct> postSingeProduct() {
-    throw HttpStatus.notImplemented;
+  static String _decodeProduct(BoughtProduct boughtProduct) {
+    Map<String, dynamic> bp = {
+      "id" : boughtProduct.id,
+      "name" : boughtProduct.name,
+      "price" : boughtProduct.price,
+      "boughtDate" : boughtProduct.boughtDate!.toIso8601String()
+    };
+
+    return jsonEncode(bp);
   }
 
   static String _decodeProducts(List<BoughtProduct> products) {
