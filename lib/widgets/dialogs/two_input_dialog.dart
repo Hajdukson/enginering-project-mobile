@@ -13,7 +13,6 @@ class TwoInputDialog extends StatelessWidget {
   final Widget firstInput;
   final Widget secondInput;
 
-  
   @override
   Widget build(BuildContext context) {
     return Dialog(
