@@ -9,11 +9,9 @@ abstract class SelectableList<T> extends StatefulWidget {
     required List<T> data, 
     this.onBulkActions, 
     this.noBulkActions,
-    this.noItemSelectedVoidCallBack, 
-    this.scrollController}) : _data = data, super(key: key);
+    this.noItemSelectedVoidCallBack,}) : _data = data, super(key: key);
 
   final bool isPage;
-  final ScrollController? scrollController;
 
   final List<ActionButton>? onBulkActions;
   final List<ActionButton>? noBulkActions;
@@ -33,6 +31,7 @@ abstract class SelectableList<T> extends StatefulWidget {
 class SelectableListState<T> extends State<SelectableList<T>> {
   List<SelectableItem<T>> searchableItems = [];
 
+  final scrollController = ScrollController();
   final bulkActionFabKey = GlobalKey<ExpandableFabState>();
   final noBulkActionFabKey = GlobalKey<ExpandableFabState>();
   final listKey = GlobalKey<AnimatedListState>();
@@ -40,7 +39,6 @@ class SelectableListState<T> extends State<SelectableList<T>> {
   @override
   void initState() {
     searchableItems.addAll(widget.selectableItems);
-    widget.scrollController;
     super.initState();
   }
 
@@ -86,7 +84,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         searchableItems.isNotEmpty ? Expanded(
           child: AnimatedList(
             key: listKey,
-            controller: widget.scrollController,
+            controller: scrollController,
             initialItemCount : searchableItems.length,
             itemBuilder: (context, index, animation) {
               return GestureDetector(
@@ -122,13 +120,13 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                     child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
                   ),
                   const SizedBox(height: 20,),
-                  Image.asset('assets/images/no_items.png'),],),
+                  Image.asset('assets/images/no_items.png', scale: 1.2,),],),
          ]);
     
 
   /// Scrolls to the top of the list and animate insert [item]
   void animateInsert(SelectableItem<T> item) async {
-    await widget.scrollController!.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+    await scrollController.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
     searchableItems.insert(0, item);
     listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 500));
   }

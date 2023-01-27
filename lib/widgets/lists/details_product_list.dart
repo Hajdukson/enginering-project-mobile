@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 import 'package:money_manager_mobile/models/eunums/sorting.dart';
 
@@ -11,14 +12,16 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
   DetailsProductList({
     Key? key, 
     required this.boughtProducts, 
-    required GlobalKey<AnimatedListState> listKey,
-    required this.setChildState}) : 
+    required this.setChildState,
+    required List<ActionButton> onBulkActions,
+    required List<ActionButton> noBulkActions,
+    }) : 
     super(
       key: key, 
       isPage: true,
       data: boughtProducts, 
-      onBulkActions: [],
-      noBulkActions: []);
+      onBulkActions: onBulkActions,
+      noBulkActions: noBulkActions);
 
   final List<BoughtProduct> boughtProducts;
   final void Function(dynamic) setChildState;
@@ -177,7 +180,8 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
 
     if(price != null) {
       result = result
-        .where((item) => item.data.price.toString().contains(price))
+        .where((item) => item.data.price.toString().contains(price) 
+          || item.data.price == double.parse(price))
         .toList();
     }
 

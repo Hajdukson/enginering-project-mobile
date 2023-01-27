@@ -8,7 +8,6 @@ import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
     Key? key, 
-    ScrollController? scrollController,
     required List<BoughtProduct> recipt, 
     required this.edit,
     Icon isAnySelected = const Icon(Icons.delete_forever), 
@@ -17,7 +16,6 @@ class ReciptList extends SelectableList<BoughtProduct> {
     required List<ActionButton> noBulkActions}) : 
       super(
         isPage: true,
-        scrollController: scrollController,
         key: key, 
         data: recipt,
         noBulkActions: noBulkActions,

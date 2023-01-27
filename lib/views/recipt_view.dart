@@ -24,10 +24,8 @@ class ReceiptView extends StatefulWidget {
 
 class ReceiptViewState extends State<ReceiptView> {
   final reciptKey = GlobalKey<SelectableListState>();
-  final listKey = GlobalKey<AnimatedListState>();
   var nameController = TextEditingController();
   var priceController = TextEditingController();
-  late final scrollController = ScrollController();
 
   DateTime? shoppingDate;
 
@@ -78,7 +76,6 @@ class ReceiptViewState extends State<ReceiptView> {
               ],),
               Expanded(
                 child: ReciptList(
-                  scrollController: scrollController,
                   noBulkActions: bulkActions,
                   bulkActions: noBulkActions,
                   key: reciptKey,

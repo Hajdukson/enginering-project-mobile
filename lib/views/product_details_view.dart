@@ -3,8 +3,8 @@ import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
+import 'package:money_manager_mobile/views/details_product_list_tab_view.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
-import 'package:money_manager_mobile/widgets/lists/details_product_list.dart';
 import 'package:money_manager_mobile/widgets/tiles/details_chart_tile.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -16,9 +16,13 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
+  _ProductDetailsViewState();
+
   late Future<List<BoughtProduct>> boughtProducts;
 
   final detailsKey = GlobalKey<DetailsChartTileState>();
+  bool requestSent = false;
+  DateTime? selectedDate; 
 
   @override
   void initState() {
@@ -35,6 +39,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text("Produkt"),
           ),
@@ -63,20 +68,21 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                child: DetailsChartTile(productSummary: widget.productSummary, boughtProducts: snapshot.data!)),
-                            ],
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  child: DetailsChartTile(productSummary: widget.productSummary, boughtProducts: snapshot.data!)),
+                              ],
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: DetailsProductList(
-                              setChildState: setChildState,
+                            child: DetailsProductListTabView(
                               key: detailsProductListKey,
-                              boughtProducts: snapshot.data!, 
-                              listKey: listKey)),
+                              productName: widget.productSummary.productName!,
+                              boughtProducts: snapshot.data!,))
                         ],),
                     ),
                   ],
@@ -87,11 +93,5 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         } )),
       ),
     );
-  }
-
-  void setChildState(dynamic expression) {
-    detailsProductListKey.currentState!.setState(() {
-      expression;
-    });
   }
 }
