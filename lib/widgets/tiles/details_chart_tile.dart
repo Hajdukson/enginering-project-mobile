@@ -4,6 +4,7 @@ import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
 import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
+import 'package:money_manager_mobile/widgets/no_products.dart';
 
 
 class DetailsChartTile extends StatefulWidget {
@@ -25,20 +26,22 @@ class DetailsChartTileState extends State<DetailsChartTile> {
 
   @override
   void initState() {
-    year = widget.boughtProducts.last.boughtDate!.year;
-    month = widget.boughtProducts.last.boughtDate!.month;
+    if(widget.boughtProducts.isNotEmpty) {
+      year = widget.boughtProducts.last.boughtDate!.year;
+      month = widget.boughtProducts.last.boughtDate!.month;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return widget.boughtProducts.isNotEmpty ? SizedBox(
             child: DecoratedBox(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(18)),
                 gradient: LinearGradient(colors: [
-              Color.fromARGB(255, 58, 61, 63),
-                  Color.fromARGB(255, 58, 61, 63),
+                Color.fromARGB(255, 58, 61, 63),
+                Color.fromARGB(255, 58, 61, 63),
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter
@@ -82,7 +85,8 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     SizedBox(
                       height: 50,
                       child: Text(month == 1 ? "Ceny z lat ${year - 1} - $year" : "Ceny z roku $year", style: Theme.of(context).textTheme.titleMedium,),
-                      )]
+                      )
+                    ]
                     ),
                     Positioned(
                       top: 160,
@@ -122,7 +126,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     )
                     ],
               )),
-          );
+          ) : const NoProducts();
   }
 
   void showDialogOnEdgeOfProductList(BuildContext context) {

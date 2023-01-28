@@ -29,7 +29,21 @@ class BoughtProductsApi {
       }
       return boughtProducts;
     }
-    throw Exception("Cannot analize image check image\nCheck image size or make sure it had some text");
+    throw Exception("Cannot analize image\nCheck image size or make sure it contained text");
+  }
+
+  static Future<BoughtProduct> deleteProduct(BoughtProduct boughtProduct) async {
+    int productId = boughtProduct.id!;
+
+    var uri = Uri.parse("$_modelUrl/$productId");
+
+    var response = await http.delete(uri);
+
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      return BoughtProduct.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to delete product");
+    }
   }
 
   static Future<String> postProducts(List<BoughtProduct> products) async {

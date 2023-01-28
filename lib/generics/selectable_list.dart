@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/fab/expandable_fab.dart';
+import 'package:money_manager_mobile/widgets/no_products.dart';
 import '../../models/selectable_item_.dart';
 abstract class SelectableList<T> extends StatefulWidget {
   SelectableList({
@@ -113,14 +114,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
-        ) : Column(
-                children: [
-                  const SizedBox(
-                    width: 140,
-                    child: Text("Nie znaloziono produktów", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-                  ),
-                  const SizedBox(height: 20,),
-                  Image.asset('assets/images/no_items.png', scale: 1.2,),],),
+        ) : const NoProducts()
          ]);
     
 
