@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
+import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/dialogs/date_input_dialog.dart';
@@ -74,20 +76,20 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
   void showConfirmDeleteDialog() async {
     var selectedProducts = listKey.currentState!.searchableItems.where((item) => item.isSelected).toList();
 
-    showDialog(
+    await showDialog(
       context: context, 
       builder: (context) => 
         YesNoDialog(
           title: "Usuń",
           description: "Jesteś pewny że chcesz usunąć ${selectedProducts.length} ${selectedProducts.length == 1 ? "product" : selectedProducts.length >= 5 ? "produktó" : "produkty"}?",
-          onYesClickAction: () {
-            deleteSelected(selectedProducts);
+          onYesClickAction: () async {
             Navigator.of(context).pop();
+            await deleteSelected(selectedProducts);
           },
           onNoClickAction: () {
             Navigator.of(context).pop();
           },
-        ));
+    ));
   }
 
   void addProduct(String price, DateTime dateTime) async {
@@ -107,7 +109,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     }
   }
 
-  void deleteSelected(List<SelectableItem<dynamic>> selectedProducts) async {
+  Future<void> deleteSelected(List<SelectableItem<dynamic>> selectedProducts) async {
     for (var product in selectedProducts) {
       await BoughtProductsApi.deleteProduct(product.data);  
     }
@@ -117,7 +119,17 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     widget.boughtProducts.clear();
     widget.boughtProducts.addAll(listKey.currentState!.widget.selectableItems.map((e) => BoughtProduct(id: e.data.id ,name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate,)));
 
+    navigateToMenu();
+
     setState(() { });
+  }
+
+  void navigateToMenu() {
+    if(widget.boughtProducts.isEmpty) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Menu()));
+      }); 
+    }
   }
 
   void setChildState(dynamic expression) {

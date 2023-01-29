@@ -128,7 +128,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
   /// Removes selected items animation [animateTile] - list tile to animate
   void animateAndRemoveSelected(Widget Function(SelectableItem<T>, Animation<double>) animateTile) {
     var selectedItems = searchableItems.where((item) => item.isSelected).toList();
-    var keys = selectedItems.map((e) => e.keyHelper);
+    var keys = selectedItems.map((e) => e.keyHelper).toList();
 
     widget.selectableItems.removeWhere((item) => keys.any((key) => item.keyHelper == key));
 
