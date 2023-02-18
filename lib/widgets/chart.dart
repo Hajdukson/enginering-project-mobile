@@ -57,8 +57,13 @@ class ChartState extends State<Chart> {
       var days = dateUtility.daysInMonth(month, year);
       result[month] = days;
       if(i == widget.boughtProducts.length - 1) {
-        days = dateUtility.daysInMonth(month + 1, month == 12 ? year + 1 : year);
-        result[month + 1] = days;
+        month++;
+        if(month > 12){
+          month = 1;
+          year++;
+        }
+        days = dateUtility.daysInMonth(month, year);
+        result[month] = days;
       }
     }
     return result;
