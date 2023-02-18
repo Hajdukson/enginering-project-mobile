@@ -110,14 +110,13 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
   }
 
   Future<void> deleteSelected(List<SelectableItem<dynamic>> selectedProducts) async {
-    for (var product in selectedProducts) {
-      await BoughtProductsApi.deleteProduct(product.data);  
-    }
-
     listKey.currentState!.animateAndRemoveSelected((product, animation) => BoughtProductTail(product: product as SelectableItem<BoughtProduct>, animation: animation));
 
-    widget.boughtProducts.clear();
-    widget.boughtProducts.addAll(listKey.currentState!.widget.selectableItems.map((e) => BoughtProduct(id: e.data.id ,name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate,)));
+    
+    for (var product in selectedProducts) {
+      var deletedProduct = await BoughtProductsApi.deleteProduct(product.data);
+      widget.boughtProducts.removeWhere((product) => product.id == deletedProduct.id);
+    }
 
     if(widget.boughtProducts.isEmpty) {
       navigateToMenu();
@@ -130,7 +129,11 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
   /// According to https://stackoverflow.com/questions/61424636/flutter-looking-up-a-deactivated-widgets-ancestor-is-unsafe
   void navigateToMenu() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Menu()));
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const Menu()),
+        (Route<dynamic> route) => false,
+      );
     }); 
   }
 
