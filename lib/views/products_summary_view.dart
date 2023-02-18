@@ -28,8 +28,9 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Raport")),
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.navigate_before,)),
+        leading: IconButton(icon: const Icon(Icons.settings), onPressed: () {
+          // expanded menu where user can change language and switch to darkmode
+        },),
         actions: [
           TextButton(
             onPressed: () { 
@@ -37,7 +38,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
             }, 
             child: Row(children: [
               const Icon(Icons.filter_alt, color: Colors.white,),
-              Text("Filtry", style: Theme.of(context).textTheme.titleMedium,), 
+              Text("Filtrowanie", style: Theme.of(context).textTheme.titleMedium,), 
             ])
           )]),
       body: FutureBuilder<List<ProductSummary>>(
@@ -61,10 +62,12 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   }
 
   void navigate(BuildContext context, dynamic productName) {     
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
         builder: (context) => ProductDetailsView(productSummary: productName,),
-    ),);
+    ),
+    );
   }
 
   void clearFiler() {
