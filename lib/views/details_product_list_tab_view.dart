@@ -119,17 +119,19 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     widget.boughtProducts.clear();
     widget.boughtProducts.addAll(listKey.currentState!.widget.selectableItems.map((e) => BoughtProduct(id: e.data.id ,name: e.data.name, price: e.data.price, boughtDate: e.data.boughtDate,)));
 
-    navigateToMenu();
+    if(widget.boughtProducts.isEmpty) {
+      navigateToMenu();
+    }
 
     setState(() { });
   }
 
+
+  /// According to https://stackoverflow.com/questions/61424636/flutter-looking-up-a-deactivated-widgets-ancestor-is-unsafe
   void navigateToMenu() {
-    if(widget.boughtProducts.isEmpty) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Menu()));
-      }); 
-    }
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Menu()));
+    }); 
   }
 
   void setChildState(dynamic expression) {
