@@ -130,12 +130,14 @@ class SelectableListState<T> extends State<SelectableList<T>> {
     var selectedItems = searchableItems.where((item) => item.isSelected).toList();
     var keys = selectedItems.map((e) => e.keyHelper).toList();
 
-    widget.selectableItems.removeWhere((item) => keys.any((key) => item.keyHelper == key));
-
     for(int i = 0; i < selectedItems.length; i++) {
       var item = searchableItems.firstWhere((item) => item.isSelected);
       listKey.currentState!.removeItem(searchableItems.indexOf(item), ((context, animation) => animateTile(item, animation)));
       searchableItems.remove(item);
+    }
+
+    for (var key in keys) {
+      widget.selectableItems.removeWhere((item) => item.keyHelper == key);
     }
   }
 
