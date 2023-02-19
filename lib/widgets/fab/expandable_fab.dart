@@ -14,7 +14,7 @@ class ExpandableFab extends StatefulWidget {
   });
 
   final String heroTag;
-  final Icon? icon;
+  final Widget? icon;
   final bool? initialOpen;
   final double distance;
   final List<Widget> children;
