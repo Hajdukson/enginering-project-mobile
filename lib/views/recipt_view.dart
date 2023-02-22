@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
@@ -226,6 +227,7 @@ class ReceiptViewState extends State<ReceiptView> {
     widget.recipt.clear();
     setState(() { });
     reciptKey.currentState!.removeAllItems();
+    _navigateToMenu();
   }
 
   void saveItems() {
@@ -235,7 +237,7 @@ class ReceiptViewState extends State<ReceiptView> {
     reciptKey.currentState!.widget.selectableItems.clear();
     reciptKey.currentState!.searchableItems.clear();
     setState(() { });
-    Navigator.of(context).pop(Menu());
+    _navigateToMenu();
   }
 
   void deleteSelectedItemsDialog() {
@@ -275,6 +277,7 @@ class ReceiptViewState extends State<ReceiptView> {
         title: "Zapisanie danych",
         description: "Czy chcesz zapisać dane?",
         onYesClickAction: () {
+          Navigator.of(context).pop();
           saveItems();
         },
         onNoClickAction: () {
@@ -294,5 +297,15 @@ class ReceiptViewState extends State<ReceiptView> {
       shoppingDate = picked;
       setState(() { });
     }
+  }
+
+  void _navigateToMenu(){
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const Menu()),
+        (Route<dynamic> route) => false,
+      );
+    });
   }
 }
