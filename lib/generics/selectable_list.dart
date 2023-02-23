@@ -64,9 +64,12 @@ class SelectableListState<T> extends State<SelectableList<T>> {
             child: const Icon(Icons.bolt)),
           distance: 80.0,
           children: [
-            ActionButton(
-              icon: const Icon(Icons.unsubscribe), 
-              onPressed: unselectAll,),            
+            Tooltip(
+              message: "Odznacz wszystko",
+              child: ActionButton(
+                icon: const Icon(Icons.disabled_by_default), 
+                onPressed: unselectAll,),
+            ),            
             ...widget.onBulkActions!
           ],
         ) : ExpandableFab(
