@@ -1,9 +1,14 @@
+import 'dart:ffi';
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
+import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
+import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/product_summary_list.dart';
 
 class ProductsSummaryView extends StatefulWidget {
@@ -54,11 +59,33 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
                 filterHandler: runFilter,
                 clearFilerHandler: clearFiler,
                 productsSummaries: snapshot.data!,
+                onBulkActions: bulkActions,
+                noBulkActions: actions,
               );
             }
           }
           return const Center(child: CircularProgressIndicator());
         })));
+  }
+
+  List<ActionButton> get bulkActions => [
+    ActionButton(
+      icon: const Icon(Icons.delete),
+      onPressed: deleteSelectedProducts
+      )
+  ];
+
+  List<ActionButton> get actions => [
+
+  ];
+
+  void deleteSelectedProducts() async {
+    var products = productSummaryKey.currentState!.searchableItems.where((product) => product.isSelected).cast<SelectableItem<ProductSummary>>();
+    var productsNames = products.map((e) => e.data.productName!).toList();
+    
+    await BoughtProductsApi.deleteProductsByName(productsNames);
+
+    setState(() { });
   }
 
   void navigate(BuildContext context, dynamic productName) {     

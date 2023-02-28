@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
 
 class ProductSummaryList extends SelectableList<ProductSummary> {
@@ -14,12 +15,14 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
       required this.productsSummaries,
       required this.filterHandler,
       required this.clearFilerHandler,
-      required this.setChildState
+      required this.setChildState,
+      List<ActionButton>? onBulkActions,
+      List<ActionButton>? noBulkActions
     }) : super(
     key: key, 
     isPage: true,
-    onBulkActions: [], 
-    noBulkActions: [],
+    onBulkActions: onBulkActions, 
+    noBulkActions: noBulkActions,
     noItemSelectedVoidCallBack: navigateHandler,
     data: productsSummaries,);
   

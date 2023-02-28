@@ -46,6 +46,31 @@ class BoughtProductsApi {
     }
   }
 
+  static Future<List<BoughtProduct>> deleteProductsByName(List<String> names) async {
+    var uri = Uri.parse("$_modelUrl/deletebynames");
+
+    var response = await http.delete(
+      uri,
+      headers: {
+        "content-type" : "application/json",
+        "accept" : "application/json",
+      },
+      body: jsonEncode(names)
+    );
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      var productsJson = jsonDecode(response.body);
+
+      List<BoughtProduct> result = [];
+      for (var json in productsJson) {
+        result.add(BoughtProduct.fromJson(json));
+      }
+
+      return result;
+    } else {
+      throw Exception("Fialed to delete products");
+    }
+  }
+
   static Future<String> postProducts(List<BoughtProduct> products) async {
     if(products.isEmpty) {
       throw Exception("In method 'postProducts' 'List<BoughtProducts>' was empty");
