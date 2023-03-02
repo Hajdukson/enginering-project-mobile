@@ -38,6 +38,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
   @override
   Widget buildChildren(SelectableItem<ProductSummary> product, Animation<double> animation) { 
     return ProductSummaryTile(
+      animation: animation,
       productSummary: product,
     );
   }

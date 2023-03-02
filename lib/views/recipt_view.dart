@@ -230,8 +230,8 @@ class ReceiptViewState extends State<ReceiptView> {
     _navigateToMenu();
   }
 
-  void saveItems() {
-    BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
+  void saveItems() async {
+    await BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
       .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: shoppingDate)).toList());
     widget.recipt.clear();
     reciptKey.currentState!.widget.selectableItems.clear();

@@ -10,6 +10,7 @@ import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/product_summary_list.dart';
+import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
 
 class ProductsSummaryView extends StatefulWidget {
   const ProductsSummaryView({Key? key}) : super(key: key);
@@ -80,9 +81,9 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   ];
 
   void deleteSelectedProducts() async {
-    var products = productSummaryKey.currentState!.searchableItems.where((product) => product.isSelected).cast<SelectableItem<ProductSummary>>();
+    var products = productSummaryKey.currentState!.searchableItems.where((product) => product.isSelected).cast<SelectableItem<ProductSummary>>().toList();
     var productsNames = products.map((e) => e.data.productName!).toList();
-    
+    productSummaryKey.currentState!.animateAndRemoveSelected((item, animation) => ProductSummaryTile(productSummary: item as SelectableItem<ProductSummary>, animation: animation,));
     await BoughtProductsApi.deleteProductsByName(productsNames);
 
     setState(() { });
