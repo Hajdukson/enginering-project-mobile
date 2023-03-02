@@ -114,6 +114,26 @@ class BoughtProductsApi {
       throw Exception("Failed to post product");
     }
   }
+
+  static Future editProduct(BoughtProduct boughtProduct) async {
+    var productId = boughtProduct.id!;
+    var uri = Uri.parse("$_modelUrl/$productId");
+
+    final response = await http.put(
+      uri,
+      headers: {
+        "content-type" : "application/json",
+        "accept" : "application/json",
+      },
+      body: _decodeProduct(boughtProduct)
+    );
+
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception("Failed to edit product");
+    }
+  }
   
   static Future<List<BoughtProduct>> getProducts({String? name}) async {
     var uri = Uri.parse(_modelUrl).replace(queryParameters: <String, dynamic> {"name" : name});

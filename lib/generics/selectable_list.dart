@@ -28,6 +28,7 @@ abstract class SelectableList<T> extends StatefulWidget {
 
   Widget buildChildren(SelectableItem<T> product, Animation<double> animation);
 
+  /// [setStateOverride] its a function that updates a state of item list 
   Widget buildFilter(BuildContext context, Function (List<SelectableItem<T>>) setStateOverride);
 }
 

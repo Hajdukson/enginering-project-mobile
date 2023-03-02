@@ -6,6 +6,7 @@ import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/dialogs/date_input_dialog.dart';
+import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/details_product_list.dart';
@@ -41,6 +42,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
       setChildState: setChildState,
       onBulkActions: bulkActions,
       noBulkActions: nobulkActions,
+      editProduct: edit,
     );
   }
 
@@ -111,7 +113,6 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
 
   Future<void> deleteSelected(List<SelectableItem<dynamic>> selectedProducts) async {
     listKey.currentState!.animateAndRemoveSelected((product, animation) => BoughtProductTail(product: product as SelectableItem<BoughtProduct>, animation: animation));
-
     
     for (var product in selectedProducts) {
       var deletedProduct = await BoughtProductsApi.deleteProduct(product.data);
@@ -141,5 +142,27 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     listKey.currentState!.setState(() {
       expression;
     });
+  }
+
+  void edit(BoughtProduct boughtProduct) {
+    final dialgoKey = GlobalKey<DateInputDialogState>();
+    final formKey = GlobalKey<FormState>();
+    showDialog(context: context, builder: (context) {
+      return DateInputDialog(
+        initialDate: boughtProduct.boughtDate,
+        initialText: boughtProduct.price.toString(),        
+        key: dialgoKey,
+        formKey: formKey,
+        textInputLabel: "Cena",
+        submit: () async {
+          if(formKey.currentState!.validate()) {
+            Navigator.of(context).pop();
+            boughtProduct.price = double.parse(dialgoKey.currentState!.textController.text);
+            boughtProduct.boughtDate = dialgoKey.currentState!.selectedDate;
+            await BoughtProductsApi.editProduct(boughtProduct);
+            setState(() { }); 
+          }
+        },
+    );});
   }
 }

@@ -15,6 +15,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
     required this.setChildState,
     required List<ActionButton> onBulkActions,
     required List<ActionButton> noBulkActions,
+    required this.editProduct
     }) : 
     super(
       key: key, 
@@ -25,6 +26,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
 
   final List<BoughtProduct> boughtProducts;
   final void Function(dynamic) setChildState;
+  final void Function(BoughtProduct boughtProduct) editProduct;
 
   SortDate? sortDate;
   SortPrice? sortPrice;
@@ -36,6 +38,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
   @override
   Widget buildChildren(SelectableItem<BoughtProduct> product, Animation<double> animation) {
     return BoughtProductTail(
+      trailingButton: IconButton(onPressed: () => editProduct(product.data), icon: const Icon(Icons.edit),),
       product: product, 
       animation: animation, 
       showDate: true,);
