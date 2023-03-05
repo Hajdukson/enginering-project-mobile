@@ -91,8 +91,11 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   }
 
   void addProduct(String name, String price, DateTime boughtDate) async {
+    Navigator.of(context).pop();
     var boughtProduct = BoughtProduct(id: 0, name: name, price: double.parse(price), boughtDate: boughtDate); 
     await BoughtProductsApi.postSingeProduct(boughtProduct);
+    futureProductsSummaries = BoughtProductsApi.getPrductsSummaries();
+    setState(() {});
   }
 
   void deleteSelectedProducts() async {
