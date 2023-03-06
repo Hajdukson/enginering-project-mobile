@@ -83,7 +83,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   ];
 
   void addProductDialog() async {
-    showDialog(context: context, builder: (contex) {
+    await showDialog(context: context, builder: (contex) {
       return NewProductDialog(
         addProductCall: addProduct,
       );

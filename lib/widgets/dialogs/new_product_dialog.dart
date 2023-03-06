@@ -18,7 +18,7 @@ class _NewProductDialogState extends State<NewProductDialog> {
   @override
   Widget build(BuildContext context) {
     TextStyle style = const TextStyle(
-      fontSize: 18,);
+      fontSize: 16,);
 
     final formKey = GlobalKey<FormState>();
     final firstInputController = TextEditingController(text: firstInput);
@@ -26,7 +26,7 @@ class _NewProductDialogState extends State<NewProductDialog> {
 
     return Dialog(
       child: SizedBox(
-        height: 350,
+        height: 360,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Form(
@@ -62,7 +62,7 @@ class _NewProductDialogState extends State<NewProductDialog> {
                   controller: secondInputController,
                   style: style,
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(height: 35,),
                 TextButton(
                   onPressed: () {
                     _selectDate(context);

@@ -6,7 +6,6 @@ import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/dialogs/date_input_dialog.dart';
-import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/details_product_list.dart';

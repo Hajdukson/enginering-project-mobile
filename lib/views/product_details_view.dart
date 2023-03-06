@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
+import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
+import 'package:money_manager_mobile/views/details_product_chart_tab_view.dart';
 import 'package:money_manager_mobile/views/details_product_list_tab_view.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
 import 'package:money_manager_mobile/widgets/tiles/details_chart_tile.dart';
@@ -37,6 +40,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: (() => SchedulerBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const Menu()),
+                (Route<dynamic> route) => false,);
+              }))),
             title: const Text("Produkt"),
             ),
           body: FutureBuilder<List<BoughtProduct>>(
@@ -65,12 +76,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         child: TabBarView(
                           children: [
                             SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                    child: DetailsChartTile(productSummary: widget.productSummary, boughtProducts: snapshot.data!)),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                child: DetailsProductChartTabView(productSummary: widget.productSummary, boughtProducts: snapshot.data!,),
                               ),
                             ),
                             Padding(
