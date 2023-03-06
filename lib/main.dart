@@ -14,7 +14,7 @@ Future<void> main() async {
   final firstCamera = cameras.first;
   FlavorConfig(
     values: FlavorValues(
-      baseUrl: "https://192.168.1.33:7075",
+      baseUrl: "https://192.168.1.32:7075",
       camera: firstCamera,
       themeData: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
@@ -47,7 +47,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
       supportedLocales: const [
         Locale("pl"),
