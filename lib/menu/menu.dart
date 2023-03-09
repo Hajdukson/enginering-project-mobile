@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/menu/page_view_main_menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/views/camera_access.dart';
 import 'package:money_manager_mobile/views/products_summary_view.dart';
-import 'package:money_manager_mobile/views/recipt_view.dart';
+import 'package:money_manager_mobile/views/receipt_makers_view.dart';
 import 'bottom_main_menu.dart';
 
 class Menu extends StatefulWidget {
@@ -60,7 +58,6 @@ class _MenuState extends State<Menu> {
   // for testing
   List<Widget> get children => [
     const ProductsSummaryView(),
-    ReceiptView(recipt: productList,),
-    CameraAccess(camera: FlavorConfig.instance.values.camera,),
+    const ReceiptMakersView(),
   ];
 }

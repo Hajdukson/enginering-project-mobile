@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
-import 'package:money_manager_mobile/views/recipt_view.dart';
+import 'package:money_manager_mobile/views/receipt_view.dart';
 
 class BoughtProductsAnalizer extends StatefulWidget {
   const BoughtProductsAnalizer({required this.image, Key? key})

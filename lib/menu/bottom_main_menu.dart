@@ -21,9 +21,7 @@ class BottomBarMainMenu extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.person), label: "Twoje konto"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag), label: "Shopping"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.camera), label: "Skanuj paragon"),
+            icon: Icon(Icons.receipt), label: "Dodaj paragon"),
         ]);
   }
 }

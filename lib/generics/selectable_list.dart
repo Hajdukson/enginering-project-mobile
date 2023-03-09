@@ -138,9 +138,11 @@ class SelectableListState<T> extends State<SelectableList<T>> {
 
   /// Scrolls to the top of the list and animate insert [item]
   void animateInsert(SelectableItem<T> item) async {
-    await scrollController.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+    if(searchableItems.isNotEmpty) {
+      await scrollController.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+    }
     searchableItems.insert(0, item);
-    listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 500));
+    listKey.currentState?.insertItem(0, duration: const Duration(milliseconds: 500));
   }
 
   /// Removes selected items animation [animateTile] - list tile to animate
@@ -157,6 +159,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
     for (var key in keys) {
       widget.selectableItems.removeWhere((item) => item.keyHelper == key);
     }
+    setState(() { });
   }
 
   /// Removes all items from [AnimatedList]

@@ -18,6 +18,7 @@ class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);
 
   List<BoughtProduct> recipt;
+  DateTime? shoppingDate;
 
   @override
   State<ReceiptView> createState() => ReceiptViewState();
@@ -28,19 +29,11 @@ class ReceiptViewState extends State<ReceiptView> {
   var nameController = TextEditingController();
   var priceController = TextEditingController();
 
-  DateTime? shoppingDate;
-
-  @override
-  void dispose() {
-    super.dispose();
-    reciptKey.currentState?.widget.selectableItems.clear();
-  }
-
   @override
   void initState() {
     super.initState();
-    if(widget.recipt.isNotEmpty) {
-      shoppingDate = widget.recipt.first.boughtDate;
+    if(widget.recipt.isNotEmpty && widget.shoppingDate == null) {
+      widget.shoppingDate = widget.recipt.first.boughtDate;
     }
   }
 
@@ -73,7 +66,7 @@ class ReceiptViewState extends State<ReceiptView> {
                 const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
                 TextButton(
                   onPressed: () async => await _selectDate(context), 
-                  child: Text(widget.recipt.isNotEmpty && shoppingDate != null ? DateFormat('dd.MM.yyyy').format(shoppingDate!) : "- brak", style: TextStyle(fontSize: 20),))
+                  child: Text(widget.shoppingDate != null ? DateFormat('dd.MM.yyyy').format(widget.shoppingDate!) : "- brak", style: TextStyle(fontSize: 20),))
               ],),
               Expanded(
                 child: ReciptList(
@@ -152,6 +145,7 @@ class ReceiptViewState extends State<ReceiptView> {
               if(value == null || value.isEmpty) {
                 return "Pole nie może być puste";
               }
+              return null;
             },
           );
           final secondInput = TextFormField(
@@ -163,6 +157,7 @@ class ReceiptViewState extends State<ReceiptView> {
               if(double.tryParse(value!) == null || value.isEmpty) {
                 return "Podaj cenę";
               }
+              return null;
             },
           );
           return TwoInputDialog(
@@ -220,6 +215,10 @@ class ReceiptViewState extends State<ReceiptView> {
       .addAll(reciptKey.currentState!.widget.selectableItems
         .map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
 
+    if(widget.recipt.isEmpty) {
+      widget.shoppingDate = null;
+    }
+
     setState(() {  });
   }
 
@@ -232,7 +231,7 @@ class ReceiptViewState extends State<ReceiptView> {
 
   void saveItems() async {
     await BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
-      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: shoppingDate)).toList());
+      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: widget.shoppingDate)).toList());
     widget.recipt.clear();
     reciptKey.currentState!.widget.selectableItems.clear();
     reciptKey.currentState!.searchableItems.clear();
@@ -290,11 +289,11 @@ class ReceiptViewState extends State<ReceiptView> {
     final DateTime? picked = await showDatePicker(
       context: context,
       locale: const Locale("pl", "PL"),
-      initialDate: shoppingDate ?? DateTime.now(), 
+      initialDate: widget.shoppingDate ?? DateTime.now(), 
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));
     if(picked != null) {
-      shoppingDate = picked;
+      widget.shoppingDate = picked;
       setState(() { });
     }
   }
