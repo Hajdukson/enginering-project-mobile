@@ -30,25 +30,23 @@ class InfoDialog extends StatelessWidget {
                   size: 30,
                   ),),),
             ...dialogContent,
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(const Size(120, 30)),
-                      elevation: MaterialStateProperty.all<double>(5),
-                      backgroundColor: MaterialStateProperty.all<Color>((Colors.blueGrey)),
-                      shape:  MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))
-                      ),
-                    child: const Text("Zamknij", style: TextStyle(color: Colors.white),),
-                    onPressed: () => Navigator.of(context).pop(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(const Size(120, 30)),
+                    elevation: MaterialStateProperty.all<double>(5),
+                    backgroundColor: MaterialStateProperty.all<Color>((Colors.blueGrey)),
+                    shape:  MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))
                     ),
-                ),
+                  child: const Text("Zamknij", style: TextStyle(color: Colors.white),),
+                  onPressed: () => Navigator.of(context).pop(),
+                  ),
               ),
             ),
           ],

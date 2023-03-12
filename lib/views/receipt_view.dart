@@ -8,6 +8,7 @@ import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
@@ -261,6 +262,36 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void saveItemsDialog() {
+    if(widget.shoppingDate == null || widget.recipt.isEmpty) {
+      showDialog(context: context, builder: ((context) => InfoDialog(
+        Icons.priority_high, 
+        dialogContent: [
+          if(widget.shoppingDate == null)
+            Expanded(
+              child: Center(
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    style: TextStyle(fontSize: 20),
+                    text: "Podaj datę z paragonu!")
+                ),
+              ),
+            ),
+          if(widget.recipt.isEmpty)
+            Expanded(
+              child: Center(
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    style: TextStyle(fontSize: 20),
+                    text: "Dodaj produkt!")
+                ),
+              ),
+            ),
+        ], 
+        height: 250, width: 250)));
+        return;
+    }
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
         title: "Zapisanie danych",
