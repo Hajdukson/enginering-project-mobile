@@ -17,7 +17,7 @@ import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);
 
-  List<BoughtProduct> recipt;
+  List<SelectableItem<BoughtProduct>> recipt;
   DateTime? shoppingDate;
 
   @override
@@ -33,7 +33,7 @@ class ReceiptViewState extends State<ReceiptView> {
   void initState() {
     super.initState();
     if(widget.recipt.isNotEmpty && widget.shoppingDate == null) {
-      widget.shoppingDate = widget.recipt.first.boughtDate;
+      widget.shoppingDate = widget.recipt.first.data.boughtDate;
     }
   }
 
@@ -107,12 +107,7 @@ class ReceiptViewState extends State<ReceiptView> {
                         formKey: formKey,
                         firstInput: firstInput,
                         secondInput: secondInput,
-                        submitHandler: () {
-                          edit(itemToEdit, formKey) ? () {
-                            nameController.dispose();
-                            priceController.dispose();
-                          } : () {};
-                        });});
+                        submitHandler: () => edit(itemToEdit, formKey));});
                   },
                   recipt: widget.recipt
                 ),
@@ -164,12 +159,7 @@ class ReceiptViewState extends State<ReceiptView> {
             formKey: formKey,
             firstInput: firstInput,
             secondInput: secondInput,
-            submitHandler: () {
-              addItem(nameController.text, priceController.text, formKey) ? () {
-                nameController.dispose();
-                priceController.dispose();
-              } : (){};
-            });});
+            submitHandler: () async => await addItem(nameController.text, priceController.text, formKey));});
         }),
     ActionButton(
       icon: Icon(Icons.clear_all),
@@ -195,12 +185,12 @@ class ReceiptViewState extends State<ReceiptView> {
     return false;
   }
   
-  bool addItem(String name, String price, GlobalKey<FormState> key) {
+  Future<bool> addItem(String name, String price, GlobalKey<FormState> key) async {
     if(key.currentState!.validate()) {
-      var boughtProduct = BoughtProduct(name: name, price: double.parse(price));
-      widget.recipt.insert(0, boughtProduct);
+      var boughtProduct = SelectableItem(BoughtProduct(name: name, price: double.parse(price)));
       Navigator.of(context).pop();
-      reciptKey.currentState!.animateInsert(SelectableItem<BoughtProduct>(boughtProduct));
+      await reciptKey.currentState!.animateInsert(boughtProduct);
+      widget.recipt.insert(0, boughtProduct);
       setState(() { });
       return true;
     }
@@ -210,10 +200,7 @@ class ReceiptViewState extends State<ReceiptView> {
   void deleteSelectedItems() {
     reciptKey.currentState!.animateAndRemoveSelected((item, animation) =>
           BoughtProductTail(product: item as SelectableItem<BoughtProduct>, animation: animation,));
-    widget.recipt.clear();
-    widget.recipt
-      .addAll(reciptKey.currentState!.widget.selectableItems
-        .map((item) => BoughtProduct(name: item.data.name, price: item.data.price)));
+    widget.recipt.removeWhere((element) => element.isSelected);
 
     if(widget.recipt.isEmpty) {
       widget.shoppingDate = null;
@@ -230,8 +217,11 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void saveItems() async {
-    await BoughtProductsApi.postProducts(reciptKey.currentState!.widget.selectableItems
-      .map((e) => BoughtProduct(id: 0, name: e.data.name, price: e.data.price, boughtDate: widget.shoppingDate)).toList());
+    await BoughtProductsApi.postProducts(widget.recipt.map((e) {
+      e.data.id = 0;
+      e.data.boughtDate = widget.shoppingDate;
+      return e.data;
+    }).toList());
     widget.recipt.clear();
     reciptKey.currentState!.widget.selectableItems.clear();
     reciptKey.currentState!.searchableItems.clear();

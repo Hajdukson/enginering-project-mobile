@@ -27,7 +27,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
     data: productsSummaries,);
   
   final ExpandableController? expandableController;
-  final List<ProductSummary> productsSummaries;
+  final List<SelectableItem<ProductSummary>> productsSummaries;
   final void Function(String, DateTimeRange?) filterHandler;
   final void Function() clearFilerHandler;
   final void Function(dynamic) setChildState;

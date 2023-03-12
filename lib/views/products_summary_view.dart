@@ -58,7 +58,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
                 setChildState: setChildState,
                 filterHandler: runFilter,
                 clearFilerHandler: clearFiler,
-                productsSummaries: snapshot.data!,
+                productsSummaries: snapshot.data!.map((e) => SelectableItem(e)).toList(),
                 onBulkActions: bulkActions,
                 noBulkActions: actions,
               );

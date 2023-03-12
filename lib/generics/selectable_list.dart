@@ -9,7 +9,7 @@ abstract class SelectableList<T> extends StatefulWidget {
   SelectableList({
     Key? key, 
     this.isPage = false,
-    required List<T> data, 
+    required List<SelectableItem<T>> data, 
     this.onBulkActions, 
     this.noBulkActions,
     this.noItemSelectedVoidCallBack,}) : _data = data, super(key: key);
@@ -20,8 +20,8 @@ abstract class SelectableList<T> extends StatefulWidget {
   final List<ActionButton>? noBulkActions;
   final Function(BuildContext, dynamic)? noItemSelectedVoidCallBack;
 
-  final List<T> _data;
-  late final List<SelectableItem<T>> selectableItems = _data.map((item) => SelectableItem(item)).toList();
+  final List<SelectableItem<T>> _data;
+  late final List<SelectableItem<T>> selectableItems = _data;
 
   @override
   State<SelectableList> createState() => SelectableListState();
@@ -122,7 +122,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                   }
                   setState(() { });
                 },
-                child: index > searchableItems.length - 1 ? 
+                child: index >= searchableItems.length ? 
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
@@ -137,7 +137,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
   }
 
   /// Scrolls to the top of the list and animate insert [item]
-  void animateInsert(SelectableItem<T> item) async {
+  Future animateInsert(SelectableItem<T> item) async {
     if(searchableItems.isNotEmpty) {
       await scrollController.animateTo(0.0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
     }

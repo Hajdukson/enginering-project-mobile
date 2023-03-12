@@ -18,7 +18,7 @@ class DetailsProductListTabView extends StatefulWidget {
     required this.boughtProducts,
     }) : super(key: key);
 
-  List<BoughtProduct> boughtProducts;
+  List<SelectableItem<BoughtProduct>> boughtProducts;
   String productName;
 
   @override
@@ -100,7 +100,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
 
     try {
       BoughtProduct responseProduct = await BoughtProductsApi.postSingeProduct(boughtPorduct);
-      widget.boughtProducts.insert(0, responseProduct);
+      widget.boughtProducts.insert(0, SelectableItem(responseProduct));
       if(listKey.currentState!.searchableItems.isNotEmpty) {
         listKey.currentState!.animateInsert(SelectableItem<BoughtProduct>(responseProduct));
       }
@@ -115,7 +115,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     
     for (var product in selectedProducts) {
       var deletedProduct = await BoughtProductsApi.deleteProduct(product.data);
-      widget.boughtProducts.removeWhere((product) => product.id == deletedProduct.id);
+      widget.boughtProducts.removeWhere((product) => product.data.id == deletedProduct.id);
     }
 
     if(widget.boughtProducts.isEmpty) {

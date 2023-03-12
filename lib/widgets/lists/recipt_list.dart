@@ -8,7 +8,7 @@ import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
     Key? key, 
-    required List<BoughtProduct> recipt, 
+    required List<SelectableItem<BoughtProduct>> recipt, 
     required this.edit,
     Icon isAnySelected = const Icon(Icons.delete_forever), 
     Icon notSelected = const Icon(Icons.add),
@@ -36,10 +36,15 @@ class ReciptList extends SelectableList<BoughtProduct> {
   
   @override
   Widget buildFilter(BuildContext context, Function setStateOverride) {
+    var longestStringLen = selectableItems.isNotEmpty ? selectableItems.reduce((value, element) => value.data.name!.length > element.data.name!.length ? value : element).data.name!.length : null;
     return TextField(
+      maxLength: longestStringLen,
       style: Theme.of(context).textTheme.labelSmall,
       onChanged: (value) {
-        setStateOverride(_runFilter(value));
+        if(longestStringLen! == value.length) {
+          return;
+        }
+        setStateOverride(_runFilter(value).isEmpty ? selectableItems : _runFilter(value));
       },
       decoration: const InputDecoration(
         labelText: 'Wyszukaj produkt', 
@@ -50,12 +55,13 @@ class ReciptList extends SelectableList<BoughtProduct> {
   List<SelectableItem<BoughtProduct>> _runFilter(String enteredKeyword) {
     List<SelectableItem<BoughtProduct>> results = [];
     if (enteredKeyword.isEmpty) {
-      results = selectableItems;
+      results.addAll(selectableItems);
     } else {
-      results = selectableItems
+      results.addAll(selectableItems
         .where((item) => item.data.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
-        .toList();
+        .toList());
     }
+
     return results;
   }
 }

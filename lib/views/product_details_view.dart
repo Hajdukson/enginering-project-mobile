@@ -5,10 +5,10 @@ import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/views/details_product_chart_tab_view.dart';
 import 'package:money_manager_mobile/views/details_product_list_tab_view.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
-import 'package:money_manager_mobile/widgets/tiles/details_chart_tile.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({Key? key, required this.productSummary}) : super(key: key);
@@ -86,7 +86,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               child: DetailsProductListTabView(
                                 key: detailsProductListKey,
                                 productName: widget.productSummary.productName!,
-                                boughtProducts: snapshot.data!,))
+                                boughtProducts: snapshot.data!.map((e) => SelectableItem(e)).toList(),))
                           ],),
                       ),
                     ],

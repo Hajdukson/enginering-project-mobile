@@ -24,7 +24,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
       onBulkActions: onBulkActions,
       noBulkActions: noBulkActions);
 
-  final List<BoughtProduct> boughtProducts;
+  final List<SelectableItem<BoughtProduct>> boughtProducts;
   final void Function(dynamic) setChildState;
   final void Function(BoughtProduct boughtProduct) editProduct;
 
