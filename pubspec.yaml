@@ -28,6 +28,7 @@ dependencies:
   fl_chart: ^0.55.2
   date_util: ^0.1.4
   badges: 3.0.2
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:

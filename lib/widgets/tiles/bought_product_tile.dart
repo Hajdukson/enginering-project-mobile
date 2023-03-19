@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:photo_view/photo_view.dart';
 
 class BoughtProductTail extends StatelessWidget {
   const BoughtProductTail({
@@ -32,7 +34,43 @@ class BoughtProductTail extends StatelessWidget {
           border: product.isSelected ? Border.all(color: Colors.black12, width: 2) : Border.all(color: Colors.grey),
         ),
         child: ListTile(
-          leading: const Icon(Icons.shopping_bag_outlined, size: 40,),
+          leading: product.data.imagePath == null ? 
+            const Icon(Icons.shopping_bag_outlined, size: 40,) :
+            IconButton(
+              constraints: const BoxConstraints(),
+              iconSize: 40,
+              icon: const Icon(Icons.receipt),
+              padding: EdgeInsets.zero,
+              onPressed: () => showDialog(
+                context: context, 
+                builder: (context) => Dialog(
+                  backgroundColor: Colors.transparent,
+                  child: Stack(
+                    children: [
+                      PhotoView(
+                        customSize: MediaQuery.of(context).size,
+                        imageProvider: NetworkImage("${FlavorConfig.instance.values.baseUrl}/${product.data.imagePath!}",),
+                        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(), 
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all<double>(5),
+                              backgroundColor: MaterialStateProperty.all<Color>((Colors.blueGrey)),
+                              shape:  MaterialStateProperty.all<CircleBorder>(const CircleBorder())
+                              ),
+                            child: const Icon(
+                                Icons.close, 
+                                color: Colors.black,
+                                size: 40,),
+                            ))),
+                    ],
+                  ),
+                ))),
           title: Text("${product.data.name}"),
           subtitle: Padding(
             padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
