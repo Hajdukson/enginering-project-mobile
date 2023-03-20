@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/extenstions/last_2_moth_products.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
+import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
 import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
 import 'package:money_manager_mobile/widgets/no_products.dart';
@@ -126,7 +127,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     )
                     ],
               )),
-          ) : const NoProducts();
+          ) : NoProducts(items: widget.boughtProducts.map((e) => SelectableItem(e)).toList());
   }
 
   void showDialogOnEdgeOfProductList(BuildContext context) {

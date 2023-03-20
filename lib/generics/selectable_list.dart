@@ -126,7 +126,7 @@ class SelectableListState<T> extends State<SelectableList<T>> {
                 Container() : widget.buildChildren(searchableItems[index], animation),
               );
             }),
-        ) : const NoProducts()
+        ) : NoProducts(items: widget.selectableItems,)
          ]);
   
   void unselectAll() {
