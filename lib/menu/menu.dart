@@ -25,13 +25,15 @@ class _MenuState extends State<Menu> {
           onBottomMenuTapHandler: onBottomMenuTap,), 
         body: PageViewMainMenu(
           pageController: _pageController, 
-          onSwipeHandler: onPageSwiape, 
+          // onSwipeHandler: onPageSwiape, 
           pages: children,));
   }
 
   void onBottomMenuTap(int index, PageController pageController) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+    _currentPageIndex = index;
+    setState(() { });
   }
 
   void onPageSwiape(int index){
