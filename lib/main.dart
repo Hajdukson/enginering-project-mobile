@@ -13,23 +13,27 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
-  FlavorConfig(
-    values: FlavorValues(
-      baseUrl: "https://192.168.1.30:7075",
-      camera: firstCamera,
-    ));
+
   runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => ThemeNotifier(), 
-    child: const MyApp()));
+    child: MyApp(firstCamera: firstCamera,)));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.firstCamera}) : super(key: key);
+
+  final CameraDescription firstCamera;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) {
+        FlavorConfig(
+          values: FlavorValues(
+            baseUrl: "https://192.168.1.30:7075",
+            camera: firstCamera,
+            themeNotifier: theme
+          ));
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
             Locale("en")
           ],
           theme: theme.getTheme(),
-          home: Menu(),
+          home: const Menu(),
         );
       }
     );

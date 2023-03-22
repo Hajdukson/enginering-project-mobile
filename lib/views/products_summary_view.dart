@@ -1,11 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
+import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
-import 'package:money_manager_mobile/theming/theme_manager.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
 import 'package:money_manager_mobile/widgets/dialogs/new_product_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
@@ -54,6 +54,11 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
                   Icon(darkMode ? Icons.dark_mode : Icons.light_mode),
                   Switch(value: darkMode, onChanged: (value){
                     darkMode = value;
+                    if(darkMode){
+                      FlavorConfig.instance.values.themeNotifier.setDarkMode();
+                    } else {
+                      FlavorConfig.instance.values.themeNotifier.setLightMode();
+                    }
                     setState(() { });
                   })
                 ],)

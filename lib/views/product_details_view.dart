@@ -45,7 +45,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               onPressed: (() => SchedulerBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => Menu()),
+                    builder: (context) => const Menu()),
                 (Route<dynamic> route) => false,);
               }))),
             title: const Text("Produkt"),

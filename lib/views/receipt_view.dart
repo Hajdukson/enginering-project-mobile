@@ -53,7 +53,7 @@ class ReceiptViewState extends State<ReceiptView> {
             onYesClickAction: () {
               result = true;
               Navigator.of(context).pop();
-              Navigator.of(context).pop(Menu());
+              Navigator.of(context).pop(const Menu());
             },
           )));
         return result;
@@ -323,7 +323,7 @@ class ReceiptViewState extends State<ReceiptView> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => Menu()),
+          builder: (context) => const Menu()),
         (Route<dynamic> route) => false,
       );
     });

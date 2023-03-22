@@ -17,9 +17,9 @@ class ThemeNotifier with ChangeNotifier {
           titleMedium: TextStyle(fontSize: 18, color: Colors.white))));
 
   final lightTheme = ThemeData(
-      appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
+      appBarTheme: const AppBarTheme(backgroundColor: Colors.lightBlue),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black87, selectedItemColor: Colors.amber),
+          backgroundColor: Colors.lightBlue, selectedItemColor: Colors.amber),
       primaryColor: Colors.black12,
       colorScheme: ColorScheme.fromSwatch(
           brightness: Brightness.dark,
