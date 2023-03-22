@@ -5,10 +5,8 @@ class FlavorValues {
   FlavorValues({
     required this.baseUrl, 
     required this.camera,
-    required this.themeData
     });
 
   String baseUrl;
   CameraDescription camera;
-  ThemeData themeData;
 }

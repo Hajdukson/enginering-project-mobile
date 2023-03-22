@@ -40,24 +40,24 @@ class _MenuState extends State<Menu> {
     _currentPageIndex = index;
     setState(() {});
   }
-
-    var productList = [
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "kanapka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "RABAT", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "pizza", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "frytki", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-        BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
-      ];
   // for testing
+  var productList = [
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "kanapka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "RABAT", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "chleb", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "biszkopt", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "pizza", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "frytki", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+      BoughtProduct(id: 0, boughtDate: DateTime.now(),name: "ciastka", price: 10),
+    ];
+  
   List<Widget> get children => [
     const ProductsSummaryView(),
     const ReceiptMakersView(),

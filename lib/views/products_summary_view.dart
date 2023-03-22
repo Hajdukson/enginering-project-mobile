@@ -5,6 +5,7 @@ import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/theming/theme_manager.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
 import 'package:money_manager_mobile/widgets/dialogs/new_product_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
@@ -18,10 +19,12 @@ class ProductsSummaryView extends StatefulWidget {
   State<ProductsSummaryView> createState() => _ProductsSummaryViewState();
 }
 
-class _ProductsSummaryViewState extends State<ProductsSummaryView> {
+class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTickerProviderStateMixin {
   late Future<List<ProductSummary>> futureProductsSummaries;
   final productSummaryKey = GlobalKey<SelectableListState>();
   final expandableController = ExpandableController();
+
+  bool darkMode = false;
 
   @override
   void initState() {
@@ -32,10 +35,44 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Ustawienia")),
+                Row(children: [
+                    Image.asset('assets/images/pl_flag.png', scale: 9.0,),
+                    Radio(value: null, groupValue: null, onChanged: null),
+                    Image.asset('assets/images/uk_flag.png', scale: 9.0,),
+                    Radio(value: null, groupValue: null, onChanged: null)
+                ],),
+                Row(children: [
+                  Icon(darkMode ? Icons.dark_mode : Icons.light_mode),
+                  Switch(value: darkMode, onChanged: (value){
+                    darkMode = value;
+                    setState(() { });
+                  })
+                ],)
+              ],
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.settings), onPressed: () {
-          // expanded menu where user can change language and switch to darkmode
-        },),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
         actions: [
           TextButton(
             onPressed: () { 

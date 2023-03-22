@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
+import 'package:provider/provider.dart';
 import 'flavor/flavor_config.dart';
+import 'theming/theme_manager.dart';
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -14,30 +15,12 @@ Future<void> main() async {
   final firstCamera = cameras.first;
   FlavorConfig(
     values: FlavorValues(
-      baseUrl: "https://192.168.1.32:7075",
+      baseUrl: "https://192.168.1.30:7075",
       camera: firstCamera,
-      themeData: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black87,
-          selectedItemColor: Colors.amber
-        ),
-        primaryColor: Colors.black12,
-        colorScheme: ColorScheme.fromSwatch(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.amber,
-          accentColor: const Color.fromARGB(255, 241, 113, 58)
-        ),
-        textTheme: GoogleFonts.anybodyTextTheme(const TextTheme(
-          labelSmall: TextStyle(
-            fontSize: 16,
-            color: Colors.grey),
-          titleMedium: TextStyle(
-            fontSize: 18,
-            color: Colors.white
-          )
-            )))));
-  runApp(const MyApp());
+    ));
+  runApp(ChangeNotifierProvider<ThemeNotifier>(
+    create: (_) => ThemeNotifier(), 
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,17 +28,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-      supportedLocales: const [
-        Locale("pl"),
-        Locale("en")
-      ],
-      theme: FlavorConfig.instance.values.themeData,
-      home: const Menu(),
+    return Consumer<ThemeNotifier>(
+      builder: (context, theme, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+          supportedLocales: const [
+            Locale("pl"),
+            Locale("en")
+          ],
+          theme: theme.getTheme(),
+          home: Menu(),
+        );
+      }
     );
   }
 }

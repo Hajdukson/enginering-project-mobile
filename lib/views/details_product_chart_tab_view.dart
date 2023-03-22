@@ -120,7 +120,7 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => const Menu()),
+          builder: (context) => Menu()),
         (Route<dynamic> route) => false,);
     }); 
   }
