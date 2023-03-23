@@ -51,8 +51,8 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
                     Radio(value: null, groupValue: null, onChanged: null)
                 ],),
                 Row(children: [
-                  Icon(darkMode ? Icons.dark_mode : Icons.light_mode),
-                  Switch(value: darkMode, onChanged: (value){
+                  Icon(FlavorConfig.instance.values.themeNotifier.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+                  Switch(value: FlavorConfig.instance.values.themeNotifier.isDarkMode, onChanged: (value){
                     darkMode = value;
                     if(darkMode){
                       FlavorConfig.instance.values.themeNotifier.setDarkMode();
