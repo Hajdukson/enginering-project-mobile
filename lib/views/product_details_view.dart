@@ -60,6 +60,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
                         child: TabBar(
+                          labelColor: Theme.of(context).primaryColorDark,
                           indicator: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                               25.0,

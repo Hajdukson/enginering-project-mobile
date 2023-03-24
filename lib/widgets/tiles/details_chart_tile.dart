@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/extenstions/last_2_moth_products.dart';
+import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
@@ -38,11 +39,10 @@ class DetailsChartTileState extends State<DetailsChartTile> {
   Widget build(BuildContext context) {
     return widget.boughtProducts.isNotEmpty ? SizedBox(
             child: DecoratedBox(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(18)),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
                 gradient: LinearGradient(colors: [
-                Color.fromARGB(255, 58, 61, 63),
-                Color.fromARGB(255, 58, 61, 63),
+                  ...FlavorConfig.instance.values.customColors.chartBackground!
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter
@@ -60,7 +60,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                         Icons.question_mark,
                         height: 300,
                         width: 300,
-                        dialogContent: dialogContent,));
+                        dialogContent: dialogContent(),));
                     }), 
                   Column(
                     children: [
@@ -134,54 +134,61 @@ class DetailsChartTileState extends State<DetailsChartTile> {
     showDialog(context: context, builder: (context) => const InfoDialog(
         Icons.priority_high,
         dialogContent: [
-          SizedBox(height: 35,),
-          Text("Nie można znaźć więcej prodktów", style: TextStyle(fontSize: 16),),
+          Expanded(child: Center(child: Text("Nie można znaźć więcej prodktów", style: TextStyle(fontSize: 16),))),
         ],
         height: 200,
         width: 350,
         ));
   }
 
-  List<Widget> get dialogContent => [
-    const SizedBox(height: 30,),
-    RichText(
-      textAlign: TextAlign.center,
-      text: const TextSpan(
-        style: TextStyle(fontSize: 16),
-        text: "Kliknij na załamania wykresu, aby sprawdzić szczegóły.")
-    ),
-    const SizedBox(height: 20,),
-    Wrap(
-      alignment: WrapAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RichText(
-              text: const TextSpan(
-                style: TextStyle(fontSize: 16),
-                text: "Użyj")
-            ),
-            const Icon(Icons.chevron_left),
-            RichText(
-              text: const TextSpan(
-                style: TextStyle(fontSize: 16),
-                text: "lub")
-            ),
-            const Icon(Icons.navigate_next),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: const TextSpan(
-              style: TextStyle(fontSize: 16),
-              text: "aby przesunąć wykres o jeden miesiąc.")
+  List<Widget> dialogContent() {
+    final fontStyle = TextStyle(color: Theme.of(context).primaryColorDark, fontSize: 16);
+    return 
+    [
+      const SizedBox(height: 30,),
+      RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: fontStyle,
+          text: "Kliknij na załamania wykresu, aby sprawdzić szczegóły.")
+      ),
+      const SizedBox(height: 20,),
+      Expanded(
+        child: Center(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      style: fontStyle,
+                      text: "Użyj")
+                  ),
+                  const Icon(Icons.chevron_left),
+                  RichText(
+                    text: TextSpan(
+                      style: fontStyle,
+                      text: "lub")
+                  ),
+                  const Icon(Icons.navigate_next),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: fontStyle,
+                    text: "aby przesunąć wykres o jeden miesiąc.")
+                ),
+              ),
+            ],
           ),
         ),
-      ],
-    ),
-    const SizedBox(height: 20,),
-  ];
+      ),
+      const SizedBox(height: 20,),
+    ];
+  }
 }

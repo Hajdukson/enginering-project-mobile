@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
           values: FlavorValues(
             baseUrl: "https://192.168.1.30:7075",
             camera: firstCamera,
-            themeNotifier: theme
+            themeNotifier: theme,
+            customColors: theme.getColors()
           ));
         return MaterialApp(
           debugShowCheckedModeBanner: false,

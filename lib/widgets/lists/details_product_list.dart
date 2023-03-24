@@ -98,9 +98,9 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                   expandableControler.toggle();
                 }, 
                 child: Row(
-                  children: const [
-                    Icon(Icons.filter_alt, color: Colors.white,),
-                    Text("Filtrowanie", style: TextStyle(color: Colors.white, fontSize: 20),), 
+                  children: [
+                    Icon(Icons.filter_alt, color: Theme.of(context).primaryColorDark,),
+                    Text("Filtrowanie", style: Theme.of(context).textTheme.titleMedium,), 
                   ],
               ))
             ],

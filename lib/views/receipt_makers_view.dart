@@ -18,10 +18,12 @@ class _ReceiptMakersViewState extends State<ReceiptMakersView> {
         length: 2,
           child: Column(
             children: [
-              const TabBar(
+              TabBar(
+                labelStyle: Theme.of(context).textTheme.labelSmall,
+                labelColor: Theme.of(context).primaryColorDark,
                 indicatorColor: Colors.amber, 
-                tabs: [
-                  Tab(text: "Skanuj paragon"),
+                tabs: const[
+                  Tab(text: "Skanuj paragon",),
                   Tab(text: "Stwórz paragon"),
                 ]),
               Expanded(

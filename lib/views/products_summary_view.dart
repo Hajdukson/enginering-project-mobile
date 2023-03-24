@@ -84,7 +84,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
               expandableController.toggle();
             }, 
             child: Row(children: [
-              const Icon(Icons.filter_alt, color: Colors.white,),
+              Icon(Icons.filter_alt, color: Theme.of(context).primaryColorDark,),
               Text("Filtrowanie", style: Theme.of(context).textTheme.titleMedium,), 
             ])
           )]),
