@@ -6,6 +6,7 @@ import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:provider/provider.dart';
 import 'flavor/flavor_config.dart';
+import 'theming/custom_colors.dart';
 import 'theming/theme_manager.dart';
 
 Future<void> main() async {
@@ -30,11 +31,11 @@ class MyApp extends StatelessWidget {
       builder: (context, theme, child) {
         FlavorConfig(
           values: FlavorValues(
-            baseUrl: "https://192.168.1.30:7075",
+            baseUrl: "https://192.168.1.33:7075",
             camera: firstCamera,
             themeNotifier: theme,
-            customColors: theme.getColors()
           ));
+        CustomColors.themeColors = theme.getColorsValues();
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

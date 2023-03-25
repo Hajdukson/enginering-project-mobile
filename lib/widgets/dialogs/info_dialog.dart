@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager_mobile/theming/custom_colors.dart';
 
 class InfoDialog extends StatelessWidget {
   const InfoDialog(this.icon, {Key? key, required this.dialogContent, required this.height, required this.width}) : super(key: key);
@@ -18,9 +19,9 @@ class InfoDialog extends StatelessWidget {
           children: [
             const SizedBox(height: 20,),
             DecoratedBox(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(100)),
-                color: Colors.blueGrey
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(100)),
+                color: CustomColors.backgroundColorPrimary
               ),
               child: SizedBox(
                 height: 40,
@@ -38,13 +39,13 @@ class InfoDialog extends StatelessWidget {
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all<Size>(const Size(120, 30)),
                     elevation: MaterialStateProperty.all<double>(5),
-                    backgroundColor: MaterialStateProperty.all<Color>((Colors.blueGrey)),
+                    backgroundColor: MaterialStateProperty.all<Color>((CustomColors.backgroundColorPrimary)),
                     shape:  MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ))
                     ),
-                  child: const Text("Zamknij", style: TextStyle(color: Colors.white),),
+                  child: Text("Zamknij", style: TextStyle(color: CustomColors.textColorPrimary),),
                   onPressed: () => Navigator.of(context).pop(),
                   ),
               ),

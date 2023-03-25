@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/extenstions/last_2_moth_products.dart';
-import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/theming/custom_colors.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
 import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
 import 'package:money_manager_mobile/widgets/no_products.dart';
@@ -42,7 +42,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(18)),
                 gradient: LinearGradient(colors: [
-                  ...FlavorConfig.instance.values.customColors.chartBackground!
+                  ...CustomColors.themeColors.chartColor
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter
@@ -53,7 +53,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    color: Colors.white,
+                    color: CustomColors.backgroundColorSecondary,
                     icon: const Icon(Icons.question_mark),
                     onPressed: () {
                       showDialog(context: context, builder: (context) => InfoDialog(

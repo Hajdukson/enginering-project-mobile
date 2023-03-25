@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:money_manager_mobile/theming/custom_colors.dart';
+import 'package:money_manager_mobile/theming/theme_colors.dart';
 import '../services/storage_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
@@ -36,26 +36,26 @@ class ThemeNotifier with ChangeNotifier {
           labelSmall: TextStyle(fontSize: 16, color: Colors.black),
           titleMedium: TextStyle(fontSize: 18, color: Colors.black))));
 
-  final darkColors = CustomColors(
-    chartBackground: const [
+  final darkColors = ThemeColors(
+    chartColor: const [
     Color.fromARGB(255, 58, 61, 63),
     Color.fromARGB(255, 58, 61, 63),
     ]
   );
 
-  final lightColors = CustomColors(
-    chartBackground: const [
+  final lightColors = ThemeColors(
+    chartColor: const [
     Color.fromARGB(255, 170, 181, 188),
     Color.fromARGB(255, 165, 174, 179),
     ]
   );
 
   late ThemeData _themeData = lightTheme;
-  late CustomColors _colors = lightColors;
+  late ThemeColors _colorsValues = lightColors;
 
   bool isDarkMode = false;
   ThemeData getTheme() => _themeData;
-  CustomColors getColors() => _colors;
+  ThemeColors getColorsValues() => _colorsValues;
 
   ThemeNotifier() {
     StorageManager.readData('themeMode').then((value) {
@@ -64,12 +64,12 @@ class ThemeNotifier with ChangeNotifier {
       if (themeMode == 'light') {
         isDarkMode = false;
         _themeData = lightTheme;
-        _colors = lightColors;
+        _colorsValues = lightColors;
       } else {
         print('setting dark theme');
         isDarkMode = true;
         _themeData = darkTheme;
-        _colors = darkColors;
+        _colorsValues = darkColors;
       }
       notifyListeners();
     });
@@ -77,7 +77,7 @@ class ThemeNotifier with ChangeNotifier {
 
   void setDarkMode() async {
     _themeData = darkTheme;
-    _colors = darkColors;
+    _colorsValues = darkColors;
     isDarkMode = true;
     StorageManager.saveData('themeMode', 'dark');
     notifyListeners();
@@ -85,7 +85,7 @@ class ThemeNotifier with ChangeNotifier {
 
   void setLightMode() async {
     _themeData = lightTheme;
-    _colors = lightColors;
+    _colorsValues = lightColors;
     isDarkMode = false;
     StorageManager.saveData('themeMode', 'light');
     notifyListeners();
