@@ -45,12 +45,6 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
                   alignment: Alignment.topLeft,
                   child: Text("Ustawienia")),
                 Row(children: [
-                    Image.asset('assets/images/pl_flag.png', scale: 9.0,),
-                    Radio(value: null, groupValue: null, onChanged: null),
-                    Image.asset('assets/images/uk_flag.png', scale: 9.0,),
-                    Radio(value: null, groupValue: null, onChanged: null)
-                ],),
-                Row(children: [
                   Icon(FlavorConfig.instance.values.themeNotifier.isDarkMode ? Icons.dark_mode : Icons.light_mode),
                   Switch(value: FlavorConfig.instance.values.themeNotifier.isDarkMode, onChanged: (value){
                     darkMode = value;

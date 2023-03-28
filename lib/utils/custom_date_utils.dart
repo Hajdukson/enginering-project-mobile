@@ -2,7 +2,7 @@
 
 import 'package:intl/intl.dart';
 
-class DateUtils {
+class CustomDateUtils {
   static final DateFormat _monthFormat = DateFormat('MMMM yyyy');
   static final DateFormat _dayFormat = DateFormat('dd');
   static final DateFormat _firstDayFormat = DateFormat('MMM dd');
@@ -34,7 +34,7 @@ class DateUtils {
     var first = firstDayOfMonth(month);
     var daysBefore = first.weekday;
     var firstToDisplay = first.subtract(Duration(days: daysBefore));
-    var last = DateUtils.lastDayOfMonth(month);
+    var last = CustomDateUtils.lastDayOfMonth(month);
 
     var daysAfter = 7 - last.weekday;
 

@@ -1,5 +1,4 @@
 
-import 'package:date_util/date_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -50,11 +49,10 @@ class ChartState extends State<Chart> {
 
   Map<int, int> get daysInMonths {
     Map<int, int> result = {};
-    var dateUtility = DateUtil();
     for(int i = 0; i < widget.boughtProducts.length; i++) {
       var month = widget.boughtProducts[i].boughtDate!.month;
       var year = widget.boughtProducts[i].boughtDate!.year;
-      var days = dateUtility.daysInMonth(month, year);
+      var days = DateUtils.getDaysInMonth(month, year);
       result[month] = days;
       if(i == widget.boughtProducts.length - 1) {
         month++;
@@ -62,7 +60,7 @@ class ChartState extends State<Chart> {
           month = 1;
           year++;
         }
-        days = dateUtility.daysInMonth(month, year);
+        days = DateUtils.getDaysInMonth(month, year);
         result[month] = days;
       }
     }
@@ -71,7 +69,6 @@ class ChartState extends State<Chart> {
 
   List<FlSpot> drawChart() {
     List<FlSpot> chartValues = [];
-    var dateUtility = DateUtil();
 
     double monthIndex = 0;
     double monthFactor = 0;
@@ -92,13 +89,13 @@ class ChartState extends State<Chart> {
         for(int i = initial; i < closing; i++) {
           monthIndex++;
           if(i == closing - 1) {
-            monthFactor = 1 / dateUtility.daysInMonth(i, product.boughtDate!.year);
+            monthFactor = 1 / DateUtils.getDaysInMonth(i, product.boughtDate!.year);
           }
         }
         chartValues.add(FlSpot((product.boughtDate!.day * monthFactor) + monthIndex, product.price!));  
       }
       else {
-        monthFactor = 1 / dateUtility.daysInMonth(product.boughtDate!.month, product.boughtDate!.year);
+        monthFactor = 1 / DateUtils.getDaysInMonth(product.boughtDate!.month, product.boughtDate!.year);
         chartValues.add(FlSpot(product.boughtDate!.day * monthFactor, product.price!));
       }
       monthIndex = 0;
