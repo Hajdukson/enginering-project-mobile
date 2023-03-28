@@ -52,7 +52,7 @@ class ChartState extends State<Chart> {
     for(int i = 0; i < widget.boughtProducts.length; i++) {
       var month = widget.boughtProducts[i].boughtDate!.month;
       var year = widget.boughtProducts[i].boughtDate!.year;
-      var days = DateUtils.getDaysInMonth(month, year);
+      var days = DateUtils.getDaysInMonth(year, month);
       result[month] = days;
       if(i == widget.boughtProducts.length - 1) {
         month++;
@@ -60,7 +60,7 @@ class ChartState extends State<Chart> {
           month = 1;
           year++;
         }
-        days = DateUtils.getDaysInMonth(month, year);
+        days = DateUtils.getDaysInMonth(year, month);
         result[month] = days;
       }
     }
@@ -89,13 +89,13 @@ class ChartState extends State<Chart> {
         for(int i = initial; i < closing; i++) {
           monthIndex++;
           if(i == closing - 1) {
-            monthFactor = 1 / DateUtils.getDaysInMonth(i, product.boughtDate!.year);
+            monthFactor = 1 / DateUtils.getDaysInMonth(product.boughtDate!.year, i);
           }
         }
         chartValues.add(FlSpot((product.boughtDate!.day * monthFactor) + monthIndex, product.price!));  
       }
       else {
-        monthFactor = 1 / DateUtils.getDaysInMonth(product.boughtDate!.month, product.boughtDate!.year);
+        monthFactor = 1 / DateUtils.getDaysInMonth(product.boughtDate!.year, product.boughtDate!.month);
         chartValues.add(FlSpot(product.boughtDate!.day * monthFactor, product.price!));
       }
       monthIndex = 0;
