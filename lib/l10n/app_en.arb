@@ -1,0 +1,46 @@
+{
+    "settings": "Settings",
+    "addReceipt": "Add receipt",
+    "analizeReceipt": "Analize receipt",
+    "createReceipt": "Create receipt",
+    "yoursAccount": "Account",
+    "filtering": "Filtering",
+    "boughtDate": "Bought date",
+    "price": "Price (PLN)",
+    "name": "Name",
+    "details": "Details",
+    "list": "List",
+    "prices": "Prices in year",
+    "changeName": "Change name",
+    "deleteProduct": "Delete product",
+    "product": "Product",
+    "sorting": "Sorting",
+    "selectDate": "Select date",
+    "filter": "Fiter",
+    "submit": "Submit",
+    "selectBoughtDate": "Select bought date",
+    "receiptDate": "Receipt date",
+    "empty": "-empty",
+    "searchProduct": "Search products",
+    "noProducts": "No products",
+    "delet" : "Delete",
+
+    "movingBack" : "Are you sure? You will lose all data.",
+
+    "saveData" : "Saving data",
+    "areYouSureAbSavingData" : "Would you like to save data?",
+
+    "fieldCannotBeEmpty" : "Field can not be empty",
+    "enterPrice" : "Enter proper value",
+
+    "deletingProducts" : "Jesteś pewny, że chcesz usunąć",
+
+    "abortData" : "Abort data",
+    "analyzeAgain" : "You will have to analize receipt agein",
+
+    "enterDataFromReceipt" : "Enter receipt data!",
+    "youHaveToAddProduct" : "Add some product!",
+    
+    "yes" : "Yes",
+    "no" : "No"
+}

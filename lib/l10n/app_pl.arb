@@ -1,0 +1,46 @@
+{
+    "settings": "Ustawienia",
+    "addReceipt": "Dodaj paragon",
+    "analizeReceipt": "Skanuj paragon",
+    "createReceipt": "Stwórz paragon",
+    "yoursAccount": "Twoje konto",
+    "filtering": "Filtrowanie",
+    "boughtDate": "Data zakupu",
+    "price": "Cena (PLN)",
+    "name": "Nazwa",
+    "details": "Szczegóły",
+    "list": "Lista",
+    "prices": "Ceny z roku",
+    "changeName": "Zmień nazwę",
+    "deleteProduct": "Usuń produkt",
+    "product": "Produkt",
+    "sorting": "Sortowanie",
+    "selectDate": "Wybierz date",
+    "filter": "Filtruj",
+    "submit": "Zatwierdź",
+    "selectBoughtDate": "Wybierz datę zakupu",
+    "receiptDate": "Paragon z dnia",
+    "empty": "-brak",
+    "searchProduct": "Wyszukaj produkt",
+    "noProducts": "Brak produktów",
+    "delet" : "Usuń",
+
+    "movingBack" : "Jesteś pewien, że chcesz wrócić? Utracisz wszystkie dane.",
+
+    "saveData" : "Zapisanie danych",
+    "areYouSureAbSavingData" : "Czy chcesz zapisać dane?",
+
+    "fieldCannotBeEmpty" : "Pole nie może być puste",
+    "enterPrice" : "Podaj prawidłową wartość",
+
+    "deletingProducts" : "Jesteś pewny, że chcesz usunąć",
+
+    "abortData" : "Porzucenie danych",
+    "analyzeAgain" : "Będziesz musiał ponowanie zeskanować paragon",
+
+    "enterDataFromReceipt" : "Podaj datę z paragonu!",
+    "youHaveToAddProduct" : "Dodaj produkt!",
+    
+    "yes" : "Tak",
+    "no" : "Nie"
+}

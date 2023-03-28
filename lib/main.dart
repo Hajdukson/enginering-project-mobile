@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:money_manager_mobile/flavor/flavor_values.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:provider/provider.dart';
@@ -38,14 +38,8 @@ class MyApp extends StatelessWidget {
         CustomColors.themeColors = theme.getColorsValues();
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-          supportedLocales: const [
-            Locale("pl"),
-            Locale("en")
-          ],
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           theme: theme.getTheme(),
           home: const Menu(),
         );
