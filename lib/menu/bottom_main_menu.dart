@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomBarMainMenu extends StatelessWidget {
   final int pageIndex;
@@ -14,14 +15,15 @@ class BottomBarMainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
     return BottomNavigationBar(
         currentIndex: pageIndex,
         onTap: (index) => {onBottomMenuTapHandler(index, pageController)},
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.person), label: "Twoje konto"),
+            icon: const Icon(Icons.person), label: texts.yoursAccount),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt), label: "Dodaj paragon"),
+            icon: const Icon(Icons.receipt), label: texts.addReceipt),
         ]);
   }
 }

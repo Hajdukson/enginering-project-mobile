@@ -9,6 +9,7 @@ import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/views/details_product_chart_tab_view.dart';
 import 'package:money_manager_mobile/views/details_product_list_tab_view.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({Key? key, required this.productSummary}) : super(key: key);
@@ -35,6 +36,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
     return DefaultTabController(
       length: 2,
         child: Scaffold(
@@ -48,7 +50,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     builder: (context) => const Menu()),
                 (Route<dynamic> route) => false,);
               }))),
-            title: const Text("Produkt"),
+            title: Text(texts.product),
             ),
           body: FutureBuilder<List<BoughtProduct>>(
             future: boughtProducts,
@@ -67,9 +69,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ),
                             color: Theme.of(context).primaryColor,
                           ),
-                          tabs: const [
-                            Tab(text: "Szczegóły",),
-                            Tab(text: "Lista"),
+                          tabs: [
+                            Tab(text: texts.details,),
+                            Tab(text: texts.list),
                           ],
                         ),
                       ),

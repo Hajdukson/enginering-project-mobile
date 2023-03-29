@@ -172,7 +172,7 @@ class ChartState extends State<Chart> {
                 textStyle,
                 children: [
                   TextSpan(text: "${widget.boughtProducts[touchedSpot.spotIndex].price!.toStringAsFixed(2)} PLN\n"),
-                  TextSpan(text: DateFormat("MMMMd", "pl").format(widget.boughtProducts[touchedSpot.spotIndex].boughtDate!))] 
+                  TextSpan(text: DateFormat("MMMMd").format(widget.boughtProducts[touchedSpot.spotIndex].boughtDate!))] 
               );
             },
           ).toList();

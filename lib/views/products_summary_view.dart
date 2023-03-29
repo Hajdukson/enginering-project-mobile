@@ -11,6 +11,7 @@ import 'package:money_manager_mobile/widgets/dialogs/new_product_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/product_summary_list.dart';
 import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductsSummaryView extends StatefulWidget {
   const ProductsSummaryView({Key? key}) : super(key: key);
@@ -34,6 +35,8 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
   
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
+
     return Scaffold(
       drawer: Drawer(
         child: SafeArea(
@@ -41,9 +44,9 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const Align(
+                Align(
                   alignment: Alignment.topLeft,
-                  child: Text("Ustawienia")),
+                  child: Text(texts.settings)),
                 Row(children: [
                   Icon(FlavorConfig.instance.values.themeNotifier.isDarkMode ? Icons.dark_mode : Icons.light_mode),
                   Switch(value: FlavorConfig.instance.values.themeNotifier.isDarkMode, onChanged: (value){
@@ -79,7 +82,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
             }, 
             child: Row(children: [
               Icon(Icons.filter_alt, color: Theme.of(context).primaryColorDark,),
-              Text("Filtrowanie", style: Theme.of(context).textTheme.titleMedium,), 
+              Text(texts.filtering, style: Theme.of(context).textTheme.titleMedium,), 
             ])
           )]),
       body: FutureBuilder<List<ProductSummary>>(

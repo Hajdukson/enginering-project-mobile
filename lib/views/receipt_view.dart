@@ -14,6 +14,7 @@ import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/recipt_list.dart';
 import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReceiptView extends StatefulWidget {
   ReceiptView({Key? key, required this.recipt, }) : super(key: key);
@@ -27,6 +28,7 @@ class ReceiptView extends StatefulWidget {
 
 class ReceiptViewState extends State<ReceiptView> {
   final reciptKey = GlobalKey<SelectableListState>();
+  late final texts = AppLocalizations.of(context)!;
   var nameController = TextEditingController();
   var priceController = TextEditingController();
 
@@ -45,7 +47,7 @@ class ReceiptViewState extends State<ReceiptView> {
         bool result = false;
         showDialog(context: context, builder: ((context) => 
           YesNoDialog(
-            description: "Jesteś pewien, że chcesz wrócić? Utracisz wszystkie dane.",
+            description: texts.movingBack,
             onNoClickAction: () {
               result = false;
               Navigator.of(context).pop();
@@ -64,10 +66,10 @@ class ReceiptViewState extends State<ReceiptView> {
           child: Column(
             children: [
               Row(children: [
-                const Text("Paragon z dnia", style: TextStyle(fontSize: 20),),
+                Text(texts.receiptDate , style: TextStyle(fontSize: 20),),
                 TextButton(
                   onPressed: () async => await _selectDate(context), 
-                  child: Text(widget.shoppingDate != null ? DateFormat('dd.MM.yyyy').format(widget.shoppingDate!) : "- brak", style: TextStyle(fontSize: 20),))
+                  child: Text(widget.shoppingDate != null ? DateFormat('dd.MM.yyyy').format(widget.shoppingDate!) : texts.empty, style: TextStyle(fontSize: 20),))
               ],),
               Expanded(
                 child: ReciptList(
@@ -84,24 +86,26 @@ class ReceiptViewState extends State<ReceiptView> {
                     showDialog(context: context, builder: (context) {
                       final firstInput = TextFormField(
                         decoration: InputDecoration(
-                          label: Text("Nazwa"),
+                          label: Text(texts.name),
                         ),  
                         controller: nameController,
                         validator: (value) {
                           if(value == null || value.isEmpty) {
-                            return "Pole nie może być puste";
+                            return texts.fieldCannotBeEmpty;
                           }
+                          return null;
                         },
                       );
                       final secondInput = TextFormField(
                         decoration: InputDecoration(
-                          label: Text("Cena (PLN)")
+                          label: Text(texts.price)
                         ),
                         controller: priceController,
                         validator: (value) {
                           if(double.tryParse(value!) == null || value.isEmpty) {
-                            return "Podaj cenę";
+                            return texts.enterPrice;
                           }
+                          return null;
                         },
                       );
                       return TwoInputDialog(
@@ -134,24 +138,24 @@ class ReceiptViewState extends State<ReceiptView> {
         showDialog(context: context, builder: (context) {
           final firstInput = TextFormField(
             decoration: InputDecoration(
-              label: Text("Nazwa"),
+              label: Text(texts.name),
             ),  
             controller: nameController,
             validator: (value) {
               if(value == null || value.isEmpty) {
-                return "Pole nie może być puste";
+                return texts.fieldCannotBeEmpty;
               }
               return null;
             },
           );
           final secondInput = TextFormField(
             decoration: InputDecoration(
-              label: Text("Cena (PLN)")
+              label: Text(texts.price)
             ),
             controller: priceController,
             validator: (value) {
               if(double.tryParse(value!) == null || value.isEmpty) {
-                return "Podaj cenę";
+                return texts.enterPrice;
               }
               return null;
             },
@@ -234,8 +238,11 @@ class ReceiptViewState extends State<ReceiptView> {
     int selectedProducts = reciptKey.currentState!.searchableItems.where((element) => element.isSelected).length;
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Usuń",
-        description: "Jesteś pewny, że chcesz usunąć $selectedProducts ${selectedProducts == 1 ? "podukt" : selectedProducts >= 5 ? "produktów" : "produkty"}?",
+        title: texts.delet,
+        description: "${texts.deletingProducts} $selectedProducts ${selectedProducts == 1 ? texts.product.toLowerCase() : 
+          Intl.getCurrentLocale() == "pl" ? 
+            (selectedProducts >= 5 ? "produktów" : "produkty") 
+              : "products"}?",
         onYesClickAction: () {
           deleteSelectedItems();
           Navigator.of(context).pop();
@@ -249,8 +256,8 @@ class ReceiptViewState extends State<ReceiptView> {
   void abortActionDialog() {
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Porzucenie danych",
-        description: "Będziesz musiał ponownie zeskanować paragon",
+        title: texts.abortData,
+        description: texts.abortDataMessage,
         onYesClickAction: () {
           abortAction();
           Navigator.of(context).pop();
@@ -262,6 +269,7 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void saveItemsDialog() {
+    var textStyle = TextStyle(fontSize: 16, color: Theme.of(context).primaryColorDark);
     if(widget.shoppingDate == null || widget.recipt.isEmpty) {
       showDialog(context: context, builder: ((context) => InfoDialog(
         Icons.priority_high, 
@@ -271,9 +279,9 @@ class ReceiptViewState extends State<ReceiptView> {
               child: Center(
                 child: RichText(
                   textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    style: TextStyle(fontSize: 20),
-                    text: "Podaj datę z paragonu!")
+                  text: TextSpan(
+                    style: textStyle,
+                    text: texts.enterDataFromReceipt)
                 ),
               ),
             ),
@@ -282,9 +290,9 @@ class ReceiptViewState extends State<ReceiptView> {
               child: Center(
                 child: RichText(
                   textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    style: TextStyle(fontSize: 20),
-                    text: "Dodaj produkt!")
+                  text: TextSpan(
+                    style: textStyle,
+                    text: texts.youHaveToAddProduct)
                 ),
               ),
             ),
@@ -294,8 +302,8 @@ class ReceiptViewState extends State<ReceiptView> {
     }
     showDialog(context: context, builder: ((context) => 
       YesNoDialog(
-        title: "Zapisanie danych",
-        description: "Czy chcesz zapisać dane?",
+        title: texts.saveData,
+        description: texts.areYouSureAbSavingData,
         onYesClickAction: () {
           Navigator.of(context).pop();
           saveItems();
@@ -309,7 +317,6 @@ class ReceiptViewState extends State<ReceiptView> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      locale: const Locale("pl", "PL"),
       initialDate: widget.shoppingDate ?? DateTime.now(), 
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));

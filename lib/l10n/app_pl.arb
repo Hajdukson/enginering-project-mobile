@@ -24,8 +24,13 @@
     "searchProduct": "Wyszukaj produkt",
     "noProducts": "Brak produktów",
     "delet" : "Usuń",
+    "couldNotFindProducts" : "Nie znaloziono produktów",
+    "enterName" : "Podaj nazwę",
+    "dateNotSelected" : "Nie wybrano daty zakupu",
 
-    "movingBack" : "Jesteś pewien, że chcesz wrócić? Utracisz wszystkie dane.",
+    "movingBack" : "Jesteś pewien, że chcesz wrócić?",
+
+    "deleteProductFromDetails" : "Czy na pewno chcesz usunąć ten produkt?",
 
     "saveData" : "Zapisanie danych",
     "areYouSureAbSavingData" : "Czy chcesz zapisać dane?",
@@ -36,11 +41,17 @@
     "deletingProducts" : "Jesteś pewny, że chcesz usunąć",
 
     "abortData" : "Porzucenie danych",
-    "analyzeAgain" : "Będziesz musiał ponowanie zeskanować paragon",
+    "abortDataMessage" : "Utracisz wszystkie dane.",
 
     "enterDataFromReceipt" : "Podaj datę z paragonu!",
     "youHaveToAddProduct" : "Dodaj produkt!",
+
+    "priceAsc" : "Cena rosnąco",
+    "priceDesc" : "Cena malejąco",
+    "dateAsc" : "Data rosnąco",
+    "dateDesc" : "Data malejąco",
     
     "yes" : "Tak",
-    "no" : "Nie"
+    "no" : "Nie",
+    "close" : "Zamknij"
 }

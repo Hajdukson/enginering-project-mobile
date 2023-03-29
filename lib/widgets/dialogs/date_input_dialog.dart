@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DateInputDialog extends StatefulWidget {
   DateInputDialog({Key? key, 
@@ -24,6 +25,7 @@ class DateInputDialog extends StatefulWidget {
 class DateInputDialogState extends State<DateInputDialog> {
   DateTime? selectedDate;
   final textController = TextEditingController();
+  late final texts = AppLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class DateInputDialogState extends State<DateInputDialog> {
     }
     return TextButton(
       onPressed: () => _selectDate(context), 
-      child: Text(selectedDate == null ? "Wybierz date" : DateFormat.yMMMMd("pl").format(selectedDate!), style: textStyle,),);}
+      child: Text(selectedDate == null ? texts.selectDate : DateFormat.yMMMMd("pl").format(selectedDate!), style: textStyle,),);}
 
   Widget get buildFirstInput => TextFormField(
     controller: textController,
@@ -55,7 +57,6 @@ class DateInputDialogState extends State<DateInputDialog> {
     widget.initialDate = null;
     final DateTime? picked = await showDatePicker(
       context: context,
-      locale: const Locale("pl", "PL"),
       initialDate: DateTime.now(), 
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));

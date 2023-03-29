@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/theming/custom_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InfoDialog extends StatelessWidget {
   const InfoDialog(this.icon, {Key? key, required this.dialogContent, required this.height, required this.width}) : super(key: key);
@@ -10,6 +11,7 @@ class InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: SizedBox(
@@ -45,7 +47,7 @@ class InfoDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(18.0),
                       ))
                     ),
-                  child: Text("Zamknij", style: TextStyle(color: CustomColors.textColorPrimary),),
+                  child: Text(texts.close, style: TextStyle(color: CustomColors.textColorPrimary),),
                   onPressed: () => Navigator.of(context).pop(),
                   ),
               ),

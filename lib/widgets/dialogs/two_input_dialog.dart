@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TwoInputDialog extends StatelessWidget {
   TwoInputDialog({
@@ -15,6 +16,8 @@ class TwoInputDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
+    
     return Dialog(
       child: Form(
         key: formKey,
@@ -30,7 +33,7 @@ class TwoInputDialog extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(onPressed: () => submitHandler.call(),  
-                  child: const Text("Zatwierdź")),
+                  child: Text(texts.submit)),
               ),
             )
           ]),

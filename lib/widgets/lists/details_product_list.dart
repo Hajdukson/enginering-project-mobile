@@ -7,6 +7,7 @@ import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
 import 'package:money_manager_mobile/models/eunums/sorting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsProductList extends SelectableList<BoughtProduct> {
   DetailsProductList({
@@ -46,6 +47,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
 
   @override
   Widget buildFilter(BuildContext context, Function(List<SelectableItem<BoughtProduct>> p1) setStateOverride) {
+    final texts = AppLocalizations.of(context)!;
     final expandableControler = ExpandableController(
       initialExpanded: keepExpanded);
     final textController = TextEditingController(text: price);
@@ -85,14 +87,14 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                   }
                 },
                 itemBuilder: (context) {
-                  return const [
-                    PopupMenuItem(value: SortPrice.ascending, child: Text("Cena rosnąco"),),
-                    PopupMenuItem(value: SortPrice.descending, child: Text("Cena malejąco"),),
-                    PopupMenuItem(value: SortDate.ascending, child: Text("Data rosnąco"),),
-                    PopupMenuItem(value: SortDate.descending, child: Text("Data malejąco"),),
+                  return [
+                    PopupMenuItem(value: SortPrice.ascending, child: Text(texts.priceAsc),),
+                    PopupMenuItem(value: SortPrice.descending, child: Text(texts.priceDesc),),
+                    PopupMenuItem(value: SortDate.ascending, child: Text(texts.dateAsc),),
+                    PopupMenuItem(value: SortDate.descending, child: Text(texts.dateDesc),),
                   ];
                 },
-                child: const Text("Sortowanie", style: TextStyle(fontSize: 20),),),
+                child: Text(texts.sorting, style: const TextStyle(fontSize: 20),),),
               TextButton(
                 onPressed: () {
                   expandableControler.toggle();
@@ -100,7 +102,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                 child: Row(
                   children: [
                     Icon(Icons.filter_alt, color: Theme.of(context).primaryColorDark,),
-                    Text("Filtrowanie", style: Theme.of(context).textTheme.titleMedium,), 
+                    Text(texts.filtering, style: Theme.of(context).textTheme.titleMedium,), 
                   ],
               ))
             ],
@@ -116,8 +118,8 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                     TextFormField(
                       controller: textController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        label: Text("Cena"),
+                      decoration: InputDecoration(
+                        label: Text(texts.price),
                       ),
                       onChanged: (value) {
                         var patter = RegExp(r',|-');
@@ -135,7 +137,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                     ),
                     const SizedBox(height: 10,),
                     ElevatedButton(onPressed: () async => setChildState(filterDates = await _showDateRange(context)),
-                      child: Text(filterDates == null ? "Wybierz date" : "${DateFormat("dd.MM.yyyy").format(filterDates!.start)} - ${DateFormat("dd.MM.yyyy").format(filterDates!.end)}"),
+                      child: Text(filterDates == null ? texts.selectDate : "${DateFormat("dd.MM.yyyy").format(filterDates!.start)} - ${DateFormat("dd.MM.yyyy").format(filterDates!.end)}"),
                     ),
                     const SizedBox(width: 5,),
                     Row(
@@ -149,7 +151,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                         const SizedBox(width: 5),
                         ElevatedButton(
                           onPressed: disableFilter ? null : () => setStateOverride(_runFilter(filterDates, price)), 
-                          child: const Text("Filtruj")),
+                          child: Text(texts.filter)),
                       ],
                     ),
                   ],
@@ -195,7 +197,6 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
     keepExpanded = true;
     DateTimeRange? dateTimeRange = await showDateRangePicker(
       context: context, 
-      locale: const Locale("pl", "PL"),
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));
     return dateTimeRange;

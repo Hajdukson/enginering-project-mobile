@@ -6,6 +6,7 @@ import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/tiles/details_chart_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsProductChartTabView extends StatefulWidget {
   const DetailsProductChartTabView({Key? key, required this.productSummary, required this.boughtProducts}) : super(key: key);
@@ -17,6 +18,8 @@ class DetailsProductChartTabView extends StatefulWidget {
 }
 
 class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView> {
+  late final texts = AppLocalizations.of(context)!;
+
   @override
   Widget build(BuildContext context) {
     final buttonStyle = ButtonStyle(
@@ -34,11 +37,11 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
         children: [
           ElevatedButton(onPressed: showDeleteDialog, 
             style: buttonStyle,
-            child: const Text("Usuń produkt"),),
+            child: Text(texts.deleteProduct),),
           const SizedBox(width: 40,),
           ElevatedButton(onPressed: changeNameDialog, 
             style: buttonStyle,
-            child: const Text("Zmień nazwę"))
+            child: Text(texts.changeName))
       ],
       )
     ],);
@@ -61,7 +64,7 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
                   TextFormField(
                     validator: ((value) {
                       if(value == null || value.isEmpty) {
-                        return "Podaj nazwę";
+                        return texts.enterName;
                       }
                       return null;
                     }),
@@ -76,7 +79,7 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
                             await changeName(textController.text);
                           }
                         },  
-                        child: const Text("Zatwierdź")),
+                        child: Text(texts.submit)),
                     ),)
                 ],
               ),
@@ -89,8 +92,8 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
   void showDeleteDialog() async {
     showDialog(context: context, builder: ((context) {
       return YesNoDialog(
-        title: "Usuń",
-        description: "Czy na pewno chcesz usunąć ten produkt?",
+        title: texts.delet,
+        description: texts.deleteProductFromDetails,
         onYesClickAction: deleteProduct,
         onNoClickAction: () {
           Navigator.of(context).pop();

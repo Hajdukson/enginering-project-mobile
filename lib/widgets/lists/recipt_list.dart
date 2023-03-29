@@ -4,6 +4,7 @@ import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReciptList extends SelectableList<BoughtProduct> {
   ReciptList({
@@ -36,6 +37,7 @@ class ReciptList extends SelectableList<BoughtProduct> {
   
   @override
   Widget buildFilter(BuildContext context, Function setStateOverride) {
+    final texts = AppLocalizations.of(context)!;
     var longestStringLen = selectableItems.isNotEmpty ? selectableItems.reduce((value, element) => value.data.name!.length > element.data.name!.length ? value : element).data.name!.length : null;
     return TextField(
       maxLength: longestStringLen,
@@ -46,9 +48,9 @@ class ReciptList extends SelectableList<BoughtProduct> {
         }
         setStateOverride(_runFilter(value).isEmpty ? selectableItems : _runFilter(value));
       },
-      decoration: const InputDecoration(
-        labelText: 'Wyszukaj produkt', 
-        suffixIcon: Icon(Icons.search)),
+      decoration: InputDecoration(
+        labelText: texts.searchProduct, 
+        suffixIcon: const Icon(Icons.search)),
     );
   }
 

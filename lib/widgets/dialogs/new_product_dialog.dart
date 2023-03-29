@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewProductDialog extends StatefulWidget {
   const NewProductDialog({Key? key, required this.addProductCall}) : super(key: key);
@@ -14,6 +15,7 @@ class _NewProductDialogState extends State<NewProductDialog> {
   String? firstInput;
   String? secondInput;
   bool isDateSelected = true;
+  late final texts = AppLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,12 @@ class _NewProductDialogState extends State<NewProductDialog> {
                 TextFormField(
                   validator: ((value) {
                     if(value == null || value.isEmpty) {
-                      return "Pole nie może być puste";
+                      return texts.fieldCannotBeEmpty;
                     }
                     return null;
                   }),
-                  decoration: const InputDecoration(
-                    label: Text("Nazwa"),),
+                  decoration: InputDecoration(
+                    label: Text(texts.name),),
                   onChanged: ((value) => firstInput = value),
                   controller: firstInputController,
                   style: style),
@@ -49,15 +51,15 @@ class _NewProductDialogState extends State<NewProductDialog> {
                 TextFormField(
                   validator: ((value) {
                     if(value == null || value.isEmpty) {
-                      return "Pole nie może być puste";
+                      return texts.fieldCannotBeEmpty;
                     } 
                     if(double.tryParse(value) == null) {
-                      return "Podaj liczbę";
+                      return texts.enterPrice;
                     }
                     return null;
                   }),
-                  decoration: const InputDecoration(
-                    label: Text("Cena"),),
+                  decoration: InputDecoration(
+                    label: Text(texts.price),),
                   onChanged: ((value) => secondInput = value),
                   controller: secondInputController,
                   style: style,
@@ -67,9 +69,9 @@ class _NewProductDialogState extends State<NewProductDialog> {
                   onPressed: () {
                     _selectDate(context);
                   }, 
-                  child: Text(selectedDate != null ? DateFormat('dd.MM.yyyy').format(selectedDate!) : "Wybierz datę zakupu", style: style,)),
+                  child: Text(selectedDate != null ? DateFormat('dd.MM.yyyy').format(selectedDate!) : texts.selectBoughtDate, style: style,)),
                 if(!isDateSelected)
-                  const Text("Nie wybrano daty zakupu", style: TextStyle(color: Colors.red),),
+                  Text(texts.dateNotSelected, style: const TextStyle(color: Colors.red),),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -83,7 +85,7 @@ class _NewProductDialogState extends State<NewProductDialog> {
                           }
                         }
                       },  
-                      child: const Text("Zatwierdź")),),)
+                      child: Text(texts.submit)),),)
               ],
             ),
           ),
@@ -95,7 +97,6 @@ class _NewProductDialogState extends State<NewProductDialog> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      locale: const Locale("pl", "PL"),
       initialDate: DateTime.now(), 
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));

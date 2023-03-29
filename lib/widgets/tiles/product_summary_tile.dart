@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductSummaryTile extends StatelessWidget {
   const ProductSummaryTile({required this.productSummary, required this.animation, Key? key})
@@ -12,6 +13,7 @@ class ProductSummaryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
     return SizeTransition(
       sizeFactor: animation,
       child: AnimatedContainer(
@@ -60,9 +62,9 @@ class ProductSummaryTile extends StatelessWidget {
                 Table(
                   columnWidths: const {0 : FixedColumnWidth(150)},
                   children: [
-                    const TableRow(children: [
-                      TableCell(child: Text("Data zakupu", style: TextStyle(fontWeight: FontWeight.bold),)),
-                      TableCell(child: Text("Cena", style: TextStyle(fontWeight: FontWeight.bold))),
+                    TableRow(children: [
+                      TableCell(child: Text(texts.boughtDate, style: const TextStyle(fontWeight: FontWeight.bold),)),
+                      TableCell(child: Text(texts.price, style: const TextStyle(fontWeight: FontWeight.bold))),
                     ]),
                     TableRow(
                       children: [

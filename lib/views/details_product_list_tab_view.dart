@@ -10,6 +10,7 @@ import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/details_product_list.dart';
 import 'package:money_manager_mobile/widgets/tiles/bought_product_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsProductListTabView extends StatefulWidget {
   DetailsProductListTabView({
@@ -32,6 +33,8 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
   bool get wantKeepAlive => true;
 
   final listKey = GlobalKey<SelectableListState>();
+  late final texts = AppLocalizations.of(context)!;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -64,7 +67,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
       DateInputDialog(
         key: dialgoKey,
         formKey: formKey,
-        textInputLabel: "Cena",
+        textInputLabel: texts.price,
         submit: () {
           if(formKey.currentState!.validate()) {
             addProduct(dialgoKey.currentState!.textController.text, dialgoKey.currentState!.selectedDate!);
@@ -81,8 +84,8 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
       context: context, 
       builder: (context) => 
         YesNoDialog(
-          title: "Usuń",
-          description: "Jesteś pewny że chcesz usunąć ${selectedProducts.length} ${selectedProducts.length == 1 ? "product" : selectedProducts.length >= 5 ? "produktó" : "produkty"}?",
+          title: texts.delet,
+          description: "${texts.deletingProducts} ${selectedProducts.length} ${selectedProducts.length == 1 ? "produkt" : selectedProducts.length >= 5 ? "produktów" : "produkty"}?",
           onYesClickAction: () async {
             Navigator.of(context).pop();
             await deleteSelected(selectedProducts);
@@ -152,7 +155,7 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
         initialText: boughtProduct.price.toString(),        
         key: dialgoKey,
         formKey: formKey,
-        textInputLabel: "Cena",
+        textInputLabel: texts.price,
         submit: () async {
           if(formKey.currentState!.validate()) {
             Navigator.of(context).pop();
