@@ -144,7 +144,7 @@ class DetailsProductList extends SelectableList<BoughtProduct> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Tooltip(
-                          message: "Resetuj filtry",
+                          message: texts.resetFilters,
                           child: ElevatedButton(onPressed:  () => setStateOverride(_resetFilters()), 
                             child: const Icon(Icons.refresh)),
                         ),

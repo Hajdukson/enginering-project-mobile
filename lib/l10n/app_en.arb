@@ -44,7 +44,7 @@
     "abortDataMessage" : "You will lose all data.",
 
     "enterDataFromReceipt" : "Enter receipt data!",
-    "youHaveToAddProduct" : "Add some product!",
+    "youHaveToAddProduct" : "Add some products!",
 
     "priceAsc" : "Price ascending",
     "priceDesc" : "Price descending",
@@ -53,5 +53,15 @@
     
     "yes" : "Yes",
     "no" : "No",
-    "close" : "Close"
+    "close" : "Close",
+
+    "resetFilters" : "Reset filters",
+
+    "yearPrices" : "Prcies from year",
+    "yearsPrices" : "Prcies from years",
+
+    "clickOnChart" : "Click on chart curves to view more detials",
+    "toMoveChart" : "in order to move chart one month backwards or forwards.",
+    "or" : "or",
+    "use" : "Use"
 }

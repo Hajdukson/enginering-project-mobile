@@ -6,6 +6,7 @@ import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductSummaryList extends SelectableList<ProductSummary> {
   ProductSummaryList({
@@ -45,6 +46,7 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
 
   @override
   Widget buildFilter(BuildContext context, Function(List<SelectableItem<ProductSummary>>) setStateOverride) {
+    final texts = AppLocalizations.of(context)!;
     final textController = TextEditingController();
     return ExpandableNotifier(
       controller: expandableController,
@@ -60,21 +62,21 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
               children: [
                 TextField(
                   controller: textController,
-                  decoration: const InputDecoration(
-                  labelText: 'Nazwa product',),
+                  decoration: InputDecoration(
+                  labelText: texts.product,),
                 ),
                 ElevatedButton(
                   onPressed: () async { 
                     setChildState(selectedDates = await _showDateRange(context));
                   }, 
-                  child: selectedDates != null ? Text("${DateFormat('dd.MM.yyyy').format(selectedDates!.start)} - ${DateFormat('dd.MM.yyyy').format(selectedDates!.end)}") : const Text("Wybierz date") ),
+                  child: selectedDates != null ? Text("${DateFormat('dd.MM.yyyy').format(selectedDates!.start)} - ${DateFormat('dd.MM.yyyy').format(selectedDates!.end)}") : Text(texts.selectDate) ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  ElevatedButton(onPressed: () => filterHandler(textController.text, selectedDates), child: const Text("Filtruj")),
+                  ElevatedButton(onPressed: () => filterHandler(textController.text, selectedDates), child: Text(texts.filter)),
                   const SizedBox(width: 5,),
                   Tooltip(
-                    message: "Wyszyść filtry",
+                    message: texts.resetFilters,
                     child: ElevatedButton(onPressed: clearFilerHandler, child: const Icon(Icons.refresh)))
                 ])
               ],
@@ -87,7 +89,6 @@ class ProductSummaryList extends SelectableList<ProductSummary> {
   Future<DateTimeRange?> _showDateRange(BuildContext context) async {
     DateTimeRange? dateTimeRange = await showDateRangePicker(
       context: context, 
-      locale: const Locale("pl", "PL"),
       firstDate: DateTime(2015, 8), 
       lastDate: DateTime(2101, 8));
     return dateTimeRange;

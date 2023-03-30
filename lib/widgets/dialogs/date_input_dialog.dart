@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_mobile/widgets/dialogs/two_input_dialog.dart';
@@ -44,7 +46,7 @@ class DateInputDialogState extends State<DateInputDialog> {
     }
     return TextButton(
       onPressed: () => _selectDate(context), 
-      child: Text(selectedDate == null ? texts.selectDate : DateFormat.yMMMMd("pl").format(selectedDate!), style: textStyle,),);}
+      child: Text(selectedDate == null ? texts.selectDate : DateFormat("yMMMMd", Platform.localeName).format(selectedDate!), style: textStyle,),);}
 
   Widget get buildFirstInput => TextFormField(
     controller: textController,

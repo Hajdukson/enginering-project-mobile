@@ -53,5 +53,15 @@
     
     "yes" : "Tak",
     "no" : "Nie",
-    "close" : "Zamknij"
+    "close" : "Zamknij",
+
+    "resetFilters" : "Resetuj filtry",
+
+    "yearPrices" : "Ceny z roku",
+    "yearsPrices" : "Ceny z lat",
+
+    "clickOnChart" : "Kliknij na załamania wykresu, aby sprawdzić szczegóły.",
+    "toMoveChart" : "aby przesunąć wykres o jeden miesiąc.",
+    "or" : "lub",
+    "use" : "Użyj"
 }

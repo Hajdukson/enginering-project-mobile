@@ -7,6 +7,7 @@ import 'package:money_manager_mobile/theming/custom_colors.dart';
 import 'package:money_manager_mobile/widgets/chart.dart';
 import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
 import 'package:money_manager_mobile/widgets/no_products.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class DetailsChartTile extends StatefulWidget {
@@ -22,6 +23,7 @@ class DetailsChartTile extends StatefulWidget {
 }
 
 class DetailsChartTileState extends State<DetailsChartTile> {
+  late final texts = AppLocalizations.of(context)!;
   var chartKey = GlobalKey<ChartState>();
   late int year;
   late int month;
@@ -85,7 +87,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                     const SizedBox(height: 30,),
                     SizedBox(
                       height: 50,
-                      child: Text(month == 1 ? "Ceny z lat ${year - 1} - $year" : "Ceny z roku $year", style: Theme.of(context).textTheme.titleMedium,),
+                      child: Text(month == 1 ? "${texts.yearsPrices} ${year - 1} - $year" : "${texts.yearPrices} $year", style: Theme.of(context).textTheme.titleMedium,),
                       )
                     ]
                     ),
@@ -131,10 +133,10 @@ class DetailsChartTileState extends State<DetailsChartTile> {
   }
 
   void showDialogOnEdgeOfProductList(BuildContext context) {
-    showDialog(context: context, builder: (context) => const InfoDialog(
+    showDialog(context: context, builder: (context) => InfoDialog(
         Icons.priority_high,
         dialogContent: [
-          Expanded(child: Center(child: Text("Nie można znaźć więcej prodktów", style: TextStyle(fontSize: 16),))),
+          Expanded(child: Center(child: Text(texts.couldNotFindProducts, style: const TextStyle(fontSize: 16),))),
         ],
         height: 200,
         width: 350,
@@ -150,7 +152,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
         textAlign: TextAlign.center,
         text: TextSpan(
           style: fontStyle,
-          text: "Kliknij na załamania wykresu, aby sprawdzić szczegóły.")
+          text: texts.clickOnChart)
       ),
       const SizedBox(height: 20,),
       Expanded(
@@ -164,13 +166,13 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                   RichText(
                     text: TextSpan(
                       style: fontStyle,
-                      text: "Użyj")
+                      text: texts.use)
                   ),
                   const Icon(Icons.chevron_left),
                   RichText(
                     text: TextSpan(
                       style: fontStyle,
-                      text: "lub")
+                      text: texts.or)
                   ),
                   const Icon(Icons.navigate_next),
                 ],
@@ -181,7 +183,7 @@ class DetailsChartTileState extends State<DetailsChartTile> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: fontStyle,
-                    text: "aby przesunąć wykres o jeden miesiąc.")
+                    text: texts.toMoveChart)
                 ),
               ),
             ],
