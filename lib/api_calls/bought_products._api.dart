@@ -46,6 +46,21 @@ class BoughtProductsApi {
     }
   }
 
+  static Future<String> deleteImage(String imagePath) async {
+    var uri = Uri.parse("$_modelUrl/deleteimage").replace(
+      queryParameters: <String, String> {
+        "imagePath" : imagePath
+      }
+    );
+
+    var response = await http.delete(uri);
+
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      return response.body;
+    }
+    return throw Exception("Cannot delete image");
+  }
+
   static Future<List<BoughtProduct>> deleteProductsByName(List<String> names) async {
     var uri = Uri.parse("$_modelUrl/deletebynames");
 

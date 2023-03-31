@@ -116,9 +116,15 @@ class _DetailsProductChartTabViewState extends State<DetailsProductChartTabView>
 
   Future deleteProduct() async {
     showDialog(context: context, builder: ((context) => const Center(child: CircularProgressIndicator())));
+
+    if(widget.boughtProducts.any((product) => product.imagePath != null)) {
+      await BoughtProductsApi.deleteImage(widget.boughtProducts.firstWhere((product) => product.imagePath != null).imagePath!);
+    }
+    
     for (var product in widget.boughtProducts) {
       await BoughtProductsApi.deleteProduct(product);
     }
+    
     if(!mounted) return;
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
