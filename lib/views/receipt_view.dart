@@ -52,8 +52,10 @@ class ReceiptViewState extends State<ReceiptView> {
               result = false;
               Navigator.of(context).pop();
             },
-            onYesClickAction: () {
+            onYesClickAction: () async {
               result = true;
+              await BoughtProductsApi.deleteImage(widget.recipt.first.data.imagePath!);
+              if(!mounted) return;
               Navigator.of(context).pop();
               Navigator.of(context).pop(const Menu());
             },
@@ -214,8 +216,9 @@ class ReceiptViewState extends State<ReceiptView> {
     setState(() {  });
   }
 
-  void abortAction() {
+  void abortAction() async {
     widget.recipt.clear();
+    await BoughtProductsApi.deleteImage(widget.recipt.first.data.imagePath!);
     setState(() { });
     reciptKey.currentState!.removeAllItems();
     _navigateToMenu();

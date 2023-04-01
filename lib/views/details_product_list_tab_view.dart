@@ -5,6 +5,7 @@ import 'package:money_manager_mobile/generics/selectable_list.dart';
 import 'package:money_manager_mobile/menu/menu.dart';
 import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
+import 'package:money_manager_mobile/views/bought_products_analizer.dart';
 import 'package:money_manager_mobile/widgets/dialogs/date_input_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
@@ -119,6 +120,13 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
     for (var product in selectedProducts) {
       var deletedProduct = await BoughtProductsApi.deleteProduct(product.data);
       widget.boughtProducts.removeWhere((product) => product.data.id == deletedProduct.id);
+
+      if(deletedProduct.imagePath != null) {
+        var productsFromImages = await BoughtProductsApi.getProductsFromConreteReceipt(deletedProduct.imagePath!);
+        if(productsFromImages.isEmpty) {
+          await BoughtProductsApi.deleteImage(deletedProduct.imagePath!);
+        }
+      }
     }
 
     if(widget.boughtProducts.isEmpty) {
@@ -127,7 +135,6 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
 
     setState(() { });
   }
-
 
   /// According to https://stackoverflow.com/questions/61424636/flutter-looking-up-a-deactivated-widgets-ancestor-is-unsafe
   void navigateToMenu() {

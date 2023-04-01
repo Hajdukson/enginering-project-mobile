@@ -176,6 +176,23 @@ class BoughtProductsApi {
       throw Exception("Failed to get products summaries");
     }
   }
+  
+  static Future<List<BoughtProduct>> getProductsFromConreteReceipt(String imagePath) async {
+    var uri = Uri.parse("$_modelUrl/receiptproducts").replace(
+      queryParameters: <String, String> {
+        "imagePath" : imagePath
+      }
+    );
+
+    var response = await http.get(uri);
+    List json = jsonDecode(response.body);
+
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      return json.map((e) => BoughtProduct.fromJson(e)).toList();
+    } else {
+      throw Exception("Failed to get products from receipt");
+    }
+  }
 
   static String _decodeProduct(BoughtProduct boughtProduct) {
     Map<String, dynamic> bp = {
