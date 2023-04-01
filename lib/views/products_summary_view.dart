@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:money_manager_mobile/api_calls/bought_products._api.dart';
 import 'package:money_manager_mobile/flavor/flavor_config.dart';
 import 'package:money_manager_mobile/generics/selectable_list.dart';
@@ -7,7 +8,9 @@ import 'package:money_manager_mobile/models/bought_product.dart';
 import 'package:money_manager_mobile/models/product_summary.dart';
 import 'package:money_manager_mobile/models/selectable_item_.dart';
 import 'package:money_manager_mobile/views/product_details_view.dart';
+import 'package:money_manager_mobile/widgets/dialogs/info_dialog.dart';
 import 'package:money_manager_mobile/widgets/dialogs/new_product_dialog.dart';
+import 'package:money_manager_mobile/widgets/dialogs/yesno_dialog.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/lists/product_summary_list.dart';
 import 'package:money_manager_mobile/widgets/tiles/product_summary_tile.dart';
@@ -24,6 +27,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
   late Future<List<ProductSummary>> futureProductsSummaries;
   final productSummaryKey = GlobalKey<SelectableListState>();
   final expandableController = ExpandableController();
+  late final texts = AppLocalizations.of(context)!;
 
   bool darkMode = false;
 
@@ -35,8 +39,6 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
   
   @override
   Widget build(BuildContext context) {
-    final texts = AppLocalizations.of(context)!;
-
     return Scaffold(
       drawer: Drawer(
         child: SafeArea(
@@ -110,7 +112,7 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
   List<ActionButton> get bulkActions => [
     ActionButton(
       icon: const Icon(Icons.delete),
-      onPressed: deleteSelectedProducts
+      onPressed: showDeleteProductsDialog
       )
   ];
 
@@ -135,6 +137,22 @@ class _ProductsSummaryViewState extends State<ProductsSummaryView> with SingleTi
     await BoughtProductsApi.postSingeProduct(boughtProduct);
     futureProductsSummaries = BoughtProductsApi.getPrductsSummaries();
     setState(() {});
+  }
+
+  void showDeleteProductsDialog() {
+    showDialog(context: context, builder: (context) => 
+      YesNoDialog(
+        title: texts.delet,
+        description: texts.areYouSure,
+        onYesClickAction: () {
+          deleteSelectedProducts();
+          Navigator.of(context).pop();
+        },
+        onNoClickAction: () {
+          Navigator.of(context).pop();
+        },
+      )
+    );
   }
 
   void deleteSelectedProducts() async {

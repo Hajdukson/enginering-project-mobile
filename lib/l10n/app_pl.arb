@@ -39,6 +39,7 @@
     "enterPrice" : "Podaj prawidłową wartość",
 
     "deletingProducts" : "Jesteś pewny, że chcesz usunąć",
+    "areYouSure" : "Jesteś pewny?",
 
     "abortData" : "Porzucenie danych",
     "abortDataMessage" : "Utracisz wszystkie dane.",

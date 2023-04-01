@@ -39,6 +39,7 @@
     "enterPrice" : "Enter proper value",
 
     "deletingProducts" : "Are you sure? You want to delete",
+    "areYouSure" : "Are you sure?",
 
     "abortData" : "Abort data",
     "abortDataMessage" : "You will lose all data.",

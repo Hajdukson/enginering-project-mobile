@@ -145,7 +145,8 @@ class SelectableListState<T> extends State<SelectableList<T>> {
     listKey.currentState?.insertItem(0, duration: const Duration(milliseconds: 500));
   }
 
-  /// Removes selected items animation [animateTile] - list tile to animate
+  /// Removes selected items animation 
+  /// [animateTile] - tile to animate
   void animateAndRemoveSelected(Widget Function(SelectableItem<T>, Animation<double>) animateTile) {
     var selectedItems = searchableItems.where((item) => item.isSelected).toList();
     var keys = selectedItems.map((e) => e.keyHelper).toList();
