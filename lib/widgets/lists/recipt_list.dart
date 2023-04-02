@@ -38,9 +38,14 @@ class ReciptList extends SelectableList<BoughtProduct> {
   @override
   Widget buildFilter(BuildContext context, Function setStateOverride) {
     final texts = AppLocalizations.of(context)!;
-    var longestStringLen = selectableItems.reduce((value, element) => value.data.name.length > element.data.name.length ? value : element).data.name.length;
+    int longestStringLen = 0;
+
+    if(selectableItems.isNotEmpty) {
+      longestStringLen = selectableItems.reduce((value, element) => value.data.name.length > element.data.name.length ? value : element).data.name.length;
+    }
+    
     return TextField(
-      maxLength: longestStringLen,
+      maxLength: longestStringLen == 0 ? null : longestStringLen,
       style: Theme.of(context).textTheme.labelSmall,
       onChanged: (value) {
         if(longestStringLen == value.length) {
@@ -60,7 +65,7 @@ class ReciptList extends SelectableList<BoughtProduct> {
       results.addAll(selectableItems);
     } else {
       results.addAll(selectableItems
-        .where((item) => item.data.name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+        .where((item) => item.data.name.toLowerCase().contains(enteredKeyword.toLowerCase()))
         .toList());
     }
 
