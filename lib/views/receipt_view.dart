@@ -217,8 +217,8 @@ class ReceiptViewState extends State<ReceiptView> {
   }
 
   void abortAction() async {
-    widget.recipt.clear();
     await BoughtProductsApi.deleteImage(widget.recipt.first.data.imagePath!);
+    widget.recipt.clear();
     setState(() { });
     reciptKey.currentState!.removeAllItems();
     _navigateToMenu();
