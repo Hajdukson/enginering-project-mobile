@@ -204,13 +204,18 @@ class ReceiptViewState extends State<ReceiptView> {
     return false;
   }
 
-  void deleteSelectedItems() {
+  void deleteSelectedItems() async {
+    var imagePath = widget.recipt.first.data.imagePath;
     reciptKey.currentState!.animateAndRemoveSelected((item, animation) =>
           BoughtProductTail(product: item as SelectableItem<BoughtProduct>, animation: animation,));
     widget.recipt.removeWhere((element) => element.isSelected);
 
     if(widget.recipt.isEmpty) {
       widget.shoppingDate = null;
+
+      if(imagePath != null) {
+        await BoughtProductsApi.deleteImage(imagePath);
+      }
     }
 
     setState(() {  });
