@@ -38,12 +38,12 @@ class ReciptList extends SelectableList<BoughtProduct> {
   @override
   Widget buildFilter(BuildContext context, Function setStateOverride) {
     final texts = AppLocalizations.of(context)!;
-    var longestStringLen = selectableItems.isNotEmpty ? selectableItems.reduce((value, element) => value.data.name!.length > element.data.name!.length ? value : element).data.name!.length : null;
+    var longestStringLen = selectableItems.reduce((value, element) => value.data.name.length > element.data.name.length ? value : element).data.name.length;
     return TextField(
       maxLength: longestStringLen,
       style: Theme.of(context).textTheme.labelSmall,
       onChanged: (value) {
-        if(longestStringLen! == value.length) {
+        if(longestStringLen == value.length) {
           return;
         }
         setStateOverride(_runFilter(value).isEmpty ? selectableItems : _runFilter(value));

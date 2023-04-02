@@ -1,11 +1,11 @@
 class BoughtProduct {
   int? id;
-  String? name;
+  String name;
   double? price;
   DateTime? boughtDate;
   String? imagePath;
 
-  BoughtProduct({this.id, this.name, this.price, this.boughtDate, this.imagePath});
+  BoughtProduct({this.id, this.name = "", this.price, this.boughtDate, this.imagePath});
 
   factory BoughtProduct.fromJson(Map<String, dynamic> json) {
     return BoughtProduct(
