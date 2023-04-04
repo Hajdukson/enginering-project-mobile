@@ -25,7 +25,7 @@ class _ReceiptMakersViewState extends State<ReceiptMakersView> {
                 labelColor: Theme.of(context).primaryColorDark,
                 indicatorColor: Colors.amber, 
                 tabs: [
-                  Tab(text: texts.createReceipt),
+                  Tab(text: texts.analizeReceipt),
                   Tab(text: texts.addReceipt),
                 ]),
               Expanded(
