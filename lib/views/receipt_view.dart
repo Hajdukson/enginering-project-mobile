@@ -45,21 +45,26 @@ class ReceiptViewState extends State<ReceiptView> {
     return WillPopScope(
       onWillPop: () async {
         bool result = false;
-        showDialog(context: context, builder: ((context) => 
-          YesNoDialog(
-            description: texts.movingBack,
-            onNoClickAction: () {
-              result = false;
-              Navigator.of(context).pop();
-            },
-            onYesClickAction: () async {
-              result = true;
-              await BoughtProductsApi.deleteImage(widget.recipt.first.data.imagePath!);
-              if(!mounted) return;
-              Navigator.of(context).pop();
-              Navigator.of(context).pop(const Menu());
-            },
-          )));
+        if(widget.recipt.isNotEmpty){
+          showDialog(context: context, builder: ((context) => 
+            YesNoDialog(
+              description: texts.movingBack,
+              onNoClickAction: () {
+                Navigator.of(context).pop();
+              },
+              onYesClickAction: () async {
+                await BoughtProductsApi.deleteImage(widget.recipt.first.data.imagePath!);
+                if(!mounted) return;
+                Navigator.of(context).pop();
+                _navigateToMenu();
+                result = true;
+              },
+            )));
+        } else {
+          result = true;
+          Navigator.of(context).pop();
+          _navigateToMenu();
+        }
         return result;
       },
       child: SafeArea(
