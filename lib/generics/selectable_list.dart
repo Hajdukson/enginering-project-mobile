@@ -1,10 +1,10 @@
+import 'package:badges/badges.dart' as badge;
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager_mobile/widgets/fab/action_button.dart';
 import 'package:money_manager_mobile/widgets/fab/expandable_fab.dart';
 import 'package:money_manager_mobile/widgets/no_products.dart';
 import '../../models/selectable_item_.dart';
-import 'package:badges/badges.dart' as badges;
 abstract class SelectableList<T> extends StatefulWidget {
   SelectableList({
     Key? key, 
@@ -59,8 +59,8 @@ class SelectableListState<T> extends State<SelectableList<T>> {
         floatingActionButton: isAnySelected ? ExpandableFab(
           heroTag: "bulk",
           key: bulkActionFabKey,
-          icon: Badge(
-            position: badges.BadgePosition.topEnd(top: -40),
+          icon: badge.Badge(
+            position: BadgePosition.topEnd(top: -40),
             badgeContent: Text(searchableItems.where((item) => item.isSelected).length.toString()),
             child: const Icon(Icons.bolt)),
           distance: 80.0,
