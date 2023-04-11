@@ -199,7 +199,8 @@ class BoughtProductsApi {
       "id" : boughtProduct.id,
       "name" : boughtProduct.name,
       "price" : boughtProduct.price,
-      "boughtDate" : boughtProduct.boughtDate!.toIso8601String()
+      "boughtDate" : boughtProduct.boughtDate!.toIso8601String(),
+      "imagePath" : boughtProduct.imagePath,
     };
 
     return jsonEncode(bp);
@@ -211,6 +212,7 @@ class BoughtProductsApi {
       "name" : e.name,
       "price" : e.price,
       "boughtDate" : e.boughtDate!.toIso8601String(),
+      "imagePath" : e.imagePath,
     }).toList();
     return jsonEncode(productsAsJson);
   }
