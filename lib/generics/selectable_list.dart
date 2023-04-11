@@ -53,38 +53,47 @@ class SelectableListState<T> extends State<SelectableList<T>> {
       if(widget.noBulkActions == null || widget.onBulkActions == null) {
         throw Exception("'noBulkActions' and 'onBulkActions' arguments are required");
       }
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: listContent,
-        floatingActionButton: isAnySelected ? ExpandableFab(
-          heroTag: "bulk",
-          key: bulkActionFabKey,
-          icon: badge.Badge(
-            position: BadgePosition.topEnd(top: -40),
-            badgeContent: Text(searchableItems.where((item) => item.isSelected).length.toString()),
-            child: const Icon(Icons.bolt)),
-          distance: 80.0,
-          children: [
-            Tooltip(
-              message: "Odznacz wszystko",
-              child: ActionButton(
-                icon: const Icon(Icons.disabled_by_default), 
-                onPressed: unselectAll,),
-            ),            
-            ...widget.onBulkActions!
-          ],
-        ) : ExpandableFab(
-              heroTag: "noBulk",
-              key: noBulkActionFabKey,
-              icon: const Icon(Icons.menu),
-              distance: 80.0, 
-              children: [
-              ...widget.noBulkActions!
-              ]
-            )
+      return RefreshIndicator(
+        onRefresh: () async {
+          setState(() { });
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: listContent,
+          floatingActionButton: isAnySelected ? ExpandableFab(
+            heroTag: "bulk",
+            key: bulkActionFabKey,
+            icon: badge.Badge(
+              position: BadgePosition.topEnd(top: -40),
+              badgeContent: Text(searchableItems.where((item) => item.isSelected).length.toString()),
+              child: const Icon(Icons.bolt)),
+            distance: 80.0,
+            children: [
+              Tooltip(
+                message: "Odznacz wszystko",
+                child: ActionButton(
+                  icon: const Icon(Icons.disabled_by_default), 
+                  onPressed: unselectAll,),
+              ),            
+              ...widget.onBulkActions!
+            ],
+          ) : ExpandableFab(
+                heroTag: "noBulk",
+                key: noBulkActionFabKey,
+                icon: const Icon(Icons.menu),
+                distance: 80.0, 
+                children: [
+                ...widget.noBulkActions!
+                ]
+              )
+        ),
       );
     }
-    return listContent;
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      child: listContent);
   }
 
   Widget get listContent =>
