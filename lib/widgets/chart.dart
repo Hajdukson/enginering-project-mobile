@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -172,7 +174,7 @@ class ChartState extends State<Chart> {
                 textStyle,
                 children: [
                   TextSpan(text: "${widget.boughtProducts[touchedSpot.spotIndex].price!.toStringAsFixed(2)} PLN\n"),
-                  TextSpan(text: DateFormat("MMMMd").format(widget.boughtProducts[touchedSpot.spotIndex].boughtDate!))] 
+                  TextSpan(text: DateFormat("MMMMd", Platform.localeName).format(widget.boughtProducts[touchedSpot.spotIndex].boughtDate!))] 
               );
             },
           ).toList();
