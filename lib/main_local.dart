@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       builder: (context, theme, child) {
         FlavorConfig(
           values: FlavorValues(
-            baseUrl: "https://192.168.1.33:7075",
+            baseUrl: "https://192.168.1.37:7075",
             camera: firstCamera,
             themeNotifier: theme,
           ));
