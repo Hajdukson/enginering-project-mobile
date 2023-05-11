@@ -148,11 +148,14 @@ class DetailsChartTileState extends State<DetailsChartTile> {
     return 
     [
       const SizedBox(height: 30,),
-      RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: fontStyle,
-          text: texts.clickOnChart)
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: fontStyle,
+            text: texts.clickOnChart)
+        ),
       ),
       const SizedBox(height: 20,),
       Expanded(
