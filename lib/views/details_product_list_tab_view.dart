@@ -69,10 +69,9 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
         key: dialgoKey,
         formKey: formKey,
         textInputLabel: texts.price,
-        submit: () {
-          if(formKey.currentState!.validate()) {
-            addProduct(dialgoKey.currentState!.textController.text, dialgoKey.currentState!.selectedDate!);
-          }
+        typableFieldValidator: priceValidator,
+        submit: () async {
+          addProduct(dialgoKey.currentState!.textController.text, dialgoKey.currentState!.selectedDate!);          
         },
     )));
     
@@ -163,15 +162,25 @@ class _DetailsProductListTabViewState extends State<DetailsProductListTabView>
         key: dialgoKey,
         formKey: formKey,
         textInputLabel: texts.price,
+        typableFieldValidator: priceValidator,
         submit: () async {
-          if(formKey.currentState!.validate()) {
-            Navigator.of(context).pop();
-            boughtProduct.price = double.parse(dialgoKey.currentState!.textController.text);
-            boughtProduct.boughtDate = dialgoKey.currentState!.selectedDate;
-            await BoughtProductsApi.editProduct(boughtProduct);
-            setState(() { }); 
-          }
+          Navigator.of(context).pop();
+          boughtProduct.price = double.parse(dialgoKey.currentState!.textController.text);
+          boughtProduct.boughtDate = dialgoKey.currentState!.selectedDate;
+          await BoughtProductsApi.editProduct(boughtProduct);
+          setState(() { });
         },
     );});
+  }
+
+  String? priceValidator(String? value) {
+    String message = texts.enterPrice;
+    if(value == null) {
+      return message;
+    }
+    else if(double.tryParse(value) == null) {
+      return message;
+    }
+    return null;
   }
 }

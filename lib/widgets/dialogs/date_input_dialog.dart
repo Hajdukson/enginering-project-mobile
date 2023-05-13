@@ -10,15 +10,17 @@ class DateInputDialog extends StatefulWidget {
     required this.formKey,
     required this.textInputLabel, 
     required this.submit,
+    required this.typableFieldValidator,
     this.initialDate,
     this.initialText
     }) : super(key: key);
 
   DateTime? initialDate;
   String? initialText;
+  String? Function(String?) typableFieldValidator;
   final GlobalKey<FormState> formKey;
   final String textInputLabel;
-  final void Function() submit;
+  final Future<void> Function() submit;
 
   @override
   State<DateInputDialog> createState() => DateInputDialogState();
@@ -26,6 +28,8 @@ class DateInputDialog extends StatefulWidget {
 
 class DateInputDialogState extends State<DateInputDialog> {
   DateTime? selectedDate;
+  String? typableValue;
+  bool isDateSelected = true;
   final textController = TextEditingController();
   late final texts = AppLocalizations.of(context)!;
 
@@ -34,26 +38,43 @@ class DateInputDialogState extends State<DateInputDialog> {
     textController.text = widget.initialText ?? "";
     return TwoInputDialog(
       formKey: widget.formKey, 
-      submitHandler: widget.submit, 
-      firstInput: buildFirstInput, 
-      secondInput: buildScundInput());
+      submitHandler: () async {
+        if(widget.formKey.currentState!.validate() && selectedDate != null) {
+          await widget.submit();
+          return;
+        }
+        isDateSelected = false;
+        setState(() {});
+      },
+      firstInput: buildFirstInput(), 
+      secondInput: buildSecondInput());
   }
 
-  Widget buildScundInput()  {
+  Widget buildSecondInput()  {
     const textStyle = TextStyle(fontSize: 20);
     if(widget.initialDate != null){
       selectedDate = widget.initialDate;
     }
-    return TextButton(
-      onPressed: () => _selectDate(context), 
-      child: Text(selectedDate == null ? texts.selectDate : DateFormat("yMMMMd", Platform.localeName).format(selectedDate!), style: textStyle,),);}
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () => _selectDate(context), 
+          child: Text(selectedDate == null ? texts.selectDate : DateFormat("yMMMMd", Platform.localeName).format(selectedDate!), style: textStyle,),),
+        if(!isDateSelected)
+          Text(texts.dateNotSelected, style: const TextStyle(color: Colors.red),),
+      ],
+    );}
 
-  Widget get buildFirstInput => TextFormField(
-    controller: textController,
-    decoration: InputDecoration(
-      label: Text(widget.textInputLabel),
-    ),
-  );
+  Widget buildFirstInput() {
+    return TextFormField(
+      controller: textController,
+      onChanged: (value) => textController.text = value,
+      validator: widget.typableFieldValidator,
+      decoration: InputDecoration(
+        label: Text(widget.textInputLabel),
+        ),
+      );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     widget.initialDate = null;
@@ -64,6 +85,7 @@ class DateInputDialogState extends State<DateInputDialog> {
       lastDate: DateTime(2101, 8));
     if(picked != null) {
       selectedDate = picked;
+      isDateSelected = true;
       setState(() { });
     }
   }
