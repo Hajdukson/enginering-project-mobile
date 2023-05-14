@@ -4,6 +4,8 @@ I developed this project over the course of my last two semesters in college.
 The primary objective of this project was to create an application that enables users to track product prices from various markets.  
 The video you are about to watch is a concise 5-minute presentation outlining the flow of my project.  
 
+It works with [REST API](https://github.com/Hajdukson/enginering-project-web)
+
 <a href="https://youtu.be/EIKXcZlGtDg" target="_blank">
     <img src="README_FILES/v1.0.0/yt_image.png" width="800px"/>
 </a>
